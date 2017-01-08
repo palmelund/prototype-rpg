@@ -15,7 +15,7 @@ namespace Assets
         public SpriteRenderer SpriteRenderer;
 
         public Stack<PathMember> Path = new Stack<PathMember>();
-        private PathMember NextTile;
+        private PathMember _nextTile;
         // Use this for initialization
         void Start()
         {
@@ -29,7 +29,7 @@ namespace Assets
             Position = GameObject.transform.position;
             Transform = GameObject.transform;
 
-            NextTile = new PathMember(map.Instance.GetTileAt(Mathf.RoundToInt(Position.x), Mathf.RoundToInt(Position.y)), PathFinderDirection.Stay);
+            _nextTile = new PathMember(map.Instance.GetTileAt(Mathf.RoundToInt(Position.x), Mathf.RoundToInt(Position.y)), PathFinderDirection.Stay);
         }
 
         // Update is called once per frame
@@ -43,29 +43,25 @@ namespace Assets
                 tile dist = map.Instance.GetTileAt(x,y);
                 if (dist != null)
                 {
-                    PathMarker.ClearPath();
-                    int myX = Mathf.RoundToInt(GameObject.transform.position.x);
-                    int myY = Mathf.RoundToInt(GameObject.transform.position.y);
-                    tile start = map.Instance.GetTileAt(myX, myY);
-                    Path = PathFinder.AllCase(start, dist);
-
-                    if (map.Instance.GetTileAt(myX, myY).Equals(NextTile.Destination))
+                    if (GameObject.transform.position == Position)
                     {
-                        PathMarker.CreatePath(Path);
+                        int myX = Mathf.RoundToInt(GameObject.transform.position.x);
+                        int myY = Mathf.RoundToInt(GameObject.transform.position.y);
+                        tile start = map.Instance.GetTileAt(myX, myY);
+                        Path = PathFinder.AllCase(start, dist);
                     }
                     else
                     {
-                        Path.Push(new PathMember(start, PathFinderDirection.Stay));
-                        PathMarker.CreatePath(Path);
+                        Path = PathFinder.AllCase(_nextTile.Destination, dist);
                     }
+
                 }
             }
 
             if (Transform.position == Position && Path.Count > 0)
             {
-                PathMarker.ClearNext();
-                NextTile = Path.Pop();
-                switch (NextTile.Direction)
+                _nextTile = Path.Pop();
+                switch (_nextTile.Direction)
                 {
                     case PathFinderDirection.Up:
                         Position += Vector3.up;
