@@ -40,14 +40,12 @@ namespace Assets
                 Vector3 clickPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 int x = Mathf.RoundToInt(clickPos.x);
                 int y = Mathf.RoundToInt(clickPos.y);
-                tile dist = map.Instance.GetTileAt(x,y);
+                tile dist = map.Instance.GetTileAt(x, y);
                 if (dist != null)
                 {
                     if (GameObject.transform.position == Position)
                     {
-                        int myX = Mathf.RoundToInt(GameObject.transform.position.x);
-                        int myY = Mathf.RoundToInt(GameObject.transform.position.y);
-                        tile start = map.Instance.GetTileAt(myX, myY);
+                        var start = map.Instance.GetTileAt(GameObject.transform.position);
                         Path = PathFinder.AllCase(start, dist);
                     }
                     else
@@ -78,7 +76,7 @@ namespace Assets
                         Position += Vector3.down;
                         break;
                     case PathFinderDirection.Down:
-                            Position += Vector3.down;
+                        Position += Vector3.down;
                         break;
                     case PathFinderDirection.DownLeft:
                         Position += Vector3.down;

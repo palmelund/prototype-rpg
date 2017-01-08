@@ -64,6 +64,11 @@ namespace Assets
             }
         }
 
+        public tile GetTileAt(Vector3 position)
+        {
+            return GetTileAt(Mathf.RoundToInt(position.x), Mathf.RoundToInt(position.y));
+        }
+
         public PathFinderDirection GetPathFinderDirection(tile from, tile to)
         {
             if (from.Equals(to)) throw new Exception("how?");

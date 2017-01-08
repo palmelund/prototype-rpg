@@ -12,8 +12,8 @@ namespace Assets
 
         void Start()
         {
-            var renderer = TileMarker.GetComponent<SpriteRenderer>();
-            renderer.sortingLayerName = "Marker";
+            var spriteRenderer = TileMarker.GetComponent<SpriteRenderer>();
+            spriteRenderer.sortingLayerName = "Marker";
         }
 
         void Update ()

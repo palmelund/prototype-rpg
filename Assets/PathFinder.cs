@@ -52,7 +52,6 @@ namespace Assets
 
             while (!next.Equals(startTile))
             {
-                //path.Enqueue(next);
                 var prev = next;
                 next = map.Instance.GetNeighbors(prev).Where(t => t != null).Aggregate((a, b) => a.Distance < b.Distance ? a : b);
                 dir = map.Instance.GetPathFinderDirection(next, prev);
