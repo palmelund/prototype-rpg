@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using Assets.PathFinding;
+using Assets.Code.PathFinding;
+using Assets.Code.World;
 using UnityEngine;
 
-namespace Assets
+namespace Assets.Code
 {
     public class Player : MonoBehaviour
     {

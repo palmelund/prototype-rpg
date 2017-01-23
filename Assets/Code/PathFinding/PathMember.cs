@@ -1,4 +1,6 @@
-﻿namespace Assets.PathFinding
+﻿using Assets.Code.World;
+
+namespace Assets.Code.PathFinding
 {
     public sealed class PathMember
     {

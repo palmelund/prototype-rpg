@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Assets.Code.World;
 
-namespace Assets.PathFinding
+namespace Assets.Code.PathFinding
 {
     public class AllPathFinder
     {

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Assets
+namespace Assets.Code.World
 {
     public class Map : MonoBehaviour
     {

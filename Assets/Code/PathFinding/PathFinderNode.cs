@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace Assets.PathFinding
+namespace Assets.Code.PathFinding
 {
     public class PathFinderNode
     {

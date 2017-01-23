@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Assets
+namespace Assets.Code
 {
     public static class GameState
     {

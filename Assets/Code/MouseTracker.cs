@@ -1,7 +1,8 @@
-﻿using UnityEngine;
+﻿using Assets.Code.World;
+using UnityEngine;
 using UnityEngine.UI;
 
-namespace Assets
+namespace Assets.Code
 {
     public class MouseTracker : MonoBehaviour {
         public Text XText;              // Set in editor
