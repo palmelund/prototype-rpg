@@ -4,7 +4,6 @@ using UnityEngine.UI;
 namespace Assets
 {
     public class MouseTracker : MonoBehaviour {
-        // Update is called once per frame
         public Text XText;              // Set in editor
         public Text YText;              // Set in editor
 
@@ -19,11 +18,11 @@ namespace Assets
         void Update ()
         {
             var pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            int x = Mathf.RoundToInt(pos.x);
-            int y = Mathf.RoundToInt(pos.y);
+            var x = Mathf.RoundToInt(pos.x);
+            var y = Mathf.RoundToInt(pos.y);
 
             var p = Input.mousePosition;
-            if (map.Instance.GetTileAt(x, y) != null)
+            if (Map.Instance.GetTileAt(x, y) != null)
             {
                 TileMarker.GetComponent<Renderer>().enabled = true;
                 TileMarker.transform.position = new Vector3(x, y);
