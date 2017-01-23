@@ -14,7 +14,7 @@ namespace Assets
             {
                 transform.position += Vector3.left * Time.deltaTime * CamSpeed;
             }
-            else if (Input.mousePosition.x > Screen.width - Border && Camera.main.transform.position.x <= map.Instance.Width)
+            else if (Input.mousePosition.x > Screen.width - Border && Camera.main.transform.position.x <= Map.Instance.Width)
             {
                 transform.position += Vector3.right * Time.deltaTime * CamSpeed;
             }
@@ -23,7 +23,7 @@ namespace Assets
             {
                 transform.position += Vector3.down * Time.deltaTime * CamSpeed;
             }
-            if (Input.mousePosition.y > Screen.height - Border && Camera.main.transform.position.y <= map.Instance.Height)
+            if (Input.mousePosition.y > Screen.height - Border && Camera.main.transform.position.y <= Map.Instance.Height)
             {
                 transform.position += Vector3.up * Time.deltaTime * CamSpeed;
             }

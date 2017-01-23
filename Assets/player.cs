@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using Assets.PathFinding;
 using UnityEngine;
 
 namespace Assets
 {
-    public class player : MonoBehaviour
+    public class Player : MonoBehaviour
     {
 
         public float Speed = 1f;
@@ -16,7 +17,9 @@ namespace Assets
 
         public Stack<PathMember> Path = new Stack<PathMember>();
         private PathMember _nextTile;
-        // Use this for initialization
+
+        private AllPathFinder _allPathFinder;
+        
         void Start()
         {
             GameObject = gameObject; // GameObject("player");
@@ -29,28 +32,30 @@ namespace Assets
             Position = GameObject.transform.position;
             Transform = GameObject.transform;
 
-            _nextTile = new PathMember(map.Instance.GetTileAt(Mathf.RoundToInt(Position.x), Mathf.RoundToInt(Position.y)), PathFinderDirection.Stay);
+            _nextTile = new PathMember(Map.Instance.GetTileAt(Mathf.RoundToInt(Position.x), Mathf.RoundToInt(Position.y)), PathFinderDirection.Stay);
+            _allPathFinder = new AllPathFinder(Map.Instance);
         }
-
-        // Update is called once per frame
+        
         void Update()
         {
             if (Input.GetMouseButtonDown(0))
             {
-                Vector3 clickPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                int x = Mathf.RoundToInt(clickPos.x);
-                int y = Mathf.RoundToInt(clickPos.y);
-                tile dist = map.Instance.GetTileAt(x, y);
+                var clickPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                var x = Mathf.RoundToInt(clickPos.x);
+                var y = Mathf.RoundToInt(clickPos.y);
+                var dist = Map.Instance.GetTileAt(x, y);
                 if (dist != null)
                 {
                     if (GameObject.transform.position == Position)
                     {
-                        var start = map.Instance.GetTileAt(GameObject.transform.position);
-                        Path = PathFinder.AllCase(start, dist);
+                        var start = Map.Instance.GetTileAt(GameObject.transform.position);
+                        //Path = PathFinder.AllCase(start.Node, dist.Node);
+                        Path = _allPathFinder.PathFinder(start, dist);
                     }
                     else
                     {
-                        Path = PathFinder.AllCase(_nextTile.Destination, dist);
+                        //Path = PathFinder.AllCase(_nextTile.Destination.Node, dist.Node);
+                        Path = _allPathFinder.PathFinder(_nextTile.Destination, dist);
                     }
 
                 }
