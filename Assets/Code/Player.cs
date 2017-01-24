@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using Assets.Code.PathFinding;
 using Assets.Code.World;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace Assets.Code
 {
     public class Player : MonoBehaviour
     {
+        public static Player Instance;
 
         public float Speed = 1f;
         public Vector3 Position;
@@ -35,31 +37,17 @@ namespace Assets.Code
 
             _nextTile = new PathMember(Map.Instance.GetTileAt(Mathf.RoundToInt(Position.x), Mathf.RoundToInt(Position.y)), PathFinderDirection.Stay);
             _allPathFinder = new AllPathFinder(Map.Instance);
+
+            GameObject.AddComponent<BoxCollider2D>();
+
+            Instance = this;
         }
         
         void Update()
         {
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
             {
-                var clickPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                var x = Mathf.RoundToInt(clickPos.x);
-                var y = Mathf.RoundToInt(clickPos.y);
-                var dist = Map.Instance.GetTileAt(x, y);
-                if (dist != null)
-                {
-                    if (GameObject.transform.position == Position)
-                    {
-                        var start = Map.Instance.GetTileAt(GameObject.transform.position);
-                        //Path = PathFinder.AllCase(start.Node, dist.Node);
-                        Path = _allPathFinder.PathFinder(start, dist);
-                    }
-                    else
-                    {
-                        //Path = PathFinder.AllCase(_nextTile.Destination.Node, dist.Node);
-                        Path = _allPathFinder.PathFinder(_nextTile.Destination, dist);
-                    }
-
-                }
+                PathFinder(Input.mousePosition);
             }
 
             if (Transform.position == Position && Path.Count > 0)
@@ -103,6 +91,28 @@ namespace Assets.Code
             }
 
             GameObject.transform.position = Vector3.MoveTowards(GameObject.transform.position, Position, Time.deltaTime * Speed);
+        }
+
+        public void PathFinder(Vector3 mousePosition)
+        {
+            var clickPos = Camera.main.ScreenToWorldPoint(mousePosition);
+            var x = Mathf.RoundToInt(clickPos.x);
+            var y = Mathf.RoundToInt(clickPos.y);
+            var target = Map.Instance.GetTileAt(x, y);
+            if (target != null)
+            {
+                if (GameObject.transform.position == Position)
+                {
+                    var start = Map.Instance.GetTileAt(GameObject.transform.position);
+                    //Path = PathFinder.AllCase(start.Node, dist.Node);
+                    Path = _allPathFinder.PathFinder(start, target);
+                }
+                else
+                {
+                    //Path = PathFinder.AllCase(_nextTile.Destination.Node, dist.Node);
+                    Path = _allPathFinder.PathFinder(_nextTile.Destination, target);
+                }
+            }
         }
     }
 }

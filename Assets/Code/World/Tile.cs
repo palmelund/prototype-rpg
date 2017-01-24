@@ -28,6 +28,36 @@ namespace Assets.Code.World
             }
             SpriteRenderer.sortingLayerName = "BackgroundTiles";
             GameObject.transform.position = new Vector3(x, y);
+
+            var collider = GameObject.AddComponent<BoxCollider2D>();
+
+            var c = GameObject.AddComponent<CustomComponentType>();
+            c.Type = ComponentType.Tile;
+
+            var t = GameObject.AddComponent<TileComponent>();
+            t.Tile = this;
+            //collider.size = new Vector2(32, 32);
         }
+    }
+
+    public class TileComponent : MonoBehaviour
+    {
+        public Tile Tile;
+    }
+
+    public class PlayerComponent : MonoBehaviour
+    {
+        public Player Player;
+    }
+
+    public enum ComponentType
+    {
+        Tile,
+        Player,
+    }
+
+    public class CustomComponentType : MonoBehaviour
+    {
+        public ComponentType Type;
     }
 }

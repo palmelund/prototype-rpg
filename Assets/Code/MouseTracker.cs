@@ -5,9 +5,6 @@ using UnityEngine.UI;
 namespace Assets.Code
 {
     public class MouseTracker : MonoBehaviour {
-        public Text XText;              // Set in editor
-        public Text YText;              // Set in editor
-
         public GameObject TileMarker;   // Set in editor
 
         void Start()
@@ -22,7 +19,6 @@ namespace Assets.Code
             var x = Mathf.RoundToInt(pos.x);
             var y = Mathf.RoundToInt(pos.y);
 
-            var p = Input.mousePosition;
             if (Map.Instance.GetTileAt(x, y) != null)
             {
                 TileMarker.GetComponent<Renderer>().enabled = true;
@@ -32,9 +28,6 @@ namespace Assets.Code
             {
                 TileMarker.GetComponent<Renderer>().enabled = false;
             }
-
-            XText.text = "x: " + pos.x + " - " + x;
-            YText.text = "y: " + pos.y + " - " + y;
         }
     }
 }
