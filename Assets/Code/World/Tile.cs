@@ -17,7 +17,7 @@ namespace Assets.Code.World
             YCoord = y;
             GameObject = new GameObject(string.Format("tile_x_{0}_y_{1}", x, y));
             SpriteRenderer = GameObject.AddComponent<SpriteRenderer>();
-            if (GameState.Rand.Next(5) == 0)
+            if (GameState.Rand.Next(10) == 0)
             {
                 SpriteRenderer.sprite = Resources.Load<Sprite>("wall");
                 CanEnter = false;
@@ -29,16 +29,17 @@ namespace Assets.Code.World
             SpriteRenderer.sortingLayerName = "BackgroundTiles";
             GameObject.transform.position = new Vector3(x, y);
 
-            var collider = GameObject.AddComponent<BoxCollider2D>();
+            GameObject.AddComponent<BoxCollider2D>();   // Used for right-clicking currently
 
             var c = GameObject.AddComponent<CustomComponentType>();
             c.Type = ComponentType.Tile;
 
             var t = GameObject.AddComponent<TileComponent>();
             t.Tile = this;
-            //collider.size = new Vector2(32, 32);
         }
     }
+
+    // Hacky solution to the way the engine does things
 
     public class TileComponent : MonoBehaviour
     {

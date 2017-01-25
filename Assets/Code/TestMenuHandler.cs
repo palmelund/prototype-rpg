@@ -53,7 +53,7 @@ namespace Assets.Code
                             {
                                 Debug.Log("Walk");
 
-                                Player.Instance.PathFinder(pos);
+                                Player.Instance.ActionPathFinder( pos);
                                 HideAndClear();
                             });
                             var t = b.GetComponentInChildren<Text>();
