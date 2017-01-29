@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Assets.Code.Characters;
+using UnityEngine;
 
 namespace Assets.Code.World
 {
@@ -17,7 +18,7 @@ namespace Assets.Code.World
             YCoord = y;
             GameObject = new GameObject(string.Format("tile_x_{0}_y_{1}", x, y));
             SpriteRenderer = GameObject.AddComponent<SpriteRenderer>();
-            if (GameState.Rand.Next(10) == 0)
+            if (false && GameState.Rand.Next(10) == 0)  // TODO: Always false
             {
                 SpriteRenderer.sprite = Resources.Load<Sprite>("wall");
                 CanEnter = false;

@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using Assets.Code.Characters;
 using Assets.Code.World;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace Assets.Code
+namespace Assets.Code.Menus
 {
-    public class TestMenuHandler : MonoBehaviour
+    public class RightClickMenu : MonoBehaviour
     {
         public GameObject CanvasGo; // Set in editor
         public RectTransform Panel; // Set in editor
@@ -51,9 +52,7 @@ namespace Assets.Code
                             var b = go.GetComponent<Button>();
                             b.onClick.AddListener(() =>
                             {
-                                Debug.Log("Walk");
-
-                                Player.Instance.ActionPathFinder( pos);
+                                Player.Instance.PathFinder(pos);
                                 HideAndClear();
                             });
                             var t = b.GetComponentInChildren<Text>();

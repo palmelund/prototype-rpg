@@ -1,46 +1,47 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using Assets.Code.World;
+﻿using Assets.Code.World;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class DebugInfoScreen : MonoBehaviour
+namespace Assets.Code.DeveloperTools
 {
-    private bool _active = false;
-    public GameObject Canvas; // Set in editor
-
-    public Text XText;                  // Set in editor
-    public Text YText;                  // Set in editor
-    public Text WorldsizeText;          // Set in editor
-    public Text ScreenResolutionText;   // Set in editor
-
-    // Use this for initialization
-    void Start()
+    public class DebugInfoScreen : MonoBehaviour
     {
-        Canvas.SetActive(false);
-    }
+        private bool _active = false;
+        public GameObject Canvas; // Set in editor
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.F5))
+        public Text XText;                  // Set in editor
+        public Text YText;                  // Set in editor
+        public Text WorldsizeText;          // Set in editor
+        public Text ScreenResolutionText;   // Set in editor
+
+        // Use this for initialization
+        void Start()
         {
-            Canvas.SetActive(!_active);
-
-            _active = !_active;
+            Canvas.SetActive(false);
         }
-        if (_active)
+
+        // Update is called once per frame
+        void Update()
         {
-            var pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            var x = Mathf.RoundToInt(pos.x);
-            var y = Mathf.RoundToInt(pos.y);
+            if (Input.GetKeyDown(KeyCode.F5))
+            {
+                Canvas.SetActive(!_active);
 
-            XText.text = "x: " + pos.x + " - " + x;
-            YText.text = "y: " + pos.y + " - " + y;
+                _active = !_active;
+            }
+            if (_active)
+            {
+                var pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                var x = Mathf.RoundToInt(pos.x);
+                var y = Mathf.RoundToInt(pos.y);
 
-            ScreenResolutionText.text = "Screen res: " + Screen.width + " x " + Screen.height;
+                XText.text = "x: " + pos.x + " - " + x;
+                YText.text = "y: " + pos.y + " - " + y;
 
-            WorldsizeText.text = "World size: " + Map.Instance.Width + " x " + Map.Instance.Height;
+                ScreenResolutionText.text = "Screen res: " + Screen.width + " x " + Screen.height;
+
+                WorldsizeText.text = "World size: " + Map.Instance.Width + " x " + Map.Instance.Height;
+            }
         }
     }
 }

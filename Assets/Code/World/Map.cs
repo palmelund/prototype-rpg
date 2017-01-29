@@ -34,8 +34,8 @@ namespace Assets.Code.World
         {
             Instance = this;
 
-            Width = 100;
-            Height = 100;
+            Width = 10;
+            Height = 10;
 
             TileMap = new Tile[Width, Height];
             for (var x = 0; x < Width; x++)

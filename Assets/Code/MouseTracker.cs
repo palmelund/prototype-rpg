@@ -1,5 +1,6 @@
 ﻿using Assets.Code.World;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace Assets.Code
@@ -15,18 +16,26 @@ namespace Assets.Code
 
         void Update ()
         {
-            var pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            var x = Mathf.RoundToInt(pos.x);
-            var y = Mathf.RoundToInt(pos.y);
-
-            if (Map.Instance.GetTileAt(x, y) != null)
+            if (!EventSystem.current.IsPointerOverGameObject())
             {
-                TileMarker.GetComponent<Renderer>().enabled = true;
-                TileMarker.transform.position = new Vector3(x, y);
+                TileMarker.SetActive(true);
+                var pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                var x = Mathf.RoundToInt(pos.x);
+                var y = Mathf.RoundToInt(pos.y);
+
+                if (Map.Instance.GetTileAt(x, y) != null)
+                {
+                    TileMarker.GetComponent<Renderer>().enabled = true;
+                    TileMarker.transform.position = new Vector3(x, y);
+                }
+                else
+                {
+                    TileMarker.GetComponent<Renderer>().enabled = false;
+                }
             }
             else
             {
-                TileMarker.GetComponent<Renderer>().enabled = false;
+                TileMarker.SetActive(false);
             }
         }
     }
