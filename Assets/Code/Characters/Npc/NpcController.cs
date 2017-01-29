@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Assets.Code.PathFinding;
+using Assets.Code.Characters.PathFinding;
 using UnityEngine;
 
 namespace Assets.Code.Characters.Npc
@@ -28,7 +28,7 @@ namespace Assets.Code.Characters.Npc
             {
                 foreach (var npc in NpcList)
                 {
-                    npc.PathFinder(GameState.Rand.Next(0, 10), GameState.Rand.Next(0, 10));
+                    npc.Move(GameState.Rand.Next(0, 10), GameState.Rand.Next(0, 10));
                 }
 
                 _nextTimer += 5f;

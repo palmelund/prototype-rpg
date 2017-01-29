@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Assets.Code.PathFinding;
+using Assets.Code.Characters.PathFinding;
 using Assets.Code.World;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -21,8 +21,6 @@ namespace Assets.Code.Characters
         public Stack<PathMember> Path = new Stack<PathMember>();
         private PathMember _nextTile;
         
-        private PathFinder _pathFinder;
-        
         void Start()
         {
             PlayerGameObject = gameObject; // PlayerGameObject("player");
@@ -36,7 +34,6 @@ namespace Assets.Code.Characters
             Transform = PlayerGameObject.transform;
 
             _nextTile = new PathMember(Map.Instance.GetTileAt(Mathf.RoundToInt(Position.x), Mathf.RoundToInt(Position.y)), PathFinderDirection.Stay);
-            _pathFinder = new PathFinder();
 
             PlayerGameObject.AddComponent<BoxCollider2D>();
 
@@ -47,8 +44,8 @@ namespace Assets.Code.Characters
         {
             if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
             {
-                //PathFinder(Input.mousePosition);
-                PathFinder(Input.mousePosition);
+                //Move(Input.mousePosition);
+                Move(Input.mousePosition);
             }
 
             if (Transform.position == Position && Path.Count > 0)
@@ -94,7 +91,7 @@ namespace Assets.Code.Characters
             PlayerGameObject.transform.position = Vector3.MoveTowards(PlayerGameObject.transform.position, Position, Time.deltaTime * Speed);
         }
 
-        public void PathFinder(Vector3 mousePosition)
+        public void Move(Vector3 mousePosition)
         {
             var clickPos = Camera.main.ScreenToWorldPoint(mousePosition);
             var x = Mathf.RoundToInt(clickPos.x);
@@ -105,13 +102,13 @@ namespace Assets.Code.Characters
                 if (PlayerGameObject.transform.position == Position)
                 {
                     var start = Map.Instance.GetTileAt(PlayerGameObject.transform.position);
-                    Path = _pathFinder.AStar(Map.Instance.Graph[start.XCoord, start.YCoord],
+                    Path = PathFinder.AStar(Map.Instance.Graph[start.XCoord, start.YCoord],
                         Map.Instance.Graph[target.XCoord, target.YCoord]);
                 }
                 else
                 {
                     var start = _nextTile.Destination;
-                    Path = _pathFinder.AStar(Map.Instance.Graph[start.XCoord, start.YCoord],
+                    Path = PathFinder.AStar(Map.Instance.Graph[start.XCoord, start.YCoord],
                         Map.Instance.Graph[target.XCoord, target.YCoord]);
                 }
             }

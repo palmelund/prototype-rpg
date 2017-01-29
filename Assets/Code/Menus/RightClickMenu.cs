@@ -52,7 +52,7 @@ namespace Assets.Code.Menus
                             var b = go.GetComponent<Button>();
                             b.onClick.AddListener(() =>
                             {
-                                Player.Instance.PathFinder(pos);
+                                Player.Instance.Move(pos);
                                 HideAndClear();
                             });
                             var t = b.GetComponentInChildren<Text>();

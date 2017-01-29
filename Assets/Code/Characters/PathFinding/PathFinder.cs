@@ -4,13 +4,13 @@ using System.Linq;
 using Assets.Code.World;
 using UnityEngine;
 
-namespace Assets.Code.PathFinding
+namespace Assets.Code.Characters.PathFinding
 {
-    public class PathFinder
+    public static class PathFinder
     {
         private const float Sqrt2 = 1.4142135f;
 
-        public Stack<PathMember> AStar(Node start, Node target)
+        public static Stack<PathMember> AStar(Node start, Node target)
         {
             var closedSet = new List<Node>();
             var openSet = new List<Node> { start };
@@ -72,7 +72,7 @@ namespace Assets.Code.PathFinding
             return new Stack<PathMember>();
         }
 
-        private Stack<PathMember> ReconstructPath(Dictionary<Node, Node> cameFrom, Node current, Node start)
+        private static Stack<PathMember> ReconstructPath(Dictionary<Node, Node> cameFrom, Node current, Node start)
         {
             var totalPath = new Queue<Node>();
             totalPath.Enqueue(current);

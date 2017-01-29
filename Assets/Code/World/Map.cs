@@ -1,5 +1,4 @@
-﻿using Assets.Code.PathFinding;
-using UnityEngine;
+﻿using UnityEngine;
 
 /* TODO:
  * Change the code so that based on tiles deemed reachable by the map maker, 

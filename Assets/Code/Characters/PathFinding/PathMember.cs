@@ -1,6 +1,6 @@
 ﻿using Assets.Code.World;
 
-namespace Assets.Code.PathFinding
+namespace Assets.Code.Characters.PathFinding
 {
     public sealed class PathMember
     {

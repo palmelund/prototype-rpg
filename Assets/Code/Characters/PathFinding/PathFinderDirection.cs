@@ -1,4 +1,4 @@
-﻿namespace Assets.Code.PathFinding
+﻿namespace Assets.Code.Characters.PathFinding
 {
     public enum PathFinderDirection
     {

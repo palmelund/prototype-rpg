@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Assets.Code.PathFinding;
+using Assets.Code.Characters.PathFinding;
 using Assets.Code.World;
 using UnityEngine;
 
@@ -20,8 +20,6 @@ namespace Assets.Code.Characters.Npc
         public Stack<PathMember> Path = new Stack<PathMember>();
         internal PathMember NextTile;
 
-        private readonly PathFinder _pathFinder;
-
         public Npc(string npcId, string npcName)
         {
             Name = npcName;
@@ -38,10 +36,9 @@ namespace Assets.Code.Characters.Npc
             Transform = NpcGameObject.transform;
 
             NextTile = new PathMember(Map.Instance.GetTileAt(Mathf.RoundToInt(Position.x), Mathf.RoundToInt(Position.y)), PathFinderDirection.Stay);
-            _pathFinder = new PathFinder();
         }
 
-        public void PathFinder(int x, int y)
+        public void Move(int x, int y)
         {
             var target = Map.Instance.GetTileAt(x, y);
             if (target != null)
@@ -49,13 +46,13 @@ namespace Assets.Code.Characters.Npc
                 if (NpcGameObject.transform.position == Position)
                 {
                     var start = Map.Instance.GetTileAt(NpcGameObject.transform.position);
-                    Path = _pathFinder.AStar(Map.Instance.Graph[start.XCoord, start.YCoord],
+                    Path = PathFinder.AStar(Map.Instance.Graph[start.XCoord, start.YCoord],
                         Map.Instance.Graph[target.XCoord, target.YCoord]);
                 }
                 else
                 {
                     var start = NextTile.Destination;
-                    Path = _pathFinder.AStar(Map.Instance.Graph[start.XCoord, start.YCoord],
+                    Path = PathFinder.AStar(Map.Instance.Graph[start.XCoord, start.YCoord],
                         Map.Instance.Graph[target.XCoord, target.YCoord]);
                 }
             }
