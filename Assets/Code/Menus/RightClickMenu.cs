@@ -13,6 +13,7 @@ namespace Assets.Code.Menus
         public GameObject CanvasGo; // Set in editor
         public RectTransform Panel; // Set in editor
         private bool _active;
+        public GameObject TargetMarker; // Set in editor
 
         private readonly List<GameObject> _obj = new List<GameObject>();
 
@@ -86,7 +87,25 @@ namespace Assets.Code.Menus
                                 break;
                             }
                         case ComponentType.Npc:
-                            break;
+                            {
+                                var enemy = hgo.GetComponent<NpcComponent>().Npc;
+                                var go = Instantiate(Resources.Load<GameObject>("Prefabs/SampleButton"));
+                                _obj.Add(go);
+                                go.transform.SetParent(Panel.transform, false);
+                                go.transform.localScale = new Vector3(1, 1, 1);
+                                var b = go.GetComponent<Button>();
+                                b.onClick.AddListener(() =>
+                                {
+                                    TargetMarker.SetActive(true);
+                                    TargetMarker.transform.SetParent(enemy.NpcGameObject.transform);
+                                    TargetMarker.transform.position = new Vector3(enemy.NpcGameObject.transform.position.x, enemy.NpcGameObject.transform.position.y, 10);
+                                    HideAndClear();
+                                });
+                                b.GetComponentInChildren<Text>().text = "Set Target";
+
+                                break;
+                            }
+
                         default:
                             throw new ArgumentOutOfRangeException();
                     }
