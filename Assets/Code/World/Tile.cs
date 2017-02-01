@@ -1,4 +1,5 @@
 ﻿using Assets.Code.Characters;
+using Assets.Code.Characters.Npc;
 using UnityEngine;
 
 namespace Assets.Code.World
@@ -52,10 +53,16 @@ namespace Assets.Code.World
         public Player Player;
     }
 
+    public class NpcComponent : MonoBehaviour
+    {
+        public Npc Npc;
+    }
+
     public enum ComponentType
     {
         Tile,
         Player,
+        Npc,
     }
 
     public class CustomComponentType : MonoBehaviour

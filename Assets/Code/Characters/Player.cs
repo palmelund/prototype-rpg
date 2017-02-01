@@ -20,6 +20,9 @@ namespace Assets.Code.Characters
 
         public Stack<PathMember> Path = new Stack<PathMember>();
         private PathMember _nextTile;
+
+        public GameObject TargetMarker;
+        public Npc.Npc Target;
         
         void Start()
         {
@@ -36,6 +39,9 @@ namespace Assets.Code.Characters
             _nextTile = new PathMember(Map.Instance.GetTileAt(Mathf.RoundToInt(Position.x), Mathf.RoundToInt(Position.y)), PathFinderDirection.Stay);
 
             PlayerGameObject.AddComponent<BoxCollider2D>();
+
+            PlayerGameObject.AddComponent<CustomComponentType>().Type = ComponentType.Player;
+            PlayerGameObject.AddComponent<PlayerComponent>().Player = this;
 
             Instance = this;
         }

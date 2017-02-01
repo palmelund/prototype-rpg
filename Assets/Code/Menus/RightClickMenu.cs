@@ -35,6 +35,8 @@ namespace Assets.Code.Menus
                 var hits = Physics2D.RaycastAll(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
                 Debug.Log(hits.Length);
 
+                int rpos = 0;
+
                 foreach (var hit in hits)
                 {
                     var hgo = hit.collider.gameObject;
@@ -43,27 +45,57 @@ namespace Assets.Code.Menus
                     switch (hco.Type)
                     {
                         case ComponentType.Tile:
-                            var tile = hgo.GetComponent<TileComponent>().Tile;
-                            if (tile.CanEnter == false) continue;
-                            var go = Instantiate(Resources.Load<GameObject>("Prefabs/SampleButton"));
-                            _obj.Add(go);
-                            go.transform.SetParent(Panel.transform, false);
-                            go.transform.localScale = new Vector3(1, 1, 1);
-                            var b = go.GetComponent<Button>();
-                            b.onClick.AddListener(() =>
                             {
-                                Player.Instance.Move(pos);
-                                HideAndClear();
-                            });
-                            var t = b.GetComponentInChildren<Text>();
-                            t.text = "Walk here";
-                            break;
+                                var tile = hgo.GetComponent<TileComponent>().Tile;
+                                if (tile.CanEnter == false) continue;
+                                var go = Instantiate(Resources.Load<GameObject>("Prefabs/SampleButton"));
+                                _obj.Add(go);
+                                go.transform.SetParent(Panel.transform, false);
+                                go.transform.localScale = new Vector3(1, 1, 1);
+                                var b = go.GetComponent<Button>();
+                                b.onClick.AddListener(() =>
+                                {
+                                    Player.Instance.Move(pos);
+                                    HideAndClear();
+                                });
+                                b.GetComponentInChildren<Text>().text = "Walk here";
+
+                                var rt = go.GetComponent<RectTransform>();
+                                rt.transform.position = new Vector3(rt.transform.position.x, rt.transform.position.y - rpos);
+
+                                break;
+                            }
                         case ComponentType.Player:
+                            {
+                                var player = hgo.GetComponent<PlayerComponent>().Player;
+                                var go = Instantiate(Resources.Load<GameObject>("Prefabs/SampleButton"));
+                                _obj.Add(go);
+                                go.transform.SetParent(Panel.transform, false);
+                                go.transform.localScale = new Vector3(1, 1, 1);
+                                var b = go.GetComponent<Button>();
+                                b.onClick.AddListener(() =>
+                                {
+                                    Menu.Instance.OpenWindow();
+                                    HideAndClear();
+                                });
+                                b.GetComponentInChildren<Text>().text = "Open Menu";
+
+                                var rt = go.GetComponent<RectTransform>();
+                                rt.transform.position = new Vector3(rt.transform.position.x, rt.transform.position.y - rpos);
+
+                                break;
+                            }
+                        case ComponentType.Npc:
                             break;
                         default:
                             throw new ArgumentOutOfRangeException();
                     }
+                    rpos += 35;
                 }
+
+                var r = Panel.GetComponent<RectTransform>();
+
+                Panel.sizeDelta = new Vector2(175, rpos + 5);
 
                 Panel.gameObject.SetActive(true);
             }

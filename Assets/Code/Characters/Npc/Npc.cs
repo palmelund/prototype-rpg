@@ -32,6 +32,9 @@ namespace Assets.Code.Characters.Npc
             NpcGameObject.transform.position = new Vector3(GameState.Rand.Next(0, 10), GameState.Rand.Next(0, 10));
             NpcGameObject.AddComponent<BoxCollider2D>();
 
+            NpcGameObject.AddComponent<CustomComponentType>().Type = ComponentType.Npc;
+            NpcGameObject.AddComponent<NpcComponent>().Npc = this;
+
             Position = NpcGameObject.transform.position;
             Transform = NpcGameObject.transform;
 
