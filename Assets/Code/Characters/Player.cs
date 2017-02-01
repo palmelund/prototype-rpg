@@ -21,9 +21,10 @@ namespace Assets.Code.Characters
         public Stack<PathMember> Path = new Stack<PathMember>();
         private PathMember _nextTile;
 
-        public GameObject TargetMarker;
         public Npc.Npc Target;
-        
+
+        public GameObject TargetMarker;
+
         void Start()
         {
             PlayerGameObject = gameObject; // PlayerGameObject("player");
@@ -45,13 +46,25 @@ namespace Assets.Code.Characters
 
             Instance = this;
         }
-        
+
         void Update()
         {
             if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
             {
                 //Move(Input.mousePosition);
                 Move(Input.mousePosition);
+                if (Target != null)
+                {
+                    Target = null;
+                    TargetMarker.SetActive(false);
+                }
+            }
+
+            if (Target != null && GameState.Euclidean(PlayerGameObject.transform.position, Target.NpcGameObject.transform.position) <= 1.4142135f) // Attack range, to be fixed
+            {
+                // Todo: Attack speed, range, damage, etc...
+                // Todo: Move towards target, cancel target
+                Debug.Log("Attack!");
             }
 
             if (Transform.position == Position && Path.Count > 0)
@@ -118,6 +131,11 @@ namespace Assets.Code.Characters
                         Map.Instance.Graph[target.XCoord, target.YCoord]);
                 }
             }
+        }
+
+        public void StopMovement()
+        {
+            Path = new Stack<PathMember>();
         }
     }
 }

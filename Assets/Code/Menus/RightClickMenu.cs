@@ -99,6 +99,7 @@ namespace Assets.Code.Menus
                                     TargetMarker.SetActive(true);
                                     TargetMarker.transform.SetParent(enemy.NpcGameObject.transform);
                                     TargetMarker.transform.position = new Vector3(enemy.NpcGameObject.transform.position.x, enemy.NpcGameObject.transform.position.y, 10);
+                                    Player.Instance.Target = enemy;
                                     HideAndClear();
                                 });
                                 b.GetComponentInChildren<Text>().text = "Set Target";
