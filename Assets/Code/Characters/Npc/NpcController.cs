@@ -7,7 +7,7 @@ namespace Assets.Code.Characters.Npc
 {
     public class NpcController : MonoBehaviour {
 
-        public List<Npc> NpcList = new List<Npc>();
+        public static List<Npc> NpcList = new List<Npc>();
         
         private float _nextTimer;
 
@@ -15,7 +15,7 @@ namespace Assets.Code.Characters.Npc
         void Start () {
             for (int i = 0; i < 5; i++)
             {
-                Npc npc = new Npc("test.npc" + i, "Npc #" + i);
+                Npc npc = new Npc("test.npc" + i, "Npc #" + i, 1);
                 npc.NpcGameObject.transform.parent = gameObject.transform;
                 NpcList.Add(npc);
             }
@@ -36,6 +36,7 @@ namespace Assets.Code.Characters.Npc
 
             foreach (var npc in NpcList)
             {
+                continue;
                 if (npc.Transform.position == npc.Position && npc.Path.Count > 0)
                 {
                     npc.NextTile = npc.Path.Pop();

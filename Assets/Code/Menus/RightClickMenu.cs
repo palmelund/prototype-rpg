@@ -13,7 +13,6 @@ namespace Assets.Code.Menus
         public GameObject CanvasGo; // Set in editor
         public RectTransform Panel; // Set in editor
         private bool _active;
-        public GameObject TargetMarker; // Set in editor
 
         private readonly List<GameObject> _obj = new List<GameObject>();
 
@@ -47,63 +46,17 @@ namespace Assets.Code.Menus
                     {
                         case ComponentType.Tile:
                             {
-                                var tile = hgo.GetComponent<TileComponent>().Tile;
-                                if (tile.CanEnter == false) continue;
-                                var go = Instantiate(Resources.Load<GameObject>("Prefabs/SampleButton"));
-                                _obj.Add(go);
-                                go.transform.SetParent(Panel.transform, false);
-                                go.transform.localScale = new Vector3(1, 1, 1);
-                                var b = go.GetComponent<Button>();
-                                b.onClick.AddListener(() =>
-                                {
-                                    Player.Instance.Move(pos);
-                                    HideAndClear();
-                                });
-                                b.GetComponentInChildren<Text>().text = "Walk here";
-
-                                var rt = go.GetComponent<RectTransform>();
-                                rt.transform.position = new Vector3(rt.transform.position.x, rt.transform.position.y - rpos);
-
+                                RightClickTileButtonBuilder(hgo, rpos, pos);
                                 break;
                             }
                         case ComponentType.Player:
                             {
-                                var player = hgo.GetComponent<PlayerComponent>().Player;
-                                var go = Instantiate(Resources.Load<GameObject>("Prefabs/SampleButton"));
-                                _obj.Add(go);
-                                go.transform.SetParent(Panel.transform, false);
-                                go.transform.localScale = new Vector3(1, 1, 1);
-                                var b = go.GetComponent<Button>();
-                                b.onClick.AddListener(() =>
-                                {
-                                    Menu.Instance.OpenWindow();
-                                    HideAndClear();
-                                });
-                                b.GetComponentInChildren<Text>().text = "Open Menu";
-
-                                var rt = go.GetComponent<RectTransform>();
-                                rt.transform.position = new Vector3(rt.transform.position.x, rt.transform.position.y - rpos);
-
+                                RightClickPlayerButtonBuilder(hgo, rpos);
                                 break;
                             }
                         case ComponentType.Npc:
                             {
-                                var enemy = hgo.GetComponent<NpcComponent>().Npc;
-                                var go = Instantiate(Resources.Load<GameObject>("Prefabs/SampleButton"));
-                                _obj.Add(go);
-                                go.transform.SetParent(Panel.transform, false);
-                                go.transform.localScale = new Vector3(1, 1, 1);
-                                var b = go.GetComponent<Button>();
-                                b.onClick.AddListener(() =>
-                                {
-                                    TargetMarker.SetActive(true);
-                                    TargetMarker.transform.SetParent(enemy.NpcGameObject.transform);
-                                    TargetMarker.transform.position = new Vector3(enemy.NpcGameObject.transform.position.x, enemy.NpcGameObject.transform.position.y, 10);
-                                    Player.Instance.Target = enemy;
-                                    HideAndClear();
-                                });
-                                b.GetComponentInChildren<Text>().text = "Set Target";
-
+                                RightClickNpcButtonBuilder(hgo, rpos);
                                 break;
                             }
 
@@ -123,6 +76,64 @@ namespace Assets.Code.Menus
             {
                 HideAndClear();
             }
+        }
+
+        private void RightClickTileButtonBuilder(GameObject hgo, int rpos, Vector3 pos)
+        {
+            var tile = hgo.GetComponent<TileComponent>().Tile;
+            if (tile.CanEnter == false) return;
+            var go = Instantiate(Resources.Load<GameObject>("Prefabs/SampleButton"));
+            _obj.Add(go);
+            go.transform.SetParent(Panel.transform, false);
+            go.transform.localScale = new Vector3(1, 1, 1);
+            var b = go.GetComponent<Button>();
+            b.onClick.AddListener(() =>
+            {
+                Player.Instance.Move(pos);
+                HideAndClear();
+            });
+            b.GetComponentInChildren<Text>().text = "Walk here";
+
+            var rt = go.GetComponent<RectTransform>();
+            rt.transform.position = new Vector3(rt.transform.position.x, rt.transform.position.y - rpos);
+        }
+
+        private void RightClickPlayerButtonBuilder(GameObject hgo, int rpos)
+        {
+            var player = hgo.GetComponent<PlayerComponent>().Player;
+            var go = Instantiate(Resources.Load<GameObject>("Prefabs/SampleButton"));
+            _obj.Add(go);
+            go.transform.SetParent(Panel.transform, false);
+            go.transform.localScale = new Vector3(1, 1, 1);
+            var b = go.GetComponent<Button>();
+            b.onClick.AddListener(() =>
+            {
+                Menu.Instance.OpenWindow();
+                HideAndClear();
+            });
+            b.GetComponentInChildren<Text>().text = "Open Menu";
+
+            var rt = go.GetComponent<RectTransform>();
+            rt.transform.position = new Vector3(rt.transform.position.x, rt.transform.position.y - rpos);
+        }
+
+        private void RightClickNpcButtonBuilder(GameObject hgo, int rpos)
+        {
+            var enemy = hgo.GetComponent<NpcComponent>().Npc;
+            var go = Instantiate(Resources.Load<GameObject>("Prefabs/SampleButton"));
+            _obj.Add(go);
+            go.transform.SetParent(Panel.transform, false);
+            go.transform.localScale = new Vector3(1, 1, 1);
+            var b = go.GetComponent<Button>();
+            b.onClick.AddListener(() =>
+            {
+                Player.Instance.SetTarget(enemy);
+                HideAndClear();
+            });
+            b.GetComponentInChildren<Text>().text = "Set Target";
+
+            var rt = go.GetComponent<RectTransform>();
+            rt.transform.position = new Vector3(rt.transform.position.x, rt.transform.position.y - rpos);
         }
 
         private void HideAndClear()

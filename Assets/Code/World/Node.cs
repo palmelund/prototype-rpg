@@ -10,10 +10,13 @@ namespace Assets.Code.World
         public readonly List<Node> StraightNeighbors = new List<Node>();
         public readonly List<Node> DiagonalNeighbors = new List<Node>();
 
-        public Node(int x, int y)
+        public Tile Tile;
+
+        public Node(int x, int y, Tile tile)
         {
             X = x;
             Y = y;
+            Tile = tile;
         }
     }
 }

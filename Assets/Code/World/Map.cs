@@ -67,7 +67,7 @@ namespace Assets.Code.World
                 for (var x = 0; x < TileMap.GetLength(0); x++)
                 {
                     if (TileMap[x, y] == null || TileMap[x, y].CanEnter == false) continue;
-                    Graph[x, y] = new Node(x, y);
+                    Graph[x, y] = new Node(x, y, TileMap[x,y]);
                 }
             }
 

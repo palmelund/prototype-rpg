@@ -20,7 +20,10 @@ namespace Assets.Code.Characters.Npc
         public Stack<PathMember> Path = new Stack<PathMember>();
         internal PathMember NextTile;
 
-        public Npc(string npcId, string npcName)
+        public int NpcHitPointCurrent;
+        public int NpcHitPointMax;
+
+        public Npc(string npcId, string npcName, int hpMax)
         {
             Name = npcName;
             NpcId = npcId;
@@ -37,6 +40,9 @@ namespace Assets.Code.Characters.Npc
 
             Position = NpcGameObject.transform.position;
             Transform = NpcGameObject.transform;
+
+            NpcHitPointCurrent = hpMax;
+            NpcHitPointMax = hpMax;
 
             NextTile = new PathMember(Map.Instance.GetTileAt(Mathf.RoundToInt(Position.x), Mathf.RoundToInt(Position.y)), PathFinderDirection.Stay);
         }
@@ -58,6 +64,27 @@ namespace Assets.Code.Characters.Npc
                     Path = PathFinder.AStar(Map.Instance.Graph[start.XCoord, start.YCoord],
                         Map.Instance.Graph[target.XCoord, target.YCoord]);
                 }
+            }
+        }
+
+        public void Attack(int damage)
+        {
+            NpcHitPointCurrent -= damage;
+            if (NpcHitPointCurrent <= 0)
+            {
+                var child = NpcGameObject.transform.GetChild(0).gameObject;
+                if(child != null)
+                {
+                    child.transform.SetParent(null);
+                    child.SetActive(false);
+                }
+                NpcController.NpcList.Remove(this);
+                if (Player.Instance.Target.Equals(this))
+                {
+                    Player.Instance.Target = null;
+                }
+                Object.Destroy(NpcGameObject);
+                Debug.Log(string.Format("Npc \"{0}\" | \"{1}\" has beem killed!", NpcId, Name));
             }
         }
     }
