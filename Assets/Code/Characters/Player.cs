@@ -52,7 +52,6 @@ namespace Assets.Code.Characters
             PlayerGameObject.AddComponent<BoxCollider2D>();
 
             PlayerGameObject.AddComponent<CustomComponentType>().Type = ComponentType.Player;
-            PlayerGameObject.AddComponent<PlayerComponent>().Player = this;
 
             Instance = this;
 

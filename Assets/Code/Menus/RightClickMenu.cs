@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Assets.Code.Characters;
+using Assets.Code.Characters.Npc;
 using Assets.Code.World;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -80,7 +81,7 @@ namespace Assets.Code.Menus
 
         private void RightClickTileButtonBuilder(GameObject hgo, int rpos, Vector3 pos)
         {
-            var tile = hgo.GetComponent<TileComponent>().Tile;
+            var tile = hgo.GetComponent<Tile>();
             if (tile.CanEnter == false) return;
             var go = Instantiate(Resources.Load<GameObject>("Prefabs/SampleButton"));
             _obj.Add(go);
@@ -100,7 +101,7 @@ namespace Assets.Code.Menus
 
         private void RightClickPlayerButtonBuilder(GameObject hgo, int rpos)
         {
-            var player = hgo.GetComponent<PlayerComponent>().Player;
+            var player = hgo.GetComponent<Player>();
             var go = Instantiate(Resources.Load<GameObject>("Prefabs/SampleButton"));
             _obj.Add(go);
             go.transform.SetParent(Panel.transform, false);
@@ -119,7 +120,7 @@ namespace Assets.Code.Menus
 
         private void RightClickNpcButtonBuilder(GameObject hgo, int rpos)
         {
-            var enemy = hgo.GetComponent<NpcComponent>().Npc;
+            var enemy = hgo.GetComponent<Npc>();
             var go = Instantiate(Resources.Load<GameObject>("Prefabs/SampleButton"));
             _obj.Add(go);
             go.transform.SetParent(Panel.transform, false);

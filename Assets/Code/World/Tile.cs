@@ -12,14 +12,16 @@ namespace Assets.Code.World
         public SpriteRenderer SpriteRenderer;
         
         public bool CanEnter = true;
-        
+
+        private const bool DrawRandomWalls = true;
+
         public Tile(int x, int y)
         {
             XCoord = x;
             YCoord = y;
             GameObject = new GameObject(string.Format("tile_x_{0}_y_{1}", x, y));
             SpriteRenderer = GameObject.AddComponent<SpriteRenderer>();
-            if (false && GameState.Rand.Next(10) == 0)  // TODO: Always false
+            if (DrawRandomWalls && GameState.Rand.Next(10) == 0)  // TODO: Always false
             {
                 SpriteRenderer.sprite = Resources.Load<Sprite>("wall");
                 CanEnter = false;
@@ -35,27 +37,7 @@ namespace Assets.Code.World
 
             var c = GameObject.AddComponent<CustomComponentType>();
             c.Type = ComponentType.Tile;
-
-            var t = GameObject.AddComponent<TileComponent>();
-            t.Tile = this;
         }
-    }
-
-    // Hacky solution to the way the engine does things
-
-    public class TileComponent : MonoBehaviour
-    {
-        public Tile Tile;
-    }
-
-    public class PlayerComponent : MonoBehaviour
-    {
-        public Player Player;
-    }
-
-    public class NpcComponent : MonoBehaviour
-    {
-        public Npc Npc;
     }
 
     public enum ComponentType

@@ -12,6 +12,11 @@ namespace Assets.Code.Characters.PathFinding
 
         public static Stack<PathMember> AStar(Node start, Node target)
         {
+            if (target == null)
+            {
+                Debug.Log("Fuck!");
+            }
+
             var closedSet = new List<Node>();
             var openSet = new List<Node> { start };
             var cameFrom = new Dictionary<Node, Node>();
@@ -109,9 +114,17 @@ namespace Assets.Code.Characters.PathFinding
 
         private static float HeuristicCostEstimate(Node start, Node target)
         {
-            var dx = Mathf.Abs(start.X - target.X);
-            var dy = Mathf.Abs(start.Y - target.Y);
-            return (dx + dy) + (Sqrt2 - 2) * Mathf.Min(dx, dy);
+            try
+            {
+                var dx = Mathf.Abs(start.X - target.X);
+                var dy = Mathf.Abs(start.Y - target.Y);
+                return (dx + dy) + (Sqrt2 - 2) * Mathf.Min(dx, dy);
+            }
+            catch (Exception e)
+            {
+                Debug.Log(e);
+                return float.PositiveInfinity;
+            }
         }
 
         private static PathFinderDirection GetPathFinderDirection(Node from, Node to)

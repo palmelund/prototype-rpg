@@ -60,6 +60,11 @@ namespace Assets.Code.World
             return GetTileAt(Mathf.RoundToInt(position.x), Mathf.RoundToInt(position.y));
         }
 
+        public Node GetTileNode(Tile tile)
+        {
+            return Graph[tile.XCoord, tile.YCoord];
+        }
+
         private void GenerateGraph()
         {
             for (var y = 0; y < TileMap.GetLength(1); y++)

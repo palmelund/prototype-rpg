@@ -32,11 +32,21 @@ namespace Assets.Code.Characters.Npc
             NpcSpriteRenderer = NpcGameObject.AddComponent<SpriteRenderer>();
             NpcSpriteRenderer.sprite = Resources.Load<Sprite>("player");
             NpcSpriteRenderer.sortingLayerName = "Characters";
-            NpcGameObject.transform.position = new Vector3(GameState.Rand.Next(0, 10), GameState.Rand.Next(0, 10));
+
+            var xpos = 0;
+            var ypos = 0;
+            var validStartPosition = false;
+            while (!validStartPosition)
+            {
+                xpos = GameState.Rand.Next(0, 10);
+                ypos = GameState.Rand.Next(0, 10);
+                if (Map.Instance.Graph[xpos, ypos] != null) validStartPosition = true;
+            }
+
+            NpcGameObject.transform.position = new Vector3(xpos, ypos);
             NpcGameObject.AddComponent<BoxCollider2D>();
 
             NpcGameObject.AddComponent<CustomComponentType>().Type = ComponentType.Npc;
-            NpcGameObject.AddComponent<NpcComponent>().Npc = this;
 
             Position = NpcGameObject.transform.position;
             Transform = NpcGameObject.transform;
@@ -50,19 +60,21 @@ namespace Assets.Code.Characters.Npc
         public void Move(int x, int y)
         {
             var target = Map.Instance.GetTileAt(x, y);
-            if (target != null)
+            var targetNode = Map.Instance.GetTileNode(target);
+
+            if (targetNode != null)
             {
                 if (NpcGameObject.transform.position == Position)
                 {
                     var start = Map.Instance.GetTileAt(NpcGameObject.transform.position);
-                    Path = PathFinder.AStar(Map.Instance.Graph[start.XCoord, start.YCoord],
-                        Map.Instance.Graph[target.XCoord, target.YCoord]);
+                    var startNode = Map.Instance.GetTileNode(start);
+                    Path = PathFinder.AStar(startNode, targetNode);
                 }
                 else
                 {
                     var start = NextTile.Destination;
-                    Path = PathFinder.AStar(Map.Instance.Graph[start.XCoord, start.YCoord],
-                        Map.Instance.Graph[target.XCoord, target.YCoord]);
+                    var startNode = Map.Instance.GetTileNode(start);
+                    Path = PathFinder.AStar(startNode, targetNode);
                 }
             }
         }
