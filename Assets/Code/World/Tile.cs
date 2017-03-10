@@ -10,7 +10,7 @@ namespace Assets.Code.World
         public int YCoord;
         public GameObject GameObject;
         public SpriteRenderer SpriteRenderer;
-        
+
         public bool CanEnter = true;
 
         private const bool DrawRandomWalls = true;
@@ -35,8 +35,8 @@ namespace Assets.Code.World
 
             GameObject.AddComponent<BoxCollider2D>();   // Used for right-clicking currently
 
-            var c = GameObject.AddComponent<CustomComponentType>();
-            c.Type = ComponentType.Tile;
+            GameObject.AddComponent<CustomComponentType>().Type = ComponentType.Tile;
+            GameObject.AddComponent<TileComponent>().Tile = this;
         }
     }
 
@@ -50,5 +50,20 @@ namespace Assets.Code.World
     public class CustomComponentType : MonoBehaviour
     {
         public ComponentType Type;
+    }
+
+    public class TileComponent : MonoBehaviour
+    {
+        public Tile Tile;
+    }
+
+    public class PlayerComponent : MonoBehaviour
+    {
+        public Player Player;
+    }
+
+    public class NpcComponent : MonoBehaviour
+    {
+        public Npc Npc;
     }
 }

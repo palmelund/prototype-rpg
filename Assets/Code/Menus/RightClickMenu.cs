@@ -11,7 +11,6 @@ namespace Assets.Code.Menus
 {
     public class RightClickMenu : MonoBehaviour
     {
-        public GameObject CanvasGo; // Set in editor
         public RectTransform Panel; // Set in editor
         private bool _active;
 
@@ -81,7 +80,7 @@ namespace Assets.Code.Menus
 
         private void RightClickTileButtonBuilder(GameObject hgo, int rpos, Vector3 pos)
         {
-            var tile = hgo.GetComponent<Tile>();
+            var tile = hgo.GetComponent<TileComponent>().Tile;
             if (tile.CanEnter == false) return;
             var go = Instantiate(Resources.Load<GameObject>("Prefabs/SampleButton"));
             _obj.Add(go);
@@ -101,7 +100,7 @@ namespace Assets.Code.Menus
 
         private void RightClickPlayerButtonBuilder(GameObject hgo, int rpos)
         {
-            var player = hgo.GetComponent<Player>();
+            var player = hgo.GetComponent<PlayerComponent>().Player;
             var go = Instantiate(Resources.Load<GameObject>("Prefabs/SampleButton"));
             _obj.Add(go);
             go.transform.SetParent(Panel.transform, false);
@@ -120,7 +119,7 @@ namespace Assets.Code.Menus
 
         private void RightClickNpcButtonBuilder(GameObject hgo, int rpos)
         {
-            var enemy = hgo.GetComponent<Npc>();
+            var enemy = hgo.GetComponent<NpcComponent>().Npc;
             var go = Instantiate(Resources.Load<GameObject>("Prefabs/SampleButton"));
             _obj.Add(go);
             go.transform.SetParent(Panel.transform, false);

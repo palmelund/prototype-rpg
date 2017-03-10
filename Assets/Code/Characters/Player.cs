@@ -14,7 +14,7 @@ namespace Assets.Code.Characters
     {
         public static Player Instance;
 
-        public float Speed = 1f;
+        
         public Vector3 Position;
         public Transform Transform;
 
@@ -30,8 +30,10 @@ namespace Assets.Code.Characters
 
         public Text PlayerHitPointText;
 
-        public int PlayerHitPointCurrent;
-        public int PlayerHitPointMax;
+
+        public int PlayerHitPointCurrent { get; private set; }
+        public int PlayerHitPointMax { get; private set; }
+        public float PlayerSpeed { get; private set; }
 
         public TestMeleeWeapon Weapon = new TestMeleeWeapon();
 
@@ -52,9 +54,11 @@ namespace Assets.Code.Characters
             PlayerGameObject.AddComponent<BoxCollider2D>();
 
             PlayerGameObject.AddComponent<CustomComponentType>().Type = ComponentType.Player;
+            PlayerGameObject.AddComponent<PlayerComponent>().Player = this;
 
             Instance = this;
 
+            PlayerSpeed = 1;
             PlayerHitPointCurrent = 10;
             PlayerHitPointMax = 10;
         }
@@ -91,7 +95,7 @@ namespace Assets.Code.Characters
                 SetNextPathTile();
             }
 
-            PlayerGameObject.transform.position = Vector3.MoveTowards(PlayerGameObject.transform.position, Position, Time.deltaTime * Speed);
+            PlayerGameObject.transform.position = Vector3.MoveTowards(PlayerGameObject.transform.position, Position, Time.deltaTime * PlayerSpeed);
 
             PlayerHitPointText.text = string.Format("HP: {0} / {1}", PlayerHitPointCurrent, PlayerHitPointMax);
         }

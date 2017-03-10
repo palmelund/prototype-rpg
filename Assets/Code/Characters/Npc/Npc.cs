@@ -20,8 +20,8 @@ namespace Assets.Code.Characters.Npc
         public Stack<PathMember> Path = new Stack<PathMember>();
         internal PathMember NextTile;
 
-        public int NpcHitPointCurrent;
-        public int NpcHitPointMax;
+        public int NpcHitPointCurrent { get; private set; }
+        public int NpcHitPointMax { get; private set; }
 
         public Npc(string npcId, string npcName, int hpMax)
         {
@@ -47,6 +47,7 @@ namespace Assets.Code.Characters.Npc
             NpcGameObject.AddComponent<BoxCollider2D>();
 
             NpcGameObject.AddComponent<CustomComponentType>().Type = ComponentType.Npc;
+            NpcGameObject.AddComponent<NpcComponent>().Npc = this;
 
             Position = NpcGameObject.transform.position;
             Transform = NpcGameObject.transform;
