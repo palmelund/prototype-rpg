@@ -5,23 +5,18 @@ using UnityEngine;
 
 namespace Assets.Code.Characters.Npc
 {
-    public class Npc
+    public class Npc : Character
     {
-
         public string NpcId;
         public string Name;
         public GameObject NpcGameObject;
         public SpriteRenderer NpcSpriteRenderer;
-
-        public float Speed = 1f;
+        
         public Vector3 Position;
         public Transform Transform;
 
         public Stack<PathMember> Path = new Stack<PathMember>();
         internal PathMember NextTile;
-
-        public int NpcHitPointCurrent { get; private set; }
-        public int NpcHitPointMax { get; private set; }
 
         public Npc(string npcId, string npcName, int hpMax)
         {
@@ -52,8 +47,8 @@ namespace Assets.Code.Characters.Npc
             Position = NpcGameObject.transform.position;
             Transform = NpcGameObject.transform;
 
-            NpcHitPointCurrent = hpMax;
-            NpcHitPointMax = hpMax;
+            HitPointCurrent = hpMax;
+            HitPointMax = hpMax;
 
             NextTile = new PathMember(Map.Instance.GetTileAt(Mathf.RoundToInt(Position.x), Mathf.RoundToInt(Position.y)), PathFinderDirection.Stay);
         }
@@ -61,8 +56,11 @@ namespace Assets.Code.Characters.Npc
         public void Move(int x, int y)
         {
             var target = Map.Instance.GetTileAt(x, y);
-            var targetNode = Map.Instance.GetTileNode(target);
 
+            if (target.CanEnter == false) return;
+
+            var targetNode = Map.Instance.GetTileNode(target);
+            
             if (targetNode != null)
             {
                 if (NpcGameObject.transform.position == Position)
@@ -77,27 +75,6 @@ namespace Assets.Code.Characters.Npc
                     var startNode = Map.Instance.GetTileNode(start);
                     Path = PathFinder.AStar(startNode, targetNode);
                 }
-            }
-        }
-
-        public void Attack(int damage)
-        {
-            NpcHitPointCurrent -= damage;
-            if (NpcHitPointCurrent <= 0)
-            {
-                var child = NpcGameObject.transform.GetChild(0).gameObject;
-                if(child != null)
-                {
-                    child.transform.SetParent(null);
-                    child.SetActive(false);
-                }
-                NpcController.NpcList.Remove(this);
-                if (Player.Instance.Target.Equals(this))
-                {
-                    Player.Instance.Target = null;
-                }
-                Object.Destroy(NpcGameObject);
-                Debug.Log(string.Format("Npc \"{0}\" | \"{1}\" has beem killed!", NpcId, Name));
             }
         }
     }

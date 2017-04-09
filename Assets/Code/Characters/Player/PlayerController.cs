@@ -1,20 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Xml.Serialization;
 using Assets.Code.Characters.PathFinding;
-using Assets.Code.Items;
 using Assets.Code.World;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace Assets.Code.Characters
+namespace Assets.Code.Characters.Player
 {
-    public class Player : MonoBehaviour
+    class PlayerController : MonoBehaviour
     {
-        public static Player Instance;
+        public static PlayerController ControllerInstance;
+        public static Player PlayerInstance;
 
-        
         public Vector3 Position;
         public Transform Transform;
 
@@ -30,14 +31,7 @@ namespace Assets.Code.Characters
 
         public Text PlayerHitPointText;
 
-
-        public int PlayerHitPointCurrent { get; private set; }
-        public int PlayerHitPointMax { get; private set; }
-        public float PlayerSpeed { get; private set; }
-
-        public TestMeleeWeapon Weapon = new TestMeleeWeapon();
-
-        void Start()
+        public void Start()
         {
             PlayerGameObject = gameObject; // PlayerGameObject("player");
             PlayerGameObject.name = "player_go";
@@ -54,40 +48,30 @@ namespace Assets.Code.Characters
             PlayerGameObject.AddComponent<BoxCollider2D>();
 
             PlayerGameObject.AddComponent<CustomComponentType>().Type = ComponentType.Player;
-            PlayerGameObject.AddComponent<PlayerComponent>().Player = this;
+            PlayerGameObject.AddComponent<PlayerComponent>().Player = PlayerInstance;
 
-            Instance = this;
+            ControllerInstance = this;
 
-            PlayerSpeed = 1;
-            PlayerHitPointCurrent = 10;
-            PlayerHitPointMax = 10;
+            PlayerInstance = new Player();
         }
 
-        void Update()
+        public void Update()
+        {
+            UpdateMove();
+            UpdateUi();
+        }
+
+        public void UpdateUi()
+        {
+            if (PlayerInstance == null) return;
+            PlayerHitPointText.text = string.Format("HP: {0} / {1}", PlayerInstance.HitPointCurrent, PlayerInstance.HitPointMax);
+        }
+
+        public void UpdateMove()
         {
             if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
             {
                 MoveOnClick();
-            }
-            /*
-            if (Target != null && GameState.Euclidean(PlayerGameObject.transform.position, Target.NpcGameObject.transform.position) <= 1.4142135f) // Attack range, to be fixed
-            {
-                // Todo: Attack speed, range, damage, etc...
-                // Todo: Move towards target, cancel target
-                Debug.Log("Attack!");
-            }
-            */
-
-            if (Target != null && GameState.Euclidean(PlayerGameObject.transform.position, Target.NpcGameObject.transform.position) <=
-    Weapon.Range)
-            {
-                if (Weapon.CoolDown <= Time.time)
-                {
-                    // Attack
-                    Debug.Log("Attack: " + Time.time);
-                    Target.Attack(Weapon.Damage);
-                    Weapon.CoolDown = Time.time + Weapon.AttackSpeed;
-                }
             }
 
             if (Transform.position == Position && Path.Count > 0)
@@ -95,9 +79,7 @@ namespace Assets.Code.Characters
                 SetNextPathTile();
             }
 
-            PlayerGameObject.transform.position = Vector3.MoveTowards(PlayerGameObject.transform.position, Position, Time.deltaTime * PlayerSpeed);
-
-            PlayerHitPointText.text = string.Format("HP: {0} / {1}", PlayerHitPointCurrent, PlayerHitPointMax);
+            PlayerGameObject.transform.position = Vector3.MoveTowards(PlayerGameObject.transform.position, Position, Time.deltaTime * PlayerInstance.Speed);
         }
 
         public void Move(Vector3 mousePosition)
@@ -106,20 +88,19 @@ namespace Assets.Code.Characters
             var x = Mathf.RoundToInt(clickPos.x);
             var y = Mathf.RoundToInt(clickPos.y);
             var target = Map.Instance.GetTileAt(x, y);
-            if (target != null)
+            if (target == null || target.CanEnter == false) return;
+
+            if (PlayerGameObject.transform.position == Position)
             {
-                if (PlayerGameObject.transform.position == Position)
-                {
-                    var start = Map.Instance.GetTileAt(PlayerGameObject.transform.position);
-                    Path = PathFinder.AStar(Map.Instance.Graph[start.XCoord, start.YCoord],
-                        Map.Instance.Graph[target.XCoord, target.YCoord]);
-                }
-                else
-                {
-                    var start = _nextTile.Destination;
-                    Path = PathFinder.AStar(Map.Instance.Graph[start.XCoord, start.YCoord],
-                        Map.Instance.Graph[target.XCoord, target.YCoord]);
-                }
+                var start = Map.Instance.GetTileAt(PlayerGameObject.transform.position);
+                Path = PathFinder.AStar(Map.Instance.Graph[start.XCoord, start.YCoord],
+                    Map.Instance.Graph[target.XCoord, target.YCoord]);
+            }
+            else
+            {
+                var start = _nextTile.Destination;
+                Path = PathFinder.AStar(Map.Instance.Graph[start.XCoord, start.YCoord],
+                    Map.Instance.Graph[target.XCoord, target.YCoord]);
             }
         }
 

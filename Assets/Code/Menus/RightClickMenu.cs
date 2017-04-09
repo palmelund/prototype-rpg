@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Assets.Code.Characters;
 using Assets.Code.Characters.Npc;
+using Assets.Code.Characters.Player;
 using Assets.Code.World;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -89,7 +90,7 @@ namespace Assets.Code.Menus
             var b = go.GetComponent<Button>();
             b.onClick.AddListener(() =>
             {
-                Player.Instance.Move(pos);
+                PlayerController.ControllerInstance.Move(pos);
                 HideAndClear();
             });
             b.GetComponentInChildren<Text>().text = "Walk here";
@@ -127,7 +128,7 @@ namespace Assets.Code.Menus
             var b = go.GetComponent<Button>();
             b.onClick.AddListener(() =>
             {
-                Player.Instance.SetTarget(enemy);
+                PlayerController.ControllerInstance.SetTarget(enemy);
                 HideAndClear();
             });
             b.GetComponentInChildren<Text>().text = "Set Target";
