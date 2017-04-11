@@ -11,8 +11,6 @@ namespace Assets.Code.Characters.Npc
         
         private float _nextTimer;
 
-        private const bool NpcRandomMovement = true;
-
         // Use this for initialization
         void Start () {
             for (int i = 0; i < 5; i++)
@@ -36,51 +34,54 @@ namespace Assets.Code.Characters.Npc
                 _nextTimer += 5f;
             }
 
-            if (NpcRandomMovement)
+            MoveRandom();
+        }
+
+        private void MoveRandom()
+        {
+            foreach (var npc in NpcList)
             {
-                foreach (var npc in NpcList)
+                if (npc.Transform.position == npc.Position && npc.Path.Count > 0)
                 {
-                    if (npc.Transform.position == npc.Position && npc.Path.Count > 0)
+                    npc.NextTile = npc.Path.Pop();
+                    switch (npc.NextTile.Direction)
                     {
-                        npc.NextTile = npc.Path.Pop();
-                        switch (npc.NextTile.Direction)
-                        {
-                            case PathFinderDirection.Up:
-                                npc.Position += Vector3.up;
-                                break;
-                            case PathFinderDirection.UpRight:
-                                npc.Position += Vector3.up;
-                                npc.Position += Vector3.right;
-                                break;
-                            case PathFinderDirection.Right:
-                                npc.Position += Vector3.right;
-                                break;
-                            case PathFinderDirection.DownRight:
-                                npc.Position += Vector3.right;
-                                npc.Position += Vector3.down;
-                                break;
-                            case PathFinderDirection.Down:
-                                npc.Position += Vector3.down;
-                                break;
-                            case PathFinderDirection.DownLeft:
-                                npc.Position += Vector3.down;
-                                npc.Position += Vector3.left;
-                                break;
-                            case PathFinderDirection.Left:
-                                npc.Position += Vector3.left;
-                                break;
-                            case PathFinderDirection.UpLeft:
-                                npc.Position += Vector3.left;
-                                npc.Position += Vector3.up;
-                                break;
-                            case PathFinderDirection.Stay:
-                                break;
-                            default:
-                                throw new ArgumentOutOfRangeException();
-                        }
+                        case PathFinderDirection.Up:
+                            npc.Position += Vector3.up;
+                            break;
+                        case PathFinderDirection.UpRight:
+                            npc.Position += Vector3.up;
+                            npc.Position += Vector3.right;
+                            break;
+                        case PathFinderDirection.Right:
+                            npc.Position += Vector3.right;
+                            break;
+                        case PathFinderDirection.DownRight:
+                            npc.Position += Vector3.right;
+                            npc.Position += Vector3.down;
+                            break;
+                        case PathFinderDirection.Down:
+                            npc.Position += Vector3.down;
+                            break;
+                        case PathFinderDirection.DownLeft:
+                            npc.Position += Vector3.down;
+                            npc.Position += Vector3.left;
+                            break;
+                        case PathFinderDirection.Left:
+                            npc.Position += Vector3.left;
+                            break;
+                        case PathFinderDirection.UpLeft:
+                            npc.Position += Vector3.left;
+                            npc.Position += Vector3.up;
+                            break;
+                        case PathFinderDirection.Stay:
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException();
                     }
-                    npc.NpcGameObject.transform.position = Vector3.MoveTowards(npc.NpcGameObject.transform.position, npc.Position, Time.deltaTime * npc.Speed);
                 }
+
+                npc.NpcGameObject.transform.position = Vector3.MoveTowards(npc.NpcGameObject.transform.position, npc.Position, Time.deltaTime * npc.Speed);
             }
         }
     }

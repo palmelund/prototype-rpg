@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using UnityEngine;
 
 namespace Assets.Code.Characters
 {
@@ -11,12 +12,16 @@ namespace Assets.Code.Characters
         public int HitPointMax { get; protected set; }
         public float Speed { get; protected set; }
 
-        private static Character _this;
-        public static Character Instance { get { return _this; } }
+        public int CombatSpeed { get { return Mathf.FloorToInt(Speed); } }
+
+        public static Character Instance { get; private set; }
 
         protected Character()
         {
-            _this = this;
+            Instance = this;
+            Speed = 1;
+            HitPointMax = 10;
+            HitPointCurrent = 10;
         }
     }
 }

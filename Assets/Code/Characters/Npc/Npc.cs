@@ -60,7 +60,7 @@ namespace Assets.Code.Characters.Npc
             if (target.CanEnter == false) return;
 
             var targetNode = Map.Instance.GetTileNode(target);
-            
+
             if (targetNode != null)
             {
                 if (NpcGameObject.transform.position == Position)

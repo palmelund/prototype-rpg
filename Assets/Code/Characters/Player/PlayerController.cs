@@ -27,9 +27,9 @@ namespace Assets.Code.Characters.Player
 
         public Npc.Npc Target;
 
-        public GameObject TargetMarker;
+        public GameObject TargetMarker; // Set in editor
 
-        public Text PlayerHitPointText;
+        public Text PlayerHitPointText; // Set in editor
 
         public void Start()
         {
