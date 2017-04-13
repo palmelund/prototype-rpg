@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using Assets.Code.Characters.Npc;
-using UnityEngine;
+﻿using UnityEngine;
 using Random = System.Random;
 
 namespace Assets.Code

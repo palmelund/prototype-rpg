@@ -1,14 +1,11 @@
 ﻿using Assets.Code.Characters;
-using Assets.Code.Combat.Actions;
 
 namespace Assets.Code.Combat.Interfaces
 {
-    public interface IAttackAction
+    public interface IRangedAction
     {
         Character Attacker { get; }
         Character Defender { get; }
-        CombatPosition Position { get; }
-
-        MeleeType MeleeType { get; }
+        int Range { get; }
     }
 }

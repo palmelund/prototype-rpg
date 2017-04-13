@@ -1,5 +1,4 @@
-﻿using Assets.Code.Characters;
-using Assets.Code.Characters.Npc;
+﻿using Assets.Code.Characters.Npc;
 using Assets.Code.Characters.Player;
 using UnityEngine;
 

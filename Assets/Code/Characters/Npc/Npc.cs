@@ -8,7 +8,6 @@ namespace Assets.Code.Characters.Npc
     public class Npc : Character
     {
         public string NpcId;
-        public string Name;
         public GameObject NpcGameObject;
         public SpriteRenderer NpcSpriteRenderer;
         

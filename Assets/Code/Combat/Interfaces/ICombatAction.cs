@@ -4,6 +4,8 @@
     {
         string Name { get; }
 
+        int InitiativeCost { get; }
+
         void ExecuteAction();
     }
 }

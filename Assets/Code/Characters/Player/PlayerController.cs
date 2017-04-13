@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Xml.Serialization;
 using Assets.Code.Characters.PathFinding;
 using Assets.Code.World;
 using UnityEngine;

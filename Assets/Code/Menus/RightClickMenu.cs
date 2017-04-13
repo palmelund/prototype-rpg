@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Assets.Code.Characters;
-using Assets.Code.Characters.Npc;
 using Assets.Code.Characters.Player;
 using Assets.Code.World;
 using UnityEngine;
@@ -36,7 +34,17 @@ namespace Assets.Code.Menus
                 var hits = Physics2D.RaycastAll(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
                 Debug.Log(hits.Length);
 
-                int rpos = 0;
+                if (hits.Length == 0)
+                {
+                    HideAndClear();
+                    return;
+                }
+                
+
+                var hight = hits.Length * 35;
+                Panel.sizeDelta = new Vector2(175, hight);
+
+                int rpos = (hight - 35)/2;
 
                 foreach (var hit in hits)
                 {
@@ -64,12 +72,12 @@ namespace Assets.Code.Menus
                         default:
                             throw new ArgumentOutOfRangeException();
                     }
-                    rpos += 35;
+                    rpos -= 35;
                 }
 
-                var r = Panel.GetComponent<RectTransform>();
+                //var r = Panel.GetComponent<RectTransform>();
 
-                Panel.sizeDelta = new Vector2(175, rpos + 5);
+                // Panel.sizeDelta = new Vector2(175, rpos + 5);
 
                 Panel.gameObject.SetActive(true);
             }
@@ -101,7 +109,7 @@ namespace Assets.Code.Menus
 
         private void RightClickPlayerButtonBuilder(GameObject hgo, int rpos)
         {
-            var player = hgo.GetComponent<PlayerComponent>().Player;
+            //var player = hgo.GetComponent<PlayerComponent>().Player;
             var go = Instantiate(Resources.Load<GameObject>("Prefabs/SampleButton"));
             _obj.Add(go);
             go.transform.SetParent(Panel.transform, false);
