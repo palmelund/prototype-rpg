@@ -1,4 +1,4 @@
-﻿namespace Assets.Code
+﻿namespace Code
 {
     public enum GameActionState
     {

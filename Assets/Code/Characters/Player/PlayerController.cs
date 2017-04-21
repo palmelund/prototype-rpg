@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using Assets.Code.Characters.PathFinding;
-using Assets.Code.World;
+using Code.Characters.PathFinding;
+using Code.World;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace Assets.Code.Characters.Player
+namespace Code.Characters.Player
 {
     class PlayerController : MonoBehaviour
     {
@@ -25,6 +25,7 @@ namespace Assets.Code.Characters.Player
         public Npc.Npc Target;
 
         public GameObject TargetMarker; // Set in editor
+        public GameObject FocusMarker;  // Set in editor
 
         public Text PlayerHitPointText; // Set in editor
 
@@ -114,6 +115,14 @@ namespace Assets.Code.Characters.Player
             Target = targetNpc;
         }
 
+        public void SetFocus(Npc.Npc targetNpc)
+        {
+            FocusMarker.SetActive(true);
+            FocusMarker.transform.SetParent(targetNpc.NpcGameObject.transform);
+            FocusMarker.transform.position = new Vector3(targetNpc.NpcGameObject.transform.position.x, targetNpc.NpcGameObject.transform.position.y, 10);
+            Target = targetNpc;
+        }
+
         private void MoveOnClick()
         {
             Move(Input.mousePosition);
@@ -121,6 +130,9 @@ namespace Assets.Code.Characters.Player
             {
                 Target = null;
                 TargetMarker.SetActive(false);
+
+                // TODO: Temp
+                FocusMarker.SetActive(false);
             }
         }
 

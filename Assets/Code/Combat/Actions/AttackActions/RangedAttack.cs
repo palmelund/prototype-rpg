@@ -1,7 +1,7 @@
 ﻿using System;
-using Assets.Code.Combat.Interfaces;
+using Code.Combat.Interfaces;
 
-namespace Assets.Code.Combat.Actions.AttackActions
+namespace Code.Combat.Actions.AttackActions
 {
     class RangedAttack : ICombatAction
     {

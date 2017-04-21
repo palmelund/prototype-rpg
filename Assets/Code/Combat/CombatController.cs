@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using Assets.Code.Characters;
-using Assets.Code.Characters.Player;
-using Assets.Code.Combat.Interfaces;
+using System.Linq;
+using Code.Characters;
+using Code.Characters.Npc;
+using Code.Characters.Player;
+using Code.Combat.Actions.GeneralActions;
+using Code.Combat.Interfaces;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Assets.Code.Combat
+namespace Code.Combat
 {
     public class CombatController : MonoBehaviour
     {
@@ -21,7 +24,7 @@ namespace Assets.Code.Combat
         public RectTransform CombatParticipantsContent; // Set in editor
         public Button CommitActionButton;   // Set in editor
 
-        public List<GameObject> CombatParticipantCards = new List<GameObject>();
+        public Dictionary<Character, GameObject> CombatParticipantCards = new Dictionary< Character, GameObject>();        // Dictionary with character as key instead?
 
         public void Start()
         {
@@ -51,15 +54,87 @@ namespace Assets.Code.Combat
                 Destroy(child);
             }
 
-            CombatParticipantsContent.sizeDelta = new Vector2(CombatParticipantsContent.sizeDelta.x, 30 * CombatParticipants.Count + 5);
+            //CombatParticipantsContent.sizeDelta = new Vector2(CombatParticipantsContent.sizeDelta.x, 30 * CombatParticipants.Count + 5);
 
-            int y = 115;    // Ensure elements are added to the top.
+            //int y = 115;    // Ensure elements are added to the top.
 
-            foreach (Character character in CombatParticipants)
+            //foreach (Character character in CombatParticipants)
+            //{
+            //    var combatParticipant = Instantiate(Resources.Load<GameObject>("Prefabs/CombatParticipant"));
+            //    combatParticipant.transform.SetParent(CombatParticipantsContent, false);
+            //    combatParticipant.transform.position = CombatParticipantsContent.transform.position;
+            //    var test = combatParticipant.GetComponentsInChildren<Text>();
+
+            //    var textName = test[0];
+            //    var textInitiative = test[1];
+            //    var textStatus = test[2];
+
+            //    textName.text = character.Name;
+            //    textInitiative.text = character.Initiative.ToString();
+            //    textStatus.text = "R";
+            //    combatParticipant.transform.position = new Vector3(combatParticipant.transform.position.x, y);
+            //    y -= 30;
+
+            //    CombatParticipantCards.Add(combatParticipant);
+            //    //CombatParticipantsContent.sizeDelta = new Vector2(CombatParticipantsContent.sizeDelta.x, CombatParticipantsContent.sizeDelta.y + 35);
+            //}
+
+            //var v = CombatParticipantCards[_currentTurn].GetComponentInChildren<Image>();
+            //if (v.name.Equals("CardPanel"))
+            //{
+            //    v.color = Color.green;
+            //}
+
+            //CommitActionButton.onClick.AddListener(() =>
+            //{
+            //    var w = CombatParticipantCards[_currentTurn].GetComponentInChildren<Image>();
+            //    if (w.name.Equals("CardPanel"))
+            //    {
+            //        w.color = _defaultColor;
+            //    }
+            //    _currentTurn++;
+            //    w = CombatParticipantCards[_currentTurn].GetComponentInChildren<Image>();
+            //    if (w.name.Equals("CardPanel"))
+            //    {
+            //        w.color = Color.green;
+            //    }
+            //});
+        }
+
+        public void StartCombat()
+        {
+            GameState.GameActionState = GameActionState.Combat;
+            PlayerController.ControllerInstance.Path.Clear();
+            foreach (var npc in NpcController.NpcList)
             {
-                var combatParticipant = Instantiate(Resources.Load<GameObject>("Prefabs/CombatParticipant"));
+                npc.Path.Clear();
+            }
+
+            CombatParticipants.Clear();
+
+            foreach (var card in CombatParticipantCards)
+            {
+                Destroy(card.Value);
+            }
+
+            CombatParticipantCards.Clear();
+            
+            CombatParticipants.Add(PlayerController.PlayerInstance);
+
+            foreach (var npc in NpcController.NpcList)
+            {
+                CombatParticipants.Add(npc);
+            }
+
+            CombatParticipants = CombatParticipants.OrderByDescending(participant => participant.Initiative).ToList();
+
+            CombatParticipantsContent.sizeDelta = new Vector2(CombatParticipantsContent.sizeDelta.x, 50 * CombatParticipants.Count + 5);
+            var y = 405;    // Ensure elements are added to the top.
+            foreach (var character in CombatParticipants)
+            {
+                var combatParticipant = Instantiate(Resources.Load<GameObject>("Prefabs/CombatThinkingParticipant"));
                 combatParticipant.transform.SetParent(CombatParticipantsContent, false);
-                combatParticipant.transform.position = CombatParticipantsContent.transform.position;
+                //combatParticipant.transform.position = CombatParticipantsContent.transform.position;
                 var test = combatParticipant.GetComponentsInChildren<Text>();
 
                 var textName = test[0];
@@ -68,34 +143,17 @@ namespace Assets.Code.Combat
 
                 textName.text = character.Name;
                 textInitiative.text = character.Initiative.ToString();
-                textStatus.text = "R";
+                textStatus.text = "Thinking...";
                 combatParticipant.transform.position = new Vector3(combatParticipant.transform.position.x, y);
-                y -= 30;
+                y -= 50;
 
-                CombatParticipantCards.Add(combatParticipant);
-                //CombatParticipantsContent.sizeDelta = new Vector2(CombatParticipantsContent.sizeDelta.x, CombatParticipantsContent.sizeDelta.y + 35);
+                CombatParticipantCards.Add(character, combatParticipant);
             }
+        }
 
-            var v = CombatParticipantCards[_currentTurn].GetComponentInChildren<Image>();
-            if (v.name.Equals("CardPanel"))
-            {
-                v.color = Color.green;
-            }
-
-            CommitActionButton.onClick.AddListener(() =>
-            {
-                var w = CombatParticipantCards[_currentTurn].GetComponentInChildren<Image>();
-                if (w.name.Equals("CardPanel"))
-                {
-                    w.color = _defaultColor;
-                }
-                _currentTurn++;
-                w = CombatParticipantCards[_currentTurn].GetComponentInChildren<Image>();
-                if (w.name.Equals("CardPanel"))
-                {
-                    w.color = Color.green;
-                }
-            });
+        public void EndCombat()
+        {
+            GameState.GameActionState = GameActionState.Normal;
         }
 
         public TimeSpan GetCombatTimer { get { return _stopwatch.Elapsed; } }
@@ -140,5 +198,19 @@ namespace Assets.Code.Combat
         /*
          * GENERAL ACTIONS
          */
+
+        public void ActionPlayerFocus(Character committingCharacter, Character focusedCharacter)
+        {
+            FocusOnCharacter focus = new FocusOnCharacter("Focus of Character", focusedCharacter);
+            Actions.Add(committingCharacter, focus);
+
+            CombatParticipantCards[committingCharacter].GetComponentsInChildren<Text>()[2].text =
+                "Focus on " + focusedCharacter.Name;
+        }
+
+        public void ActionNpcFocus()
+        {
+            
+        }
     }
 }

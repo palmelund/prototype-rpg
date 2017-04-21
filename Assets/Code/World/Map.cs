@@ -7,7 +7,7 @@
  *     => Apply this to the tiles as well if they say they can be entered!
  */
 
-namespace Assets.Code.World
+namespace Code.World
 {
     public class Map : MonoBehaviour
     {

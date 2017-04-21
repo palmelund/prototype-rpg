@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using Assets.Code.Characters.PathFinding;
+using Code.Characters.PathFinding;
 using UnityEngine;
 
-namespace Assets.Code.Characters.Npc
+namespace Code.Characters.Npc
 {
     public class NpcController : MonoBehaviour {
 
@@ -24,7 +24,7 @@ namespace Assets.Code.Characters.Npc
 
         // Update is called once per frame
         void Update () {
-            if (Time.fixedTime >= _nextTimer)
+            if (GameState.GameActionState != GameActionState.Combat && Time.fixedTime >= _nextTimer)
             {
                 foreach (var npc in NpcList)
                 {

@@ -1,8 +1,8 @@
-﻿using Assets.Code.World;
+﻿using Code.World;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Assets.Code.DeveloperTools
+namespace Code.DeveloperTools
 {
     public class DebugInfoScreen : MonoBehaviour
     {

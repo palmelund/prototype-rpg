@@ -1,4 +1,4 @@
-﻿namespace Assets.Code.Combat
+﻿namespace Code.Combat
 {
     class CombatAction
     {

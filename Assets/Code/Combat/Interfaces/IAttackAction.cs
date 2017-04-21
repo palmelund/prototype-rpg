@@ -1,7 +1,7 @@
-﻿using Assets.Code.Characters;
-using Assets.Code.Combat.Actions;
+﻿using Code.Characters;
+using Code.Combat.Actions;
 
-namespace Assets.Code.Combat.Interfaces
+namespace Code.Combat.Interfaces
 {
     public interface IAttackAction
     {

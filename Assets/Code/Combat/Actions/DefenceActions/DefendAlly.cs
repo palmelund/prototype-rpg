@@ -1,4 +1,4 @@
-﻿namespace Assets.Code.Combat.Actions.DefenceActions
+﻿namespace Code.Combat.Actions.DefenceActions
 {
     class DefendAlly
     {

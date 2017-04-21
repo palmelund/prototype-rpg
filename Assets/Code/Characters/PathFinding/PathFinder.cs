@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Assets.Code.World;
+using Code.World;
 using UnityEngine;
 
-namespace Assets.Code.Characters.PathFinding
+namespace Code.Characters.PathFinding
 {
     public static class PathFinder
     {

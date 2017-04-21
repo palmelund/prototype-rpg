@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
-using Assets.Code.Characters.PathFinding;
-using Assets.Code.World;
+using Code.Characters.PathFinding;
+using Code.World;
 using UnityEngine;
 
-namespace Assets.Code.Characters.Npc
+namespace Code.Characters.Npc
 {
     public class Npc : Character
     {
@@ -26,6 +26,7 @@ namespace Assets.Code.Characters.Npc
             NpcSpriteRenderer = NpcGameObject.AddComponent<SpriteRenderer>();
             NpcSpriteRenderer.sprite = Resources.Load<Sprite>("player");
             NpcSpriteRenderer.sortingLayerName = "Characters";
+            Initiative = 5 + GameState.Rand.Next(0, 10);
 
             var xpos = 0;
             var ypos = 0;

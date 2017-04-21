@@ -1,4 +1,4 @@
-namespace Assets.Code.Combat.Actions
+namespace Code.Combat.Actions
 {
     public enum MeleeType
     {

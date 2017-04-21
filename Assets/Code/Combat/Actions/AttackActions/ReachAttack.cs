@@ -1,4 +1,4 @@
-﻿namespace Assets.Code.Combat.Actions.AttackActions
+﻿namespace Code.Combat.Actions.AttackActions
 {
     class ReachAttack
     {

@@ -1,8 +1,8 @@
-﻿using Assets.Code.World;
+﻿using Code.World;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace Assets.Code
+namespace Code
 {
     public class MouseTracker : MonoBehaviour {
         public GameObject TileMarker;   // Set in editor

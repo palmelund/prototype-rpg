@@ -1,4 +1,4 @@
-﻿namespace Assets.Code.Characters.Player
+﻿namespace Code.Characters.Player
 {
     public class Player : Character
     {
@@ -8,6 +8,7 @@
             HitPointCurrent = 10;
             HitPointMax = 10;
             Name = "Player";
+            Initiative = 10 + GameState.Rand.Next(0, 10);
         }
     }
 }

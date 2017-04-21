@@ -1,6 +1,6 @@
-﻿using Assets.Code.Characters;
+﻿using Code.Characters;
 
-namespace Assets.Code.Combat.Interfaces
+namespace Code.Combat.Interfaces
 {
     public interface IRangedAction
     {

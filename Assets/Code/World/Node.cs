@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Assets.Code.World
+namespace Code.World
 {
     public class Node
     {

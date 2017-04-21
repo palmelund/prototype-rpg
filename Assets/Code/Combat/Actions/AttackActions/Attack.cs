@@ -1,8 +1,8 @@
 ﻿using System;
-using Assets.Code.Characters;
-using Assets.Code.Combat.Interfaces;
+using Code.Characters;
+using Code.Combat.Interfaces;
 
-namespace Assets.Code.Combat.Actions.AttackActions
+namespace Code.Combat.Actions.AttackActions
 {
     public class Attack : ICombatAction, IAttackAction
     {

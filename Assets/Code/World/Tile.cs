@@ -1,8 +1,8 @@
-﻿using Assets.Code.Characters.Npc;
-using Assets.Code.Characters.Player;
+﻿using Code.Characters.Npc;
+using Code.Characters.Player;
 using UnityEngine;
 
-namespace Assets.Code.World
+namespace Code.World
 {
     public class Tile
     {

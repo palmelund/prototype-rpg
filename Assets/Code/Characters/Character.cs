@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Assets.Code.Characters
+namespace Code.Characters
 {
     public class Character
     {

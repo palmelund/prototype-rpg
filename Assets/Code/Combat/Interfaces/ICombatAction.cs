@@ -1,4 +1,4 @@
-﻿namespace Assets.Code.Combat.Interfaces
+﻿namespace Code.Combat.Interfaces
 {
     public interface ICombatAction
     {

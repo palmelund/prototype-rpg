@@ -1,7 +1,7 @@
-﻿using Assets.Code.World;
+﻿using Code.World;
 using UnityEngine;
 
-namespace Assets.Code
+namespace Code
 {
     public class ControlCamera : MonoBehaviour
     {

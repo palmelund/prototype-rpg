@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Assets.Code.Menus
+namespace Code.Menus
 {
     public class HouseMenu : MonoBehaviour {
         void Start()

@@ -1,6 +1,6 @@
-﻿using Assets.Code.Combat.Actions;
+﻿using Code.Combat.Actions;
 
-namespace Assets.Code.Combat.Interfaces
+namespace Code.Combat.Interfaces
 {
     public interface IDefenceAction
     {

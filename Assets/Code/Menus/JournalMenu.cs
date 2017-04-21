@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Assets.Code.Menus
+namespace Code.Menus
 {
     public class JournalMenu : MonoBehaviour {
         void Start()

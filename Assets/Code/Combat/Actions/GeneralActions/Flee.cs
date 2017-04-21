@@ -1,4 +1,4 @@
-﻿namespace Assets.Code.Combat.Actions.GeneralActions
+﻿namespace Code.Combat.Actions.GeneralActions
 {
     class Flee
     {

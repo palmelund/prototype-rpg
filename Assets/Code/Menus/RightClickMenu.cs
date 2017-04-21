@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using Assets.Code.Characters.Player;
-using Assets.Code.World;
+using Code.Characters.Player;
+using Code.Combat;
+using Code.World;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace Assets.Code.Menus
+namespace Code.Menus
 {
     public class RightClickMenu : MonoBehaviour
     {
@@ -44,40 +45,42 @@ namespace Assets.Code.Menus
                 var hight = hits.Length * 35;
                 Panel.sizeDelta = new Vector2(175, hight);
 
-                int rpos = (hight - 35)/2;
+                int verticalPositionOffSet = (hight - 35)/2;
 
                 foreach (var hit in hits)
                 {
-                    var hgo = hit.collider.gameObject;
-                    var hco = hgo.GetComponent<CustomComponentType>();
+                    var colliderGameObject = hit.collider.gameObject;
+                    var hco = colliderGameObject.GetComponent<CustomComponentType>();
                     if (hco == null) continue;
                     switch (hco.Type)
                     {
                         case ComponentType.Tile:
                             {
-                                RightClickTileButtonBuilder(hgo, rpos, pos);
+                                RightClickTileButtonBuilder(colliderGameObject, verticalPositionOffSet, pos);
                                 break;
                             }
                         case ComponentType.Player:
                             {
-                                RightClickPlayerButtonBuilder(hgo, rpos);
+                                RightClickPlayerButtonBuilder(colliderGameObject, verticalPositionOffSet);
                                 break;
                             }
                         case ComponentType.Npc:
                             {
-                                RightClickNpcButtonBuilder(hgo, rpos);
+                                RightClickNpcButtonBuilder(colliderGameObject, verticalPositionOffSet);
+                                verticalPositionOffSet -= 35;
+                                RightClickFocusButtonBuilder(colliderGameObject, verticalPositionOffSet);
                                 break;
                             }
 
                         default:
                             throw new ArgumentOutOfRangeException();
                     }
-                    rpos -= 35;
+                    verticalPositionOffSet -= 35;
                 }
 
                 //var r = Panel.GetComponent<RectTransform>();
 
-                // Panel.sizeDelta = new Vector2(175, rpos + 5);
+                // Panel.sizeDelta = new Vector2(175, verticalPositionOffSet + 5);
 
                 Panel.gameObject.SetActive(true);
             }
@@ -87,9 +90,28 @@ namespace Assets.Code.Menus
             }
         }
 
-        private void RightClickTileButtonBuilder(GameObject hgo, int rpos, Vector3 pos)
+        private void RightClickFocusButtonBuilder(GameObject collidedGameObject, int verticalPositionOffset)
         {
-            var tile = hgo.GetComponent<TileComponent>().Tile;
+            var enemy = collidedGameObject.GetComponent<NpcComponent>().Npc;
+            var go = Instantiate(Resources.Load<GameObject>("Prefabs/SampleButton"));
+            _obj.Add(go);
+            go.transform.SetParent(Panel.transform, false);
+            go.transform.localScale = new Vector3(1, 1, 1);
+            var button = go.GetComponent<Button>();
+            button.onClick.AddListener(() =>
+            {
+                CombatController.Instance.ActionPlayerFocus(PlayerController.PlayerInstance, enemy);
+
+            });
+            button.GetComponentInChildren<Text>().text = "Focus on " + enemy.Name;
+
+            var rt = go.GetComponent<RectTransform>();
+            rt.transform.position = new Vector3(rt.transform.position.x, rt.transform.position.y - verticalPositionOffset);
+        }
+
+        private void RightClickTileButtonBuilder(GameObject collidedGameObject, int verticalPositionOffSet, Vector3 pos)
+        {
+            var tile = collidedGameObject.GetComponent<TileComponent>().Tile;
             if (tile.CanEnter == false) return;
             var go = Instantiate(Resources.Load<GameObject>("Prefabs/SampleButton"));
             _obj.Add(go);
@@ -104,12 +126,12 @@ namespace Assets.Code.Menus
             b.GetComponentInChildren<Text>().text = "Walk here";
 
             var rt = go.GetComponent<RectTransform>();
-            rt.transform.position = new Vector3(rt.transform.position.x, rt.transform.position.y - rpos);
+            rt.transform.position = new Vector3(rt.transform.position.x, rt.transform.position.y - verticalPositionOffSet);
         }
 
-        private void RightClickPlayerButtonBuilder(GameObject hgo, int rpos)
+        private void RightClickPlayerButtonBuilder(GameObject collidedGameObject, int verticalPositionOffSet)
         {
-            //var player = hgo.GetComponent<PlayerComponent>().Player;
+            //var player = collidedGameObject.GetComponent<PlayerComponent>().Player;
             var go = Instantiate(Resources.Load<GameObject>("Prefabs/SampleButton"));
             _obj.Add(go);
             go.transform.SetParent(Panel.transform, false);
@@ -123,12 +145,12 @@ namespace Assets.Code.Menus
             b.GetComponentInChildren<Text>().text = "Open Menu";
 
             var rt = go.GetComponent<RectTransform>();
-            rt.transform.position = new Vector3(rt.transform.position.x, rt.transform.position.y - rpos);
+            rt.transform.position = new Vector3(rt.transform.position.x, rt.transform.position.y - verticalPositionOffSet);
         }
 
-        private void RightClickNpcButtonBuilder(GameObject hgo, int rpos)
+        private void RightClickNpcButtonBuilder(GameObject collidedGameObject, int verticalPositionOffSet)
         {
-            var enemy = hgo.GetComponent<NpcComponent>().Npc;
+            var enemy = collidedGameObject.GetComponent<NpcComponent>().Npc;
             var go = Instantiate(Resources.Load<GameObject>("Prefabs/SampleButton"));
             _obj.Add(go);
             go.transform.SetParent(Panel.transform, false);
@@ -137,12 +159,13 @@ namespace Assets.Code.Menus
             b.onClick.AddListener(() =>
             {
                 PlayerController.ControllerInstance.SetTarget(enemy);
+                CombatController.Instance.StartCombat();
                 HideAndClear();
             });
             b.GetComponentInChildren<Text>().text = "Set Target";
 
             var rt = go.GetComponent<RectTransform>();
-            rt.transform.position = new Vector3(rt.transform.position.x, rt.transform.position.y - rpos);
+            rt.transform.position = new Vector3(rt.transform.position.x, rt.transform.position.y - verticalPositionOffSet);
         }
 
         private void HideAndClear()

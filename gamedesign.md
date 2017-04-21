@@ -73,7 +73,11 @@ When a character have created distance, but still only is one distance away. Onl
 Create a ranged attack. Cost initiative. Requires a ranged weapon. Enemies still adjacent treats this as not taking an attack action.
 
 ##### Close gap
-Assuming it is possible to close the gap, the gap can be closed by one distance for each initiative spent. A normal attack can be made afterwards for an initiative cost.
+~~Assuming it is possible to close the gap, the gap can be closed by one distance for each initiative spent. A normal attack can be made afterwards for an initiative cost.~~
+Update, since movement is possible, this is just taking a movement.
+
+##### Reload
+Some ranged weapons require a reload between attacks.
 
 #### Defence actions
 ##### Normal defence
@@ -91,8 +95,9 @@ Can be used to defend in one of three states:
 3) Low
 
 ##### Create distance
-Creating distance means that the you leave the range of the attacker.
-Creating distance will always create space to the attacker, but any attacks made during this acction hits for full.
+~~Creating distance means that the you leave the range of the attacker.
+Creating distance will always create space to the attacker, but any attacks made during this acction hits for full.~~
+Think of how this should work. Once per round, maybe?
 
 ##### Defend ally
 Redirects the defence to an ally, lowering damage dealt to an area, but leaving other defences open.
@@ -132,6 +137,12 @@ Raising/Lowering a shield normally takes one turn.
 ##### Remove/Equip shield.
 Sometimes both hands are needed to handle weapon, in which case removing the shield is needed. Or if a hand is free, it is possible to equip a shield in a lowered state.
 Removing7Equipping a shield takes until the end of a round, and will nullify an attack/defence action if applicable.
+
+##### Quick-reload weapon
+Reload weapon without using an attack turn. This cost initiative, and leaves one open for attack.
+
+##### Future
+Cover?
 
 ## Warfare
 
