@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using Code.Characters.PathFinding;
+using Code.Characters.Player;
+using UnityEngine;
 
 /* TODO:
  * Change the code so that based on tiles deemed reachable by the map maker, 
@@ -13,8 +15,7 @@ namespace Code.World
     {
 
         public Tile[,] TileMap;
-        public Node[,] Graph;
-
+        
         // Todo: better way that does not rely on static global variable?
         public static Map Instance;
         public int Width;
@@ -41,12 +42,14 @@ namespace Code.World
             {
                 for (var y = 0; y < Height; y++)
                 {
-                    var tile = new Tile(x, y);
-                    tile.GameObject.transform.parent = gameObject.transform;
+
+                    var go = new GameObject();
+                    var tile = go.AddComponent<Tile>();
+                    tile.Configure(new Vector3(x, y));
                     TileMap[x, y] = tile;
                 }
             }
-            Graph = new Node[Width,Height];
+
             GenerateGraph();
         }
 
@@ -60,19 +63,16 @@ namespace Code.World
             return GetTileAt(Mathf.RoundToInt(position.x), Mathf.RoundToInt(position.y));
         }
 
-        public Node GetTileNode(Tile tile)
-        {
-            return Graph[tile.XCoord, tile.YCoord];
-        }
 
-        private void GenerateGraph()
+        
+        public void GenerateGraph()
         {
             for (var y = 0; y < TileMap.GetLength(1); y++)
             {
                 for (var x = 0; x < TileMap.GetLength(0); x++)
                 {
                     if (TileMap[x, y] == null || TileMap[x, y].CanEnter == false) continue;
-                    Graph[x, y] = new Node(x, y, TileMap[x,y]);
+                    TileMap[x, y].Vertice = new Vertice(new Vector3(x, y), GetTileAt(x, y));
                 }
             }
 
@@ -80,62 +80,60 @@ namespace Code.World
             {
                 for (var x = 0; x < TileMap.GetLength(0); x++)
                 {
-                    if (TileMap[x, y] == null || TileMap[x, y].CanEnter == false) continue;
+                    if (TileMap[x, y] == null || TileMap[x, y].CanEnter == false || TileMap[x, y].Vertice == null) continue;
 
                     // Straights
 
                     if (x > 0)
                     {
-                        Graph[x, y].StraightNeighbors.Add(Graph[x - 1, y]);
+                        TileMap[x, y].Vertice.NeighborList.Add(TileMap[x - 1, y].Vertice);
                     }
 
                     if (y > 0)
                     {
-                        Graph[x, y].StraightNeighbors.Add(Graph[x, y - 1]);
+                        TileMap[x, y].Vertice.NeighborList.Add(TileMap[x, y - 1].Vertice);
                     }
 
                     if (x < TileMap.GetLength(0) - 1)
                     {
-                        Graph[x, y].StraightNeighbors.Add(Graph[x + 1, y]);
+                        TileMap[x, y].Vertice.NeighborList.Add(TileMap[x + 1, y].Vertice);
                     }
 
                     if (y < TileMap.GetLength(1) - 1)
                     {
-                        Graph[x, y].StraightNeighbors.Add(Graph[x, y + 1]);
+                        TileMap[x, y].Vertice.NeighborList.Add(TileMap[x, y + 1].Vertice);
                     }
 
                     // Diagonals
 
-                    if (x > 0 && y > 0 && Graph[x - 1, y] != null && Graph[x, y - 1] != null)
+                    if (x > 0 && y > 0 && TileMap[x - 1, y].Vertice != null && TileMap[x, y - 1].Vertice != null)
                     {
-                        Graph[x, y].DiagonalNeighbors.Add(Graph[x - 1, y - 1]);
+                        TileMap[x, y].Vertice.NeighborList.Add(TileMap[x - 1, y - 1].Vertice);
                     }
 
-                    if (x > 0 && y < TileMap.GetLength(1) - 1 && Graph[x - 1, y] != null &&
-                        Graph[x, y + 1] != null)
+                    if (x > 0 && y < TileMap.GetLength(1) - 1 && TileMap[x - 1, y].Vertice != null &&
+                        TileMap[x, y + 1].Vertice != null)
                     {
-                        Graph[x, y].DiagonalNeighbors.Add(Graph[x - 1, y + 1]);
+                        TileMap[x, y].Vertice.NeighborList.Add(TileMap[x - 1, y + 1].Vertice);
                     }
 
                     if (x < TileMap.GetLength(0) - 1 && y < TileMap.GetLength(1) - 1 &&
-                        Graph[x + 1, y] != null && Graph[x, y + 1] != null)
+                        TileMap[x + 1, y].Vertice != null && TileMap[x, y + 1].Vertice != null)
                     {
-                        Graph[x, y].DiagonalNeighbors.Add(Graph[x + 1, y + 1]);
+                        TileMap[x, y].Vertice.NeighborList.Add(TileMap[x + 1, y + 1].Vertice);
                     }
 
-                    if (x < TileMap.GetLength(0) - 1 && y > 0 && Graph[x + 1, y] != null &&
-                        Graph[x, y - 1] != null)
+                    if (x < TileMap.GetLength(0) - 1 && y > 0 && TileMap[x + 1, y].Vertice != null &&
+                        TileMap[x, y - 1].Vertice != null)
                     {
-                        Graph[x, y].DiagonalNeighbors.Add(Graph[x + 1, y - 1]);
+                        TileMap[x, y].Vertice.NeighborList.Add(TileMap[x + 1, y - 1].Vertice);
                     }
                 }
             }
 
-            foreach (var node in Graph)
+            foreach (var tile in TileMap)
             {
-                if (node == null) continue;
-                node.StraightNeighbors.RemoveAll(n => n == null);
-                node.DiagonalNeighbors.RemoveAll(n => n == null);
+                tile?.Vertice?.NeighborList.RemoveAll(n => n == null);
             }
         }
     }

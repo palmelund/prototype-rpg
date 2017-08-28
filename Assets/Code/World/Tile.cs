@@ -1,69 +1,29 @@
-﻿using Code.Characters.Npc;
-using Code.Characters.Player;
+﻿using Code.Characters.PathFinding;
 using UnityEngine;
 
 namespace Code.World
 {
-    public class Tile
+    public class Tile : MonoBehaviour
     {
         public int XCoord;
         public int YCoord;
-        public GameObject GameObject;
-        public SpriteRenderer SpriteRenderer;
+
+        public Vertice Vertice;
 
         public bool CanEnter = true;
 
-        private const bool DrawRandomWalls = true;
-
-        public Tile(int x, int y)
+        public void Configure(Vector3 position)
         {
-            XCoord = x;
-            YCoord = y;
-            GameObject = new GameObject(string.Format("tile_x_{0}_y_{1}", x, y));
-            SpriteRenderer = GameObject.AddComponent<SpriteRenderer>();
-            if (DrawRandomWalls && GameState.Rand.Next(10) == 0)  // TODO: Always false
-            {
-                SpriteRenderer.sprite = Resources.Load<Sprite>("wall");
-                CanEnter = false;
-            }
-            else
-            {
-                SpriteRenderer.sprite = Resources.Load<Sprite>("grass");
-            }
-            SpriteRenderer.sortingLayerName = "BackgroundTiles";
-            GameObject.transform.position = new Vector3(x, y);
+            XCoord = Mathf.RoundToInt(position.x);
+            YCoord = Mathf.RoundToInt(position.y);
+            name = $"tile_x_{XCoord}_y_{YCoord}";
 
-            GameObject.AddComponent<BoxCollider2D>();   // Used for right-clicking currently
+            var spriteRenderer = gameObject.AddComponent<SpriteRenderer>();
+            spriteRenderer.sprite = Resources.Load<Sprite>("grass");
+            spriteRenderer.sortingLayerName = "BackgroundTiles";
+            gameObject.transform.position = position;
 
-            GameObject.AddComponent<CustomComponentType>().Type = ComponentType.Tile;
-            GameObject.AddComponent<TileComponent>().Tile = this;
+            gameObject.AddComponent<BoxCollider2D>();
         }
-    }
-
-    public enum ComponentType
-    {
-        Tile,
-        Player,
-        Npc,
-    }
-
-    public class CustomComponentType : MonoBehaviour
-    {
-        public ComponentType Type;
-    }
-
-    public class TileComponent : MonoBehaviour
-    {
-        public Tile Tile;
-    }
-
-    public class PlayerComponent : MonoBehaviour
-    {
-        public Player Player;
-    }
-
-    public class NpcComponent : MonoBehaviour
-    {
-        public Npc Npc;
     }
 }
