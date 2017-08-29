@@ -1,7 +1,3 @@
-[submodule "Assets/High-Speed-Priority-Queue-for-C-Sharp"]
-	path = Assets/High-Speed-Priority-Queue-for-C-Sharp
-	url = https://github.com/BlueRaja/High-Speed-Priority-Queue-for-C-Sharp
-	branch = master
-[submodule "Assets/Newtonsoft.Json"]
-	path = Assets/Newtonsoft.Json
-	url = https://github.com/JamesNK/Newtonsoft.Json.git
+[submodule "Assets/Code/High-Speed-Priority-Queue-for-C-Sharp"]
+	path = Assets/Code/High-Speed-Priority-Queue-for-C-Sharp
+	url = https://github.com/BlueRaja/High-Speed-Priority-Queue-for-C-Sharp.git

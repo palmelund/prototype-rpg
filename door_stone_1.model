@@ -1,0 +1,7 @@
+<DoorModel>
+identifier:door_stone_1
+spriteName:door_frame
+doorSpriteName:door
+sortingLayer:BackgroundConstruction
+doorSortingLayer:Door
+turnPoint:-0.45

@@ -1,0 +1,9 @@
+<FloorModel>
+# identifier is a unique ID for a model
+identifier:floor_grass_1
+# spriteName is the name and path of the sprite, excluding filetype
+spriteName:grass
+# Sorting layer is the layer the model is drawn on: For tiles default is "backgroundTiles"
+sortingLayer:backgroundTiles
+# determines if a character can enter the tile
+canEnter:true
