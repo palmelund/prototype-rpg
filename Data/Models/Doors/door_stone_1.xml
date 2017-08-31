@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<DoorModel xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Identifier>door_stone_1.model</Identifier>
+  <DisplayName>Stone Door 1</DisplayName>
+  <DoorSpriteName>door</DoorSpriteName>
+  <DoorSortingLayer>Door</DoorSortingLayer>
+  <FrameFrameSpriteName>door_frame</FrameFrameSpriteName>
+  <FrameFrameSortingLayer>BackgroundConstruction</FrameFrameSortingLayer>
+  <TurnPoint>-0.45</TurnPoint>
+</DoorModel>

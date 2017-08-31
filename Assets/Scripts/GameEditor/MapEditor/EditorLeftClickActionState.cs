@@ -1,8 +1,9 @@
 ﻿namespace GameEditor.MapEditor
 {
-    public enum MoveMode
+    public enum EditorLeftClickActionState
     {
         Move,
+        Select,
         BuildWall,
         BuildDoor
     }

@@ -81,7 +81,7 @@ namespace InputControllers
         //private void RightClickFocusButtonBuilder(GameObject collidedGameObject, int verticalPositionOffset)
         //{
         //    var enemy = collidedGameObject.GetComponent<NpcComponent>().Npc;
-        //    var Go = Instantiate(Resources.Load<GameObject>("Prefabs/SampleButton"));
+        //    var Go = InstantiateGame(Resources.Load<GameObject>("Prefabs/SampleButton"));
         //    _rightClickMenuObjects.Add(Go);
         //    Go.transform.SetParent(Panel.transform, false);
         //    Go.transform.localScale = new Vector3(1, 1, 1);
@@ -91,7 +91,7 @@ namespace InputControllers
         //        CombatController.Instance.ActionPlayerFocus(PlayerController.PlayableCharacterInstance, enemy);
 
         //    });
-        //    button.GetComponentInChildren<Text>().text = "Focus on " + enemy.Name;
+        //    button.GetComponentInChildren<Text>().text = "Focus on " + enemy.DisplayName;
 
         //    var rt = Go.GetComponent<RectTransform>();
         //    rt.transform.position = new Vector3(rt.transform.position.x, rt.transform.position.y - verticalPositionOffset);
@@ -137,7 +137,7 @@ namespace InputControllers
         //private void RightClickPlayerButtonBuilder(GameObject collidedGameObject, int verticalPositionOffSet)
         //{
         //    //var player = collidedGameObject.GetComponent<PlayerComponent>().PlayableCharacter;
-        //    var Go = Instantiate(Resources.Load<GameObject>("Prefabs/SampleButton"));
+        //    var Go = InstantiateGame(Resources.Load<GameObject>("Prefabs/SampleButton"));
         //    _rightClickMenuObjects.Add(Go);
         //    Go.transform.SetParent(Panel.transform, false);
         //    Go.transform.localScale = new Vector3(1, 1, 1);
@@ -156,7 +156,7 @@ namespace InputControllers
         //private void RightClickNpcButtonBuilder(GameObject collidedGameObject, int verticalPositionOffSet)
         //{
         //    var enemy = collidedGameObject.GetComponent<NpcComponent>().Npc;
-        //    var Go = Instantiate(Resources.Load<GameObject>("Prefabs/SampleButton"));
+        //    var Go = InstantiateGame(Resources.Load<GameObject>("Prefabs/SampleButton"));
         //    _rightClickMenuObjects.Add(Go);
         //    Go.transform.SetParent(Panel.transform, false);
         //    Go.transform.localScale = new Vector3(1, 1, 1);

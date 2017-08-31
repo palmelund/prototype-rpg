@@ -6,31 +6,46 @@ using World;
 
 namespace Models
 {
-    public class DoorModel : BaseModel
+    public class DoorModel : Model
     {
+        public string DoorSpriteName { get; set; }
+        public string DoorSortingLayer { get; set; }
+        public string FrameFrameSpriteName { get; set; }
+        public string FrameFrameSortingLayer { get; set; }
         public float TurnPoint { get; set; }
-        public string DoorSpriteName { get; protected set; }
-        public string DoorSortingLayer { get; protected set; }
 
-        public DoorModel(string fileName)
+        public DoorModel(string identifier, string displayName, string frameSpriteName, string doorSpriteName,
+            string frameSortingLayer, string doorSortingLayer, float turnPoint)
         {
-            LoadFromFile(fileName);
+            Identifier = identifier;
+            DisplayName = displayName;
+            TurnPoint = turnPoint;
+
+            FrameFrameSpriteName = frameSpriteName;
+            FrameFrameSortingLayer = frameSortingLayer;
+
+            DoorSpriteName = doorSpriteName;
+            DoorSortingLayer = doorSortingLayer;
         }
 
-        public override GameObject Instantiate(Vector3 position)
+        protected DoorModel()
         {
-            return Instantiate(position, Vector3.zero);
         }
 
-        public override GameObject Instantiate(Vector3 position, Vector3 rotation)
+        public override GameObject InstantiateGame(Vector3 position)
+        {
+            return InstantiateGame(position, Vector3.zero);
+        }
+
+        public override GameObject InstantiateGame(Vector3 position, Vector3 rotation)
         {
             var go = new GameObject(Identifier);
             go.transform.position = position;
             go.transform.rotation = Quaternion.Euler(rotation);
 
             var spriteRenderer = go.AddComponent<SpriteRenderer>();
-            spriteRenderer.sprite = Resources.Load<Sprite>(SpriteName);
-            spriteRenderer.sortingLayerName = SortingLayer;
+            spriteRenderer.sprite = Resources.Load<Sprite>(FrameFrameSpriteName);
+            spriteRenderer.sortingLayerName = FrameFrameSortingLayer;
 
             var wall = go.AddComponent<Wall>();
             wall.Configure(Identifier);
@@ -66,6 +81,16 @@ namespace Models
             return go;
         }
 
+        public override GameObject InstantiateEditor(Vector3 position)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override GameObject InstantiateEditor(Vector3 position, Vector3 rotation)
+        {
+            throw new NotImplementedException();
+        }
+
         private Tuple<Tile, Tile> GetTouchingTiles(Vector3 position)
         {
             var xDecimal = Mathf.Abs(position.x - (int)position.x);
@@ -88,66 +113,6 @@ namespace Models
                 Debug.LogError($"X: {xDecimal} Y: {yDecimal}");
                 return new Tuple<Tile, Tile>(null, null);
             }
-        }
-
-        protected sealed override void LoadFromFile(string fileName)
-        {
-            var modelString = File.ReadAllLines(fileName);
-            modelString = modelString.Where(s => !string.IsNullOrWhiteSpace(s)).Where(s => !s.TrimStart().StartsWith("#")).ToArray();
-            if (!modelString[0].Equals("<DoorModel>"))
-            {
-                Debug.LogError(modelString);
-            }
-
-            var identifier = string.Empty;
-            var spriteName = string.Empty;
-            var doorSpriteName = string.Empty;
-            var sortingLayer = string.Empty;
-            var doorSortingLayer = string.Empty;
-            float turnPoint = 0;
-
-            for (var index = 1; index < modelString.Length; index++)
-            {
-                if (modelString[index].StartsWith("identifier:"))
-                {
-                    identifier = modelString[index].Split(new[] { ':' }, 2)[1].Trim();
-                }
-                else if (modelString[index].StartsWith("spriteName:"))
-                {
-                    spriteName = modelString[index].Split(new[] { ':' }, 2)[1].Trim();
-                }
-                else if (modelString[index].StartsWith("doorSpriteName:"))
-                {
-                    doorSpriteName = modelString[index].Split(new[] { ':' }, 2)[1].Trim();
-                }
-                else if (modelString[index].StartsWith("sortingLayer:"))
-                {
-                    sortingLayer = modelString[index].Split(new[] { ':' }, 2)[1].Trim();
-                }
-                else if (modelString[index].StartsWith("doorSortingLayer:"))
-                {
-                    doorSortingLayer = modelString[index].Split(new[] { ':' }, 2)[1].Trim();
-                }
-                else if (modelString[index].StartsWith("turnPoint:"))
-                {
-                    var tmp = modelString[index].Split(new[] { ':' }, 2)[1].Trim();
-                    if (!float.TryParse(tmp, out turnPoint))
-                    {
-                        Debug.Log("turnPointX not a float value!");
-                    }
-                }
-                else
-                {
-                    Debug.LogError("Cannot parse line: " + modelString[index]);
-                }
-            }
-
-            Identifier = identifier;
-            SpriteName = spriteName;
-            DoorSpriteName = doorSpriteName;
-            SortingLayer = sortingLayer;
-            DoorSortingLayer = doorSortingLayer;
-            TurnPoint = turnPoint;
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace GameEditor.MapEditor
 {
-    public enum BuildMode
+    public enum BuildPositionMode
     {
         Center,
         Corner,

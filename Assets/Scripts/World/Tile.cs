@@ -26,7 +26,7 @@ namespace World
 
         //    var spriteRenderer = gameObject.AddComponent<SpriteRenderer>();
         //    spriteRenderer.sprite = Resources.Load<Sprite>("grass");
-        //    SpriteName = "grass";
+        //    FrameFrameSpriteName = "grass";
         //    spriteRenderer.sortingLayerName = "BackgroundTiles";
         //    gameObject.transform.position = position;
 

@@ -21,22 +21,23 @@ namespace World
         public Dictionary<Vector3, Tile> TileMap = new Dictionary<Vector3, Tile>();
         public Dictionary<Vector3, GameObject> WorldModelMap = new Dictionary<Vector3, GameObject>();
 
-        public Dictionary<string, BaseModel> ModelCatalogue = new Dictionary<string, BaseModel>();
+        public Dictionary<string, Model> ModelCatalogue = new Dictionary<string, Model>();
 
         // Todo: better way that does not rely on static global variable?
         public static Map Instance;
 
         private int _width = 10;
         private int _height = 10;
-        
-        void Start ()
+
+        void Start()
         {
             Instance = this;
             LoadModels();
             CreateTestMap();
         }
-	
-        void Update () {
+
+        void Update()
+        {
             if (Input.GetKeyDown(KeyCode.Return))
             {
                 ToggleVisibleGraph();
@@ -45,13 +46,19 @@ namespace World
 
         private void LoadModels()
         {
-            var floorModel = new FloorModel("floor_grass_1.model");
+            var floorModel = new FloorModel("floor_grass_1", "Grass 1", "BackgroundTiles", "grass", true);
+            floorModel.SerializeToFile("Data/Models/Floor/floor_grass_1.xml");
+            floorModel = Model.DeserializeFromFile<FloorModel>("Data/Models/Floor/floor_grass_1.xml");
             ModelCatalogue.Add(floorModel.Identifier, floorModel);
-            
-            var wallModel = new WallModel("wall_stone_1.model");
+
+            var wallModel = new WallModel("wall_stone_1.model", "Stone Wall 1", "BackgroundConstruction", "flat_wall");
+            wallModel.SerializeToFile("Data/Models/Walls/wall_stone_1.xml");
+            wallModel = Model.DeserializeFromFile<WallModel>("Data/Models/Walls/wall_stone_1.xml");
             ModelCatalogue.Add(wallModel.Identifier, wallModel);
 
-            var doorModel = new DoorModel("door_stone_1.model");
+            var doorModel = new DoorModel("door_stone_1.model", "Stone Door 1", "door_frame", "door", "BackgroundConstruction", "Door", -0.45f);
+            doorModel.SerializeToFile("Data/Models/Doors/door_stone_1.xml");
+            doorModel = Model.DeserializeFromFile<DoorModel>("Data/Models/Doors/door_stone_1.xml");
             ModelCatalogue.Add(doorModel.Identifier, doorModel);
         }
 
@@ -62,7 +69,7 @@ namespace World
             {
                 for (var y = 0; y < _height; y++)
                 {
-                    var go = ModelCatalogue["floor_grass_1"].Instantiate(new Vector3(x, y));
+                    var go = ModelCatalogue["floor_grass_1"].InstantiateGame(new Vector3(x, y));
                     TileMap.Add(go.transform.position, go.GetComponent<Tile>());
                 }
             }
@@ -79,7 +86,7 @@ namespace World
         {
             return TileMap.ContainsKey(position) ? TileMap[position] : null;
         }
-        
+
         public void GenerateGraph()
         {
             // TODO: Door/wall support
@@ -97,7 +104,7 @@ namespace World
             // Deattach actors (if any)
             var playerController = FindObjectOfType<PlayerController>();
             playerController.SelectedPlayerCharacter?.Path.Clear();
-            
+
             // Add vertice to all walkable tiles
 
             foreach (var tile in TileMap.Values)
