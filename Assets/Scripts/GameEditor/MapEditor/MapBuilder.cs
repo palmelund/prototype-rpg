@@ -1,6 +1,7 @@
 ﻿using System;
 using Characters.PathFinding;
 using Characters.Player;
+using Models.MapModels;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using World;
@@ -110,31 +111,35 @@ namespace GameEditor.MapEditor
         
         public void BuildDoor()
         {
+            var world = FindObjectOfType<WorldComponent>();
+
             Vector3 sideRotation;
             var pos = RoundToBuildModePosition(Camera.main.ScreenToWorldPoint(Input.mousePosition), BuildPositionMode.Side, out sideRotation);
 
-            if (Map.Instance.WorldModelMap.ContainsKey(pos))
+            if (world.WorldModelMap.ContainsKey(pos))
             {
                 return;
             }
 
-            var go = Map.Instance.ModelCatalogue["door_stone_1"].InstantiateGame(pos, sideRotation);
-            Map.Instance.WorldModelMap.Add(pos, go);
+            var go = GameRegistry.DoorDataModelRegistry["door_stone_1"].InstantiateGame(pos, sideRotation);
+            world.WorldModelMap.Add(pos, go);
         }
 
         public void BuildWall()
         {
+            var world = FindObjectOfType<WorldComponent>();
+
             Vector3 sideRotation;
             var pos = RoundToBuildModePosition(Camera.main.ScreenToWorldPoint(Input.mousePosition), BuildPositionMode.Side, out sideRotation);
 
-            if (Map.Instance.WorldModelMap.ContainsKey(pos))
+            if (world.WorldModelMap.ContainsKey(pos))
             {
                 Debug.Log("Side already occupied!");
                 return;
             }
 
-            var go = Map.Instance.ModelCatalogue["wall_stone_1"].InstantiateGame(pos, sideRotation);
-            Map.Instance.WorldModelMap.Add(pos, go);
+            var go = GameRegistry.WallDataModelRegistry["wall_stone_1"].InstantiateGame(pos, sideRotation);
+            world.WorldModelMap.Add(pos, go);
         }
 
         public void SetModeMove()
@@ -154,12 +159,16 @@ namespace GameEditor.MapEditor
 
         public void LoadMap()
         {
-            
+            var mapModel = MapModelRepresentation.DeserializeFromFile("map.xml");
+            mapModel.CreateMapFromModel();
+            var debugActorSpawner = new DebugActorSpawner();
         }
 
         public void SaveMap()
         {
-            
+            var mapModel = new MapModelRepresentation();
+            mapModel.CreateModelFromMap();
+            mapModel.Serialize("map.xml");
         }
     }
 }

@@ -22,7 +22,7 @@ namespace InputControllers
                 var x = Mathf.RoundToInt(pos.x);
                 var y = Mathf.RoundToInt(pos.y);
 
-                if (Map.Instance.GetTileAt(x, y) != null)
+                if (GetComponent<WorldComponent>().GetTileAt(x, y) != null)
                 {
                     TileMarker.GetComponent<Renderer>().enabled = true;
                     TileMarker.transform.position = new Vector3(x, y);

@@ -2,7 +2,7 @@
 
 namespace World
 {
-    public class Wall : MonoBehaviour, IWorldModel
+    public class WallComponent : MonoBehaviour, IWorldComponent, IWallBehavior
     {
         public string Identifier { get; private set; }
 

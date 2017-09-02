@@ -2,9 +2,9 @@ using System.IO;
 using System.Xml.Serialization;
 using UnityEngine;
 
-namespace Models
+namespace Models.DataModels
 {
-    public abstract class Model
+    public abstract class DataModel
     {
         public string Identifier { get; set; }
         public string DisplayName { get; set; }

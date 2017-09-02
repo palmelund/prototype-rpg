@@ -6,17 +6,17 @@ namespace GameEditor.MapEditor
 {
     public class ObjectEditorWindow : MonoBehaviour
     {
-        public void OpenEditorWindow(Tile tile)
+        public void OpenEditorWindow(FloorComponent floorComponent)
         {
             
         }
 
-        public void OpenEditorWindow(Wall wall)
+        public void OpenEditorWindow(WallComponent wallComponent)
         {
 
         }
 
-        public void OpenEditorWindow(Door door)
+        public void OpenEditorWindow(DoorComponent doorComponent)
         {
 
         }

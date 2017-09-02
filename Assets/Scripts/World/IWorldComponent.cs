@@ -1,6 +1,6 @@
 ﻿namespace World
 {
-    public interface IWorldModel
+    public interface IWorldComponent
     {
         string Identifier { get; }
     }

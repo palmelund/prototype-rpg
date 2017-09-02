@@ -4,6 +4,7 @@ using System.IO;
 using Characters.PathFinding;
 using Characters.Player;
 using Models;
+using Models.MapModels;
 using UnityEngine;
 
 /* TODO:
@@ -15,25 +16,19 @@ using UnityEngine;
 
 namespace World
 {
-    public class Map : MonoBehaviour
+    public class WorldComponent : MonoBehaviour
     {
-        // public Tile[,] TileMap;
-        public Dictionary<Vector3, Tile> TileMap = new Dictionary<Vector3, Tile>();
+        public Dictionary<Vector3, FloorComponent> TileMap = new Dictionary<Vector3, FloorComponent>();
         public Dictionary<Vector3, GameObject> WorldModelMap = new Dictionary<Vector3, GameObject>();
 
-        public Dictionary<string, Model> ModelCatalogue = new Dictionary<string, Model>();
-
         // Todo: better way that does not rely on static global variable?
-        public static Map Instance;
 
         private int _width = 10;
         private int _height = 10;
 
         void Start()
         {
-            Instance = this;
-            LoadModels();
-            CreateTestMap();
+            // CreateTestMap();
         }
 
         void Update()
@@ -44,24 +39,6 @@ namespace World
             }
         }
 
-        private void LoadModels()
-        {
-            var floorModel = new FloorModel("floor_grass_1", "Grass 1", "BackgroundTiles", "grass", true);
-            floorModel.SerializeToFile("Data/Models/Floor/floor_grass_1.xml");
-            floorModel = Model.DeserializeFromFile<FloorModel>("Data/Models/Floor/floor_grass_1.xml");
-            ModelCatalogue.Add(floorModel.Identifier, floorModel);
-
-            var wallModel = new WallModel("wall_stone_1.model", "Stone Wall 1", "BackgroundConstruction", "flat_wall");
-            wallModel.SerializeToFile("Data/Models/Walls/wall_stone_1.xml");
-            wallModel = Model.DeserializeFromFile<WallModel>("Data/Models/Walls/wall_stone_1.xml");
-            ModelCatalogue.Add(wallModel.Identifier, wallModel);
-
-            var doorModel = new DoorModel("door_stone_1.model", "Stone Door 1", "door_frame", "door", "BackgroundConstruction", "Door", -0.45f);
-            doorModel.SerializeToFile("Data/Models/Doors/door_stone_1.xml");
-            doorModel = Model.DeserializeFromFile<DoorModel>("Data/Models/Doors/door_stone_1.xml");
-            ModelCatalogue.Add(doorModel.Identifier, doorModel);
-        }
-
         public void CreateTestMap()
         {
             TileMap.Clear();
@@ -69,27 +46,27 @@ namespace World
             {
                 for (var y = 0; y < _height; y++)
                 {
-                    var go = ModelCatalogue["floor_grass_1"].InstantiateGame(new Vector3(x, y));
-                    TileMap.Add(go.transform.position, go.GetComponent<Tile>());
+                    var go = GameRegistry.FloorDataModelRegistry["floor_grass_1"].InstantiateGame(new Vector3(x, y));
+                    TileMap.Add(go.transform.position, go.GetComponent<FloorComponent>());
                 }
             }
 
             GenerateGraph();
         }
 
-        public Tile GetTileAt(int x, int y)
+        public FloorComponent GetTileAt(int x, int y)
         {
             return GetTileAt(new Vector3(x, y));
         }
 
-        public Tile GetTileAt(Vector3 position)
+        public FloorComponent GetTileAt(Vector3 position)
         {
             return TileMap.ContainsKey(position) ? TileMap[position] : null;
         }
 
         public void GenerateGraph()
         {
-            // TODO: Door/wall support
+            // TODO: DoorMapModel/wall support
 
             /* How it works
              * 1) Add a vertice to all walkable tiles
@@ -109,11 +86,6 @@ namespace World
 
             foreach (var tile in TileMap.Values)
             {
-                if (tile == null || tile.CanEnter == false)
-                {
-                    continue;
-                }
-
                 tile.Vertice = new Vertice(tile.transform.position, tile);
             }
 
@@ -150,10 +122,10 @@ namespace World
 
             foreach (var go in WorldModelMap.Values)
             {
-                if (go.GetComponentInChildren<Door>() != null)
+                if (go.GetComponentInChildren<DoorComponent>() != null)
                 {
 
-                    var door = go.GetComponentInChildren<Door>();
+                    var door = go.GetComponentInChildren<DoorComponent>();
                     var touchingTiles = GetTouchingTiles(go.transform.position);
                     door.SetSides(touchingTiles.Item1, touchingTiles.Item2);
                 }
@@ -163,7 +135,7 @@ namespace World
 
             foreach (var go in WorldModelMap.Values)
             {
-                if (go.GetComponent<Wall>() != null)
+                if (go.GetComponent<IWallBehavior>() != null)
                 {
                     var touchingSides = GetTouchingTiles(go.transform.position);
 
@@ -178,11 +150,11 @@ namespace World
 
                         if (touchingSides.Item1.X == touchingSides.Item2.X) // Vertical
                         {
-                            var right1Tile = Map.Instance.GetTileAt(touchingSides.Item1.X + 1, touchingSides.Item1.Y);
-                            var left1Tile = Map.Instance.GetTileAt(touchingSides.Item1.X - 1, touchingSides.Item1.Y);
+                            var right1Tile = GetTileAt(touchingSides.Item1.X + 1, touchingSides.Item1.Y);
+                            var left1Tile = GetTileAt(touchingSides.Item1.X - 1, touchingSides.Item1.Y);
 
-                            var right2Tile = Map.Instance.GetTileAt(touchingSides.Item2.X + 1, touchingSides.Item2.Y);
-                            var left2Tile = Map.Instance.GetTileAt(touchingSides.Item2.X - 1, touchingSides.Item2.Y);
+                            var right2Tile = GetTileAt(touchingSides.Item2.X + 1, touchingSides.Item2.Y);
+                            var left2Tile = GetTileAt(touchingSides.Item2.X - 1, touchingSides.Item2.Y);
 
                             if (right1Tile != null && right1Tile.CanEnter)
                             {
@@ -210,11 +182,11 @@ namespace World
                         }
                         else // Horizontal
                         {
-                            var up1Tile = Map.Instance.GetTileAt(touchingSides.Item1.X, touchingSides.Item1.Y + 1);
-                            var down1Tile = Map.Instance.GetTileAt(touchingSides.Item1.X, touchingSides.Item1.Y - 1);
+                            var up1Tile = GetTileAt(touchingSides.Item1.X, touchingSides.Item1.Y + 1);
+                            var down1Tile = GetTileAt(touchingSides.Item1.X, touchingSides.Item1.Y - 1);
 
-                            var up2Tile = Map.Instance.GetTileAt(touchingSides.Item2.X, touchingSides.Item2.Y + 1);
-                            var down2Tile = Map.Instance.GetTileAt(touchingSides.Item2.X, touchingSides.Item2.Y - 1);
+                            var up2Tile = GetTileAt(touchingSides.Item2.X, touchingSides.Item2.Y + 1);
+                            var down2Tile = GetTileAt(touchingSides.Item2.X, touchingSides.Item2.Y - 1);
 
                             if (up1Tile != null && up1Tile.CanEnter)
                             {
@@ -245,13 +217,13 @@ namespace World
             }
 
             // Re-attach actors
-            if (playerController.SelectedPlayerCharacter != null)
+            if (playerController.SelectedPlayerCharacter != null && playerController.SelectedPlayerCharacter.NextVertice != null)
             {
-                playerController.SelectedPlayerCharacter.NextVertice = GetTileAt(playerController.SelectedPlayerCharacter.NextVertice.Position).Vertice;  //GetTileAt(playerController.SelectedPlayerCharacter.transform.position).Vertice;
+                playerController.SelectedPlayerCharacter.NextVertice = GetTileAt(playerController.SelectedPlayerCharacter.NextVertice.Position)?.Vertice;
             }
         }
 
-        public Tuple<Tile, Tile> GetTouchingTiles(Vector3 position)
+        public Tuple<FloorComponent, FloorComponent> GetTouchingTiles(Vector3 position)
         {
             var xDecimal = Mathf.Abs(position.x - (int)position.x);
             var yDecimal = Mathf.Abs(position.y - (int)position.y);
@@ -260,18 +232,18 @@ namespace World
             {
                 var left = new Vector3(position.x - 0.5f, position.y);
                 var right = new Vector3(position.x + 0.5f, position.y);
-                return new Tuple<Tile, Tile>(GetTileAt(Mathf.RoundToInt(left.x), Mathf.RoundToInt(left.y)), GetTileAt(Mathf.RoundToInt(right.x), Mathf.RoundToInt(right.y)));
+                return new Tuple<FloorComponent, FloorComponent>(GetTileAt(Mathf.RoundToInt(left.x), Mathf.RoundToInt(left.y)), GetTileAt(Mathf.RoundToInt(right.x), Mathf.RoundToInt(right.y)));
             }
             else if (yDecimal == 0.5f)
             {
                 var down = new Vector3(position.x, position.y - 0.5f);
                 var up = new Vector3(position.x, position.y + 0.5f);
-                return new Tuple<Tile, Tile>(GetTileAt(Mathf.RoundToInt(down.x), Mathf.RoundToInt(down.y)), GetTileAt(Mathf.RoundToInt(up.x), Mathf.RoundToInt(up.y)));
+                return new Tuple<FloorComponent, FloorComponent>(GetTileAt(Mathf.RoundToInt(down.x), Mathf.RoundToInt(down.y)), GetTileAt(Mathf.RoundToInt(up.x), Mathf.RoundToInt(up.y)));
             }
             else
             {
                 Debug.LogError($"X: {xDecimal} Y: {yDecimal}");
-                return new Tuple<Tile, Tile>(null, null);
+                return new Tuple<FloorComponent, FloorComponent>(null, null);
             }
         }
 
@@ -280,7 +252,7 @@ namespace World
 
         public void DrawVisibleGraph()
         {
-            foreach (var tile in Map.Instance.TileMap.Values)
+            foreach (var tile in TileMap.Values)
             {
                 if (tile == null || tile.Vertice == null) continue;
 

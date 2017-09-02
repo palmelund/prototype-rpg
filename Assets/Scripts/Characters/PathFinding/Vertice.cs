@@ -6,17 +6,17 @@ namespace Characters.PathFinding
 {
     public class Vertice : IVertice
     {
-        public Tile Tile { get; }
+        public FloorComponent FloorComponent { get; }
 
         public Vector3 Position { get; }
         public IVertice[] Neighbors => NeighborList.ToArray();
 
         public List<Vertice> NeighborList = new List<Vertice>();
 
-        public Vertice(Vector3 position, Tile tile)
+        public Vertice(Vector3 position, FloorComponent floorComponent)
         {
             Position = position;
-            Tile = tile;
+            FloorComponent = floorComponent;
         }
     }
 }

@@ -1,9 +1,10 @@
 ﻿using Characters.PathFinding;
+using Models.MapModels;
 using UnityEngine;
 
 namespace World
 {
-    public class Tile : MonoBehaviour, IWorldModel
+    public class FloorComponent : MonoBehaviour, IWorldComponent
     {
         public int X => Mathf.RoundToInt(transform.position.x);
         public int Y => Mathf.RoundToInt(transform.position.y);
@@ -26,7 +27,7 @@ namespace World
 
         //    var spriteRenderer = gameObject.AddComponent<SpriteRenderer>();
         //    spriteRenderer.sprite = Resources.Load<Sprite>("grass");
-        //    FrameFrameSpriteName = "grass";
+        //    FrameSpriteName = "grass";
         //    spriteRenderer.sortingLayerName = "BackgroundTiles";
         //    gameObject.transform.position = position;
 
@@ -36,30 +37,11 @@ namespace World
         public void Configure(string identifier, bool canEnter, string sprite)
         {
             var spriteRenderer = gameObject.AddComponent<SpriteRenderer>();
-            spriteRenderer.sprite = Resources.Load<Sprite>(sprite);
+            spriteRenderer.sprite = GameRegistry.SpriteRegistry[sprite];
             spriteRenderer.sortingLayerName = "BackgroundTiles";
-            Identifier = sprite;
+            Identifier = identifier;
             gameObject.AddComponent<BoxCollider2D>();
             CanEnter = true;
-        }
-
-        public string SaveData => $"{transform.position.x},{transform.position.y},{CanEnter}";
-
-        public void ConfigureFromSaveData(string s)
-        {
-            var content = s.Split(',');
-            float x;
-            float y;
-            bool canEnter;
-
-            if (!float.TryParse(content[0], out x) || !float.TryParse(content[1], out y) || !bool.TryParse(content[2], out canEnter))
-            {
-                Debug.LogError($"Failed to pass Tile: {s}");
-            }
-            else
-            {
-                // Configure(x, y, canEnter, content[3]);
-            }
         }
     }
 }

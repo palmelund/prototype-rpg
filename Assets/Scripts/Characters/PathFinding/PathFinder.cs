@@ -184,13 +184,13 @@ namespace Characters.PathFinding
     //        var prev = totalPath.Dequeue();
     //        var dir = GetPathFinderDirection(prev, next);
 
-    //        path.Push(new PathMember(Map.Instance.GetTileAt(next.X, next.Y), dir));
+    //        path.Push(new PathMember(WorldComponent.Instance.GetTileAt(next.X, next.Y), dir));
     //        while (!prev.Equals(start))
     //        {
     //            next = prev;
     //            prev = totalPath.Dequeue();
     //            dir = GetPathFinderDirection(prev, next);
-    //            path.Push(new PathMember(Map.Instance.GetTileAt(next.X, next.Y), dir));
+    //            path.Push(new PathMember(WorldComponent.Instance.GetTileAt(next.X, next.Y), dir));
     //        }
 
     //        return path;
@@ -230,7 +230,7 @@ namespace Characters.PathFinding
     //        if (rx == -1 && ry == 1) return PathFinderDirection.UpLeft;
     //        if (rx == -1 && ry == -1) return PathFinderDirection.DownLeft;
 
-    //        throw new Exception("The PathFinding Algorithm skipped a tile...");
+    //        throw new Exception("The PathFinding Algorithm skipped a floorComponent...");
     //    }
     //}
 }

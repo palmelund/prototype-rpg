@@ -1,25 +1,30 @@
-using System.IO;
-using System.Linq;
 using UnityEngine;
 using World;
 
-namespace Models
+namespace Models.DataModels
 {
-    public class WallModel : Model
+    public class FloorDataModel : DataModel
     {
         public string SpriteName { get; set; }
         public string SortingLayer { get; set; }
 
-        public WallModel(string identifier, string displayName, string sortingLayer, string spriteName)
+        // TODO: Should not have non-empty publich constructor
+        public bool CanEnter { get; set; }
+
+        public FloorDataModel(string identifier, string displayName, string sortingLayer, string spriteName, bool canEnter)
         {
             Identifier = identifier;
             DisplayName = displayName;
-            SortingLayer = sortingLayer;
+
             SpriteName = spriteName;
+            SortingLayer = sortingLayer;
+
+            CanEnter = canEnter;
         }
 
-        protected WallModel()
+        protected FloorDataModel()
         {
+
         }
 
         public override GameObject InstantiateGame(Vector3 position)
@@ -32,13 +37,8 @@ namespace Models
             var go = new GameObject(Identifier);
             go.transform.position = position;
             go.transform.rotation = Quaternion.Euler(rotation);
-
-            var spriteRenderer = go.AddComponent<SpriteRenderer>();
-            spriteRenderer.sprite = Resources.Load<Sprite>(SpriteName);
-            spriteRenderer.sortingLayerName = SortingLayer;
-
-            var wall = go.AddComponent<Wall>();
-            wall.Configure(Identifier);
+            var tile = go.AddComponent<FloorComponent>();
+            tile.Configure(Identifier, CanEnter, SpriteName);
 
             return go;
         }

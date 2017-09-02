@@ -3,6 +3,7 @@ using Characters.Player;
 using GameEditor.MapEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using World;
 
 namespace GameEditor.Controllers
 {
@@ -15,7 +16,7 @@ namespace GameEditor.Controllers
                 switch (FindObjectOfType<MapBuilder>().EditorLeftClickActionState)
                 {
                     case EditorLeftClickActionState.Move:
-                        PlayerController.ControllerInstance.MoveSelectedPlayerCharacterToTarget();
+                        FindObjectOfType<PlayerController>().MoveSelectedPlayerCharacterToTarget();
                         break;
                     case EditorLeftClickActionState.BuildWall:
                         FindObjectOfType<MapBuilder>().BuildWall();

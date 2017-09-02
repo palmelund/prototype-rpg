@@ -48,13 +48,13 @@ namespace InputControllers
                 {
                     var colliderGameObject = hit.collider.gameObject;
 
-                    if (colliderGameObject.GetComponent<Tile>() != null)
+                    if (colliderGameObject.GetComponent<FloorComponent>() != null)
                     {
-                        RightClickTileButtonBuilder(colliderGameObject.GetComponent<Tile>(), verticalPositionOffSet, pos);
+                        RightClickTileButtonBuilder(colliderGameObject.GetComponent<FloorComponent>(), verticalPositionOffSet, pos);
                     }
-                    else if (colliderGameObject.GetComponent<Door>() != null)
+                    else if (colliderGameObject.GetComponent<DoorComponent>() != null)
                     {
-                        RightClickDoorButtonBuilder(colliderGameObject.GetComponent<Door>(), verticalPositionOffSet);  // TODO: Opening the door from a distance should set a path to the door, and then open it. That means that paths should allow other actions as well, or some other way of queueing actions.
+                        RightClickDoorButtonBuilder(colliderGameObject.GetComponent<DoorComponent>(), verticalPositionOffSet);  // TODO: Opening the doorComponent from a distance should set a path to the doorComponent, and then open it. That means that paths should allow other actions as well, or some other way of queueing actions.
                     }
                     // Expand here
 
@@ -97,9 +97,9 @@ namespace InputControllers
         //    rt.transform.position = new Vector3(rt.transform.position.x, rt.transform.position.y - verticalPositionOffset);
         //}
 
-        private void RightClickTileButtonBuilder(Tile tile, int verticalPositionOffSet, Vector3 pos)
+        private void RightClickTileButtonBuilder(FloorComponent floorComponent, int verticalPositionOffSet, Vector3 pos)
         {
-            if (tile.CanEnter == false) return;
+            if (floorComponent.CanEnter == false) return;
             var go = Instantiate(Resources.Load<GameObject>("Prefabs/SampleButton"));
             _rightClickMenuObjects.Add(go);
             go.transform.SetParent(Panel.transform, false);
@@ -107,7 +107,7 @@ namespace InputControllers
             var b = go.GetComponent<Button>();
             b.onClick.AddListener(() =>
             {
-                PlayerController.ControllerInstance.SetSelectedPlayerCharacterPath(pos);
+                FindObjectOfType<PlayerController>().SetSelectedPlayerCharacterPath(pos);
                 HideAndClear();
             });
             b.GetComponentInChildren<Text>().text = "Walk here";
@@ -116,7 +116,7 @@ namespace InputControllers
             rt.transform.position = new Vector3(rt.transform.position.x, rt.transform.position.y - verticalPositionOffSet);
         }
 
-        private void RightClickDoorButtonBuilder(Door door, int verticalPositionOffSet)
+        private void RightClickDoorButtonBuilder(DoorComponent doorComponent, int verticalPositionOffSet)
         {
             var go = Instantiate(Resources.Load<GameObject>("Prefabs/SampleButton"));
             _rightClickMenuObjects.Add(go);
@@ -125,10 +125,10 @@ namespace InputControllers
             var b = go.GetComponent<Button>();
             b.onClick.AddListener(() =>
             {
-                door.ToggleDoor();
+                doorComponent.ToggleDoor();
                 HideAndClear();
             });
-            b.GetComponentInChildren<Text>().text = door.IsOpen ? "Close Door" : "Open Door";
+            b.GetComponentInChildren<Text>().text = doorComponent.IsOpen ? "Close DoorMapModel" : "Open DoorMapModel";
 
             var rt = go.GetComponent<RectTransform>();
             rt.transform.position = new Vector3(rt.transform.position.x, rt.transform.position.y - verticalPositionOffSet);
