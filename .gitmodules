@@ -1,3 +1,6 @@
-[submodule "Assets/Code/High-Speed-Priority-Queue-for-C-Sharp"]
-	path = Assets/Code/High-Speed-Priority-Queue-for-C-Sharp
+[submodule "Assets/Scripts/-f"]
+	path = Assets/Scripts/-f
+	url = https://github.com/BlueRaja/High-Speed-Priority-Queue-for-C-Sharp.git
+[submodule "Assets/Scripts/High-Speed-Priority-Queue-for-C-Sharp"]
+	path = Assets/Scripts/High-Speed-Priority-Queue-for-C-Sharp
 	url = https://github.com/BlueRaja/High-Speed-Priority-Queue-for-C-Sharp.git

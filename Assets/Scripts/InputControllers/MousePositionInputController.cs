@@ -1,10 +1,12 @@
-﻿using UnityEngine;
+﻿using Models.Components;
+using UnityEngine;
 using UnityEngine.EventSystems;
 using World;
 
 namespace InputControllers
 {
-    public class MousePositionInputController : MonoBehaviour {
+    public class MousePositionInputController : MonoBehaviour
+    {
         public GameObject TileMarker;   // Set in editor
 
         private void Start()
@@ -13,7 +15,7 @@ namespace InputControllers
             spriteRenderer.sortingLayerName = "Marker";
         }
 
-        private void Update ()
+        private void Update()
         {
             if (!EventSystem.current.IsPointerOverGameObject())
             {
@@ -22,7 +24,7 @@ namespace InputControllers
                 var x = Mathf.RoundToInt(pos.x);
                 var y = Mathf.RoundToInt(pos.y);
 
-                if (GetComponent<WorldComponent>().GetTileAt(x, y) != null)
+                if (GetComponent<MapComponent>().GetComponentAt<FloorComponent>(x, y) != null)
                 {
                     TileMarker.GetComponent<Renderer>().enabled = true;
                     TileMarker.transform.position = new Vector3(x, y);

@@ -1,16 +1,13 @@
-﻿using World;
+﻿using Models.Components;
 
 namespace Models.MapModels
 {
-    public class WallMapModel : IMapModel
+    public class WallMapModel : MapModel
     {
-        public string Identifier { get; set; }
-        public float X { get; set; }
-        public float Y { get; set; }
-
         public WallMapModel(WallComponent wallComponent)
         {
             Identifier = wallComponent.Identifier;
+            References = wallComponent.References;
             X = wallComponent.transform.position.x;
             Y = wallComponent.transform.position.y;
         }

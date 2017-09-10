@@ -1,5 +1,6 @@
+using System.Collections.Generic;
+using Models.Components;
 using UnityEngine;
-using World;
 
 namespace Models.DataModels
 {
@@ -7,50 +8,32 @@ namespace Models.DataModels
     {
         public string SpriteName { get; set; }
         public string SortingLayer { get; set; }
-
-        // TODO: Should not have non-empty publich constructor
+        
         public bool CanEnter { get; set; }
-
-        public FloorDataModel(string identifier, string displayName, string sortingLayer, string spriteName, bool canEnter)
-        {
-            Identifier = identifier;
-            DisplayName = displayName;
-
-            SpriteName = spriteName;
-            SortingLayer = sortingLayer;
-
-            CanEnter = canEnter;
-        }
-
+        
         protected FloorDataModel()
         {
 
         }
 
-        public override GameObject InstantiateGame(Vector3 position)
+        public override GameObject Instantiate(Vector3 position)
         {
-            return InstantiateGame(position, Vector3.zero);
+            return Instantiate(position, Vector3.zero);
         }
 
-        public override GameObject InstantiateGame(Vector3 position, Vector3 rotation)
+        public override GameObject Instantiate(Vector3 position, Vector3 rotation)
         {
             var go = new GameObject(Identifier);
             go.transform.position = position;
             go.transform.rotation = Quaternion.Euler(rotation);
-            var tile = go.AddComponent<FloorComponent>();
-            tile.Configure(Identifier, CanEnter, SpriteName);
 
+            var spriteRenderer = go.AddComponent<SpriteRenderer>();
+            spriteRenderer.sortingLayerName = "BackgroundTiles";
+
+            var floorComponent = go.AddComponent<FloorComponent>();
+            floorComponent.Configure(Identifier, new List<string>(), CanEnter, SpriteName);
+            go.AddComponent<BoxCollider2D>();
             return go;
-        }
-
-        public override GameObject InstantiateEditor(Vector3 position)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public override GameObject InstantiateEditor(Vector3 position, Vector3 rotation)
-        {
-            throw new System.NotImplementedException();
         }
     }
 }

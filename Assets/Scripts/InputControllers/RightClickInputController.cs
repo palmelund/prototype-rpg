@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using Characters.Player;
+using Models.Components;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using World;
 
 namespace InputControllers
 {
@@ -81,7 +81,7 @@ namespace InputControllers
         //private void RightClickFocusButtonBuilder(GameObject collidedGameObject, int verticalPositionOffset)
         //{
         //    var enemy = collidedGameObject.GetComponent<NpcComponent>().Npc;
-        //    var Go = InstantiateGame(Resources.Load<GameObject>("Prefabs/SampleButton"));
+        //    var Go = Instantiate(Resources.Load<GameObject>("Prefabs/SampleButton"));
         //    _rightClickMenuObjects.Add(Go);
         //    Go.transform.SetParent(Panel.transform, false);
         //    Go.transform.localScale = new Vector3(1, 1, 1);
@@ -137,7 +137,7 @@ namespace InputControllers
         //private void RightClickPlayerButtonBuilder(GameObject collidedGameObject, int verticalPositionOffSet)
         //{
         //    //var player = collidedGameObject.GetComponent<PlayerComponent>().PlayableCharacter;
-        //    var Go = InstantiateGame(Resources.Load<GameObject>("Prefabs/SampleButton"));
+        //    var Go = Instantiate(Resources.Load<GameObject>("Prefabs/SampleButton"));
         //    _rightClickMenuObjects.Add(Go);
         //    Go.transform.SetParent(Panel.transform, false);
         //    Go.transform.localScale = new Vector3(1, 1, 1);
@@ -156,7 +156,7 @@ namespace InputControllers
         //private void RightClickNpcButtonBuilder(GameObject collidedGameObject, int verticalPositionOffSet)
         //{
         //    var enemy = collidedGameObject.GetComponent<NpcComponent>().Npc;
-        //    var Go = InstantiateGame(Resources.Load<GameObject>("Prefabs/SampleButton"));
+        //    var Go = Instantiate(Resources.Load<GameObject>("Prefabs/SampleButton"));
         //    _rightClickMenuObjects.Add(Go);
         //    Go.transform.SetParent(Panel.transform, false);
         //    Go.transform.localScale = new Vector3(1, 1, 1);

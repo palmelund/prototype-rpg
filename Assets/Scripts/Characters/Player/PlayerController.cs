@@ -1,4 +1,5 @@
 ﻿using Characters.PathFinding;
+using Models.Components;
 using UnityEngine;
 using World;
 
@@ -55,19 +56,19 @@ namespace Characters.Player
             var x = Mathf.RoundToInt(clickPos.x);
             var y = Mathf.RoundToInt(clickPos.y);
             var targetPos = new Vector3(x, y);
-            var target = FindObjectOfType<WorldComponent>().GetTileAt(targetPos);
+            var target = FindObjectOfType<MapComponent>().GetComponentAt<FloorComponent>(targetPos);
             if (target == null || target.CanEnter == false) return;
 
             if (SelectedPlayerCharacter.GameObject.transform.position == SelectedPlayerCharacter.NextVertice.FloorComponent.gameObject.transform.position)
             {
-                var startVertice = FindObjectOfType<WorldComponent>().GetTileAt(SelectedPlayerCharacter.GameObject.transform.position).Vertice;
-                var endVertice = FindObjectOfType<WorldComponent>().GetTileAt(targetPos).Vertice;
+                var startVertice = FindObjectOfType<MapComponent>().GetComponentAt<FloorComponent>(SelectedPlayerCharacter.GameObject.transform.position).Vertice;
+                var endVertice = FindObjectOfType<MapComponent>().GetComponentAt<FloorComponent>(targetPos).Vertice;
                 SelectedPlayerCharacter.Path = PathFinder.AStar(startVertice, endVertice);
             }
             else
             {
-                var startVertice = FindObjectOfType<WorldComponent>().GetTileAt(SelectedPlayerCharacter.NextVertice.Position).Vertice;
-                var endVertice = FindObjectOfType<WorldComponent>().GetTileAt(targetPos).Vertice;
+                var startVertice = FindObjectOfType<MapComponent>().GetComponentAt<FloorComponent>(SelectedPlayerCharacter.NextVertice.Position).Vertice;
+                var endVertice = FindObjectOfType<MapComponent>().GetComponentAt<FloorComponent>(targetPos).Vertice;
                 SelectedPlayerCharacter.Path = PathFinder.AStar(startVertice, endVertice);
             }
         }

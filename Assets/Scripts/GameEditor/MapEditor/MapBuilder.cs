@@ -1,25 +1,93 @@
 ﻿using System;
-using Characters.PathFinding;
-using Characters.Player;
+using System.Collections.Generic;
+using GameEditor.MapEditor.MapModelEditors;
+using Models.Components;
+using Models.DataModels;
 using Models.MapModels;
 using UnityEngine;
-using UnityEngine.EventSystems;
+using UnityEngine.UI;
 using World;
 
 namespace GameEditor.MapEditor
 {
     public class MapBuilder : MonoBehaviour
     {
-        public EditorLeftClickActionState EditorLeftClickActionState = EditorLeftClickActionState.Move;
-        public GameObject SelectedGameObject;
+        public EditorLeftClickActionState EditorLeftClickActionState = EditorLeftClickActionState.Select;
+        public GameObject SelectedGameObject { get; set; }
+        public DataModel SelectedDataModel { get; set; }
+
+        public InputField FileNameInputField;
+
+        public readonly Dictionary<IWorldComponent, GameObject> OpenWindowMap = new Dictionary<IWorldComponent, GameObject>();
+
+        public bool FocusOnInputField { get; set; } = false;
 
         private void Start()
         {
-            
+            CreateBuildableObjectList();
         }
 
         private void Update()
         {
+            if (!FocusOnInputField)
+            {
+                if (Input.GetKeyDown(KeyCode.E))
+                {
+                    if (SelectedGameObject != null)
+                    {
+                        SelectedGameObject.GetComponent<IWorldComponent>().OpenEditorWindow();
+                    }
+                    else
+                    {
+                        Debug.Log("Nothing to edit!");
+                    }
+                }
+                else if (Input.GetKeyDown(KeyCode.Escape))
+                {
+                    SelectedGameObject = null;
+                }
+                else if (Input.GetKeyDown(KeyCode.Delete))
+                {
+                    // TODO: Delete the selected gameobject
+                }
+            }
+        }
+
+        public void CreateBuildableObjectList()
+        {
+            var scrollView = Instantiate(Resources.Load<GameObject>("Prefabs/LeftSideScrollView"), GameObject.Find("GlobalCanvas").transform);
+            scrollView.name = "Buildable Objects Scroll View";
+            var content = scrollView.transform.Find("Viewport").Find("Content").gameObject;
+            
+            var count = GameRegistry.ModelRegistry.Count;
+
+            var height = count * 35;
+            
+            content.GetComponent<RectTransform>().sizeDelta = new Vector2(175, height);
+            var verticalPositionOffset = height; // (height - 35) / 2;
+
+            foreach (var model in GameRegistry.ModelRegistry.Values)
+            {
+                EditorSelectorButtonBuilder(model.Identifier, verticalPositionOffset, content);
+                verticalPositionOffset -= 35;
+            }
+        }
+
+        public void EditorSelectorButtonBuilder(string identifier, int verticalPositionOffset, GameObject content)
+        {
+            var go = Instantiate(Resources.Load<GameObject>("Prefabs/SampleButton"));
+            go.transform.SetParent(content.transform);
+            go.transform.localScale = Vector3.one;
+
+            var button = go.GetComponent<Button>();
+            button.onClick.AddListener(() =>
+            {
+                GameRegistry.ModelRegistry[identifier].OnEditorBuilderSelect();
+            });
+            button.GetComponentInChildren<Text>().text = identifier;
+
+            var rt = go.GetComponent<RectTransform>();
+            rt.transform.position = new Vector3(rt.transform.position.x, rt.transform.position.y - verticalPositionOffset);
         }
 
         public Vector3 RoundToBuildModePosition(Vector3 position, BuildPositionMode buildPositionMode, out Vector3 sideRotation)
@@ -108,38 +176,39 @@ namespace GameEditor.MapEditor
                     throw new ArgumentOutOfRangeException(nameof(buildPositionMode), buildPositionMode, null);
             }
         }
-        
-        public void BuildDoor()
+
+        public void BuildSelectedObject()
         {
-            var world = FindObjectOfType<WorldComponent>();
+            var world = FindObjectOfType<MapComponent>();
 
             Vector3 sideRotation;
-            var pos = RoundToBuildModePosition(Camera.main.ScreenToWorldPoint(Input.mousePosition), BuildPositionMode.Side, out sideRotation);
+            BuildPositionMode mode;
 
-            if (world.WorldModelMap.ContainsKey(pos))
+            // TODO: Better way to do this?
+            if (SelectedDataModel is FloorDataModel)
             {
+                mode = BuildPositionMode.Center;
+            }
+            else if (SelectedDataModel is WallDataModel || SelectedDataModel is DoorDataModel)
+            {
+                mode = BuildPositionMode.Side;
+            }
+            else
+            {
+                Debug.LogError($"Cannot set mode for: {SelectedDataModel.Identifier}");
                 return;
             }
 
-            var go = GameRegistry.DoorDataModelRegistry["door_stone_1"].InstantiateGame(pos, sideRotation);
-            world.WorldModelMap.Add(pos, go);
-        }
-
-        public void BuildWall()
-        {
-            var world = FindObjectOfType<WorldComponent>();
-
-            Vector3 sideRotation;
-            var pos = RoundToBuildModePosition(Camera.main.ScreenToWorldPoint(Input.mousePosition), BuildPositionMode.Side, out sideRotation);
-
-            if (world.WorldModelMap.ContainsKey(pos))
+            var pos = RoundToBuildModePosition(Camera.main.ScreenToWorldPoint(Input.mousePosition), mode, out sideRotation);
+            if (world.ModelsMap.ContainsKey(pos))
             {
-                Debug.Log("Side already occupied!");
+                Debug.Log("Tile already occupied!");
                 return;
+                // TODO: Think about what should happen if trying to override existing object
             }
-
-            var go = GameRegistry.WallDataModelRegistry["wall_stone_1"].InstantiateGame(pos, sideRotation);
-            world.WorldModelMap.Add(pos, go);
+            
+            var go = GameRegistry.ModelRegistry[SelectedDataModel.Identifier].Instantiate(pos, sideRotation);
+            world.ModelsMap.Add(pos, go);
         }
 
         public void SetModeMove()
@@ -147,28 +216,41 @@ namespace GameEditor.MapEditor
             EditorLeftClickActionState = EditorLeftClickActionState.Move;
         }
 
-        public void SetModeWall()
+        public void SetModeBuild()
         {
-            EditorLeftClickActionState = EditorLeftClickActionState.BuildWall;
+            EditorLeftClickActionState = EditorLeftClickActionState.Build;
         }
 
-        public void SetModelDoor()
+        public void SetModeSelect()
         {
-            EditorLeftClickActionState = EditorLeftClickActionState.BuildDoor;
+            EditorLeftClickActionState = EditorLeftClickActionState.Select;
         }
 
         public void LoadMap()
         {
-            var mapModel = MapModelRepresentation.DeserializeFromFile("map.xml");
-            mapModel.CreateMapFromModel();
-            var debugActorSpawner = new DebugActorSpawner();
+            FindObjectOfType<MapComponent>().ClearMap();
+            var mapName = FileNameInputField.text == string.Empty ? "Data/Maps/map.xml" : "Data/Maps/" + FileNameInputField.text + ".xml";
+            LoadMap(mapName);
         }
 
         public void SaveMap()
         {
-            var mapModel = new MapModelRepresentation();
+            var mapName = FileNameInputField.text == string.Empty ? "Data/Maps/map.xml" : "Data/Maps/" + FileNameInputField.text + ".xml";
+            SaveMap(mapName);
+        }
+
+        public void SaveMap(string mapName)
+        {
+            var mapModel = new MapModelConverter();
             mapModel.CreateModelFromMap();
-            mapModel.Serialize("map.xml");
+            mapModel.Serialize(mapName);
+
+        }
+
+        public void LoadMap(string mapName)
+        {
+            var mapModel = MapModelConverter.DeserializeFromFile(mapName);
+            mapModel.CreateMapFromModel();
         }
     }
 }

@@ -1,12 +1,10 @@
-﻿using World;
+﻿using Models.Components;
+using UnityEngine;
 
 namespace Models.MapModels
 {
-    public class FloorMapModel : IMapModel
+    public class FloorMapModel : MapModel
     {
-        public string Identifier { get; set; }
-        public float X { get; set; }
-        public float Y { get; set; }
         public bool CanEnter { get; set; }
 
         public FloorMapModel()
@@ -17,6 +15,7 @@ namespace Models.MapModels
         public FloorMapModel(FloorComponent floorComponent)
         {
             Identifier = floorComponent.Identifier;
+            References = floorComponent.References;
             X = floorComponent.X;
             Y = floorComponent.Y;
             CanEnter = floorComponent.CanEnter;

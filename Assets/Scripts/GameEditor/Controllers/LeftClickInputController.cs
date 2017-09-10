@@ -1,9 +1,9 @@
 ﻿using System;
 using Characters.Player;
 using GameEditor.MapEditor;
+using Models.Components;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using World;
 
 namespace GameEditor.Controllers
 {
@@ -18,27 +18,17 @@ namespace GameEditor.Controllers
                     case EditorLeftClickActionState.Move:
                         FindObjectOfType<PlayerController>().MoveSelectedPlayerCharacterToTarget();
                         break;
-                    case EditorLeftClickActionState.BuildWall:
-                        FindObjectOfType<MapBuilder>().BuildWall();
-                        break;
-                    case EditorLeftClickActionState.BuildDoor:
-                        FindObjectOfType<MapBuilder>().BuildDoor();
-                        break;
                     case EditorLeftClickActionState.Select:
+                        var hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
 
-                        //var hits = Physics2D.RaycastAll(Camera.main.ScreenToWorldPoint(UnityEngine.Input.mousePosition), Vector2.zero);
-
-                        //if (hits.Length == 0)
-                        //{
-                        //    break;
-                        //}
-
-                        //foreach (var hit in hits)
-                        //{
-                            
-                        //}
-
-                        //FindObjectOfType<MapBuilder>().SelectedGameObject = 
+                        if (hit.collider?.gameObject.GetComponent<IWorldComponent>() != null)
+                        {
+                            Debug.Log(hit.collider.gameObject.GetComponent<IWorldComponent>().Identifier);
+                            FindObjectOfType<MapBuilder>().SelectedGameObject = hit.collider.gameObject;
+                        }
+                        break;
+                    case EditorLeftClickActionState.Build:
+                        FindObjectOfType<MapBuilder>().BuildSelectedObject();
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();

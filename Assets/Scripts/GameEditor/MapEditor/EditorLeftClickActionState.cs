@@ -4,7 +4,6 @@
     {
         Move,
         Select,
-        BuildWall,
-        BuildDoor
+        Build
     }
 }

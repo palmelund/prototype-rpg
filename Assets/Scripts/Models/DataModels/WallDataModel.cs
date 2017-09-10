@@ -1,5 +1,6 @@
+using System.Collections.Generic;
+using Models.Components;
 using UnityEngine;
-using World;
 
 namespace Models.DataModels
 {
@@ -7,25 +8,17 @@ namespace Models.DataModels
     {
         public string SpriteName { get; set; }
         public string SortingLayer { get; set; }
-
-        public WallDataModel(string identifier, string displayName, string sortingLayer, string spriteName)
-        {
-            Identifier = identifier;
-            DisplayName = displayName;
-            SortingLayer = sortingLayer;
-            SpriteName = spriteName;
-        }
-
+        
         protected WallDataModel()
         {
         }
 
-        public override GameObject InstantiateGame(Vector3 position)
+        public override GameObject Instantiate(Vector3 position)
         {
-            return InstantiateGame(position, Vector3.zero);
+            return Instantiate(position, Vector3.zero);
         }
 
-        public override GameObject InstantiateGame(Vector3 position, Vector3 rotation)
+        public override GameObject Instantiate(Vector3 position, Vector3 rotation)
         {
             var go = new GameObject(Identifier);
             go.transform.position = position;
@@ -35,20 +28,12 @@ namespace Models.DataModels
             spriteRenderer.sprite = GameRegistry.SpriteRegistry[SpriteName];
             spriteRenderer.sortingLayerName = SortingLayer;
 
+            go.AddComponent<BoxCollider2D>();
+
             var wall = go.AddComponent<WallComponent>();
-            wall.Configure(Identifier);
+            wall.Configure(Identifier, new List<string>());
 
             return go;
-        }
-
-        public override GameObject InstantiateEditor(Vector3 position)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public override GameObject InstantiateEditor(Vector3 position, Vector3 rotation)
-        {
-            throw new System.NotImplementedException();
         }
     }
 }

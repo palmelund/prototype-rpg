@@ -1,7 +1,6 @@
 <?xml version="1.0"?>
 <WallDataModel xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <Identifier>wall_stone_1</Identifier>
-  <DisplayName>Stone Wall 1</DisplayName>
-  <SpriteName>flat_wall</SpriteName>
+  <SpriteName>wall_stone_1</SpriteName>
   <SortingLayer>BackgroundConstruction</SortingLayer>
 </WallDataModel>

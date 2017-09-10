@@ -1,0 +1,343 @@
+<?xml version="1.0"?>
+<MapModelConverter xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Models>
+    <MapModel xsi:type="FloorMapModel">
+      <Identifier>floor_grass_1</Identifier>
+      <X>-1</X>
+      <Y>-3</Y>
+      <References />
+      <CanEnter>true</CanEnter>
+    </MapModel>
+    <MapModel xsi:type="FloorMapModel">
+      <Identifier>floor_grass_1</Identifier>
+      <X>-1</X>
+      <Y>-2</Y>
+      <References />
+      <CanEnter>true</CanEnter>
+    </MapModel>
+    <MapModel xsi:type="FloorMapModel">
+      <Identifier>floor_grass_1</Identifier>
+      <X>0</X>
+      <Y>-2</Y>
+      <References />
+      <CanEnter>true</CanEnter>
+    </MapModel>
+    <MapModel xsi:type="FloorMapModel">
+      <Identifier>floor_grass_1</Identifier>
+      <X>0</X>
+      <Y>-3</Y>
+      <References />
+      <CanEnter>true</CanEnter>
+    </MapModel>
+    <MapModel xsi:type="FloorMapModel">
+      <Identifier>floor_grass_1</Identifier>
+      <X>2</X>
+      <Y>-2</Y>
+      <References />
+      <CanEnter>true</CanEnter>
+    </MapModel>
+    <MapModel xsi:type="FloorMapModel">
+      <Identifier>floor_grass_1</Identifier>
+      <X>2</X>
+      <Y>-3</Y>
+      <References />
+      <CanEnter>true</CanEnter>
+    </MapModel>
+    <MapModel xsi:type="FloorMapModel">
+      <Identifier>floor_grass_1</Identifier>
+      <X>3</X>
+      <Y>-3</Y>
+      <References />
+      <CanEnter>true</CanEnter>
+    </MapModel>
+    <MapModel xsi:type="FloorMapModel">
+      <Identifier>floor_grass_1</Identifier>
+      <X>3</X>
+      <Y>-2</Y>
+      <References />
+      <CanEnter>true</CanEnter>
+    </MapModel>
+    <MapModel xsi:type="FloorMapModel">
+      <Identifier>floor_grass_1</Identifier>
+      <X>-1</X>
+      <Y>-1</Y>
+      <References />
+      <CanEnter>true</CanEnter>
+    </MapModel>
+    <MapModel xsi:type="FloorMapModel">
+      <Identifier>floor_grass_1</Identifier>
+      <X>0</X>
+      <Y>-1</Y>
+      <References />
+      <CanEnter>true</CanEnter>
+    </MapModel>
+    <MapModel xsi:type="FloorMapModel">
+      <Identifier>floor_grass_1</Identifier>
+      <X>2</X>
+      <Y>-1</Y>
+      <References />
+      <CanEnter>true</CanEnter>
+    </MapModel>
+    <MapModel xsi:type="FloorMapModel">
+      <Identifier>floor_grass_1</Identifier>
+      <X>3</X>
+      <Y>-1</Y>
+      <References />
+      <CanEnter>true</CanEnter>
+    </MapModel>
+    <MapModel xsi:type="FloorMapModel">
+      <Identifier>floor_stone_1</Identifier>
+      <X>1</X>
+      <Y>-3</Y>
+      <References />
+      <CanEnter>true</CanEnter>
+    </MapModel>
+    <MapModel xsi:type="FloorMapModel">
+      <Identifier>floor_stone_1</Identifier>
+      <X>1</X>
+      <Y>-2</Y>
+      <References />
+      <CanEnter>true</CanEnter>
+    </MapModel>
+    <MapModel xsi:type="FloorMapModel">
+      <Identifier>floor_stone_1</Identifier>
+      <X>1</X>
+      <Y>-1</Y>
+      <References>
+        <string>door_spawn</string>
+      </References>
+      <CanEnter>true</CanEnter>
+    </MapModel>
+    <MapModel xsi:type="FloorMapModel">
+      <Identifier>floor_wood_1</Identifier>
+      <X>1</X>
+      <Y>0</Y>
+      <References />
+      <CanEnter>true</CanEnter>
+    </MapModel>
+    <MapModel xsi:type="FloorMapModel">
+      <Identifier>floor_wood_1</Identifier>
+      <X>0</X>
+      <Y>0</Y>
+      <References />
+      <CanEnter>true</CanEnter>
+    </MapModel>
+    <MapModel xsi:type="FloorMapModel">
+      <Identifier>floor_wood_1</Identifier>
+      <X>-1</X>
+      <Y>0</Y>
+      <References />
+      <CanEnter>true</CanEnter>
+    </MapModel>
+    <MapModel xsi:type="FloorMapModel">
+      <Identifier>floor_wood_1</Identifier>
+      <X>-1</X>
+      <Y>1</Y>
+      <References />
+      <CanEnter>true</CanEnter>
+    </MapModel>
+    <MapModel xsi:type="FloorMapModel">
+      <Identifier>floor_wood_1</Identifier>
+      <X>0</X>
+      <Y>1</Y>
+      <References />
+      <CanEnter>true</CanEnter>
+    </MapModel>
+    <MapModel xsi:type="FloorMapModel">
+      <Identifier>floor_wood_1</Identifier>
+      <X>2</X>
+      <Y>1</Y>
+      <References />
+      <CanEnter>true</CanEnter>
+    </MapModel>
+    <MapModel xsi:type="FloorMapModel">
+      <Identifier>floor_wood_1</Identifier>
+      <X>3</X>
+      <Y>0</Y>
+      <References />
+      <CanEnter>true</CanEnter>
+    </MapModel>
+    <MapModel xsi:type="FloorMapModel">
+      <Identifier>floor_wood_1</Identifier>
+      <X>3</X>
+      <Y>1</Y>
+      <References />
+      <CanEnter>true</CanEnter>
+    </MapModel>
+    <MapModel xsi:type="FloorMapModel">
+      <Identifier>floor_wood_1</Identifier>
+      <X>2</X>
+      <Y>0</Y>
+      <References />
+      <CanEnter>true</CanEnter>
+    </MapModel>
+    <MapModel xsi:type="FloorMapModel">
+      <Identifier>floor_wood_1</Identifier>
+      <X>1</X>
+      <Y>1</Y>
+      <References />
+      <CanEnter>true</CanEnter>
+    </MapModel>
+    <MapModel xsi:type="FloorMapModel">
+      <Identifier>floor_wood_1</Identifier>
+      <X>-1</X>
+      <Y>2</Y>
+      <References />
+      <CanEnter>true</CanEnter>
+    </MapModel>
+    <MapModel xsi:type="FloorMapModel">
+      <Identifier>floor_wood_1</Identifier>
+      <X>0</X>
+      <Y>2</Y>
+      <References />
+      <CanEnter>true</CanEnter>
+    </MapModel>
+    <MapModel xsi:type="FloorMapModel">
+      <Identifier>floor_wood_1</Identifier>
+      <X>1</X>
+      <Y>2</Y>
+      <References />
+      <CanEnter>true</CanEnter>
+    </MapModel>
+    <MapModel xsi:type="FloorMapModel">
+      <Identifier>floor_wood_1</Identifier>
+      <X>1</X>
+      <Y>3</Y>
+      <References />
+      <CanEnter>true</CanEnter>
+    </MapModel>
+    <MapModel xsi:type="FloorMapModel">
+      <Identifier>floor_wood_1</Identifier>
+      <X>0</X>
+      <Y>3</Y>
+      <References />
+      <CanEnter>true</CanEnter>
+    </MapModel>
+    <MapModel xsi:type="FloorMapModel">
+      <Identifier>floor_wood_1</Identifier>
+      <X>-1</X>
+      <Y>3</Y>
+      <References />
+      <CanEnter>true</CanEnter>
+    </MapModel>
+    <MapModel xsi:type="WallMapModel">
+      <Identifier>wall_stone_1</Identifier>
+      <X>0</X>
+      <Y>-0.5</Y>
+      <References />
+    </MapModel>
+    <MapModel xsi:type="WallMapModel">
+      <Identifier>wall_stone_1</Identifier>
+      <X>-1</X>
+      <Y>-0.5</Y>
+      <References />
+    </MapModel>
+    <MapModel xsi:type="WallMapModel">
+      <Identifier>wall_stone_1</Identifier>
+      <X>-1.5</X>
+      <Y>0</Y>
+      <References />
+    </MapModel>
+    <MapModel xsi:type="WallMapModel">
+      <Identifier>wall_stone_1</Identifier>
+      <X>-1.5</X>
+      <Y>1</Y>
+      <References />
+    </MapModel>
+    <MapModel xsi:type="WallMapModel">
+      <Identifier>wall_stone_1</Identifier>
+      <X>-1.5</X>
+      <Y>2</Y>
+      <References />
+    </MapModel>
+    <MapModel xsi:type="WallMapModel">
+      <Identifier>wall_stone_1</Identifier>
+      <X>-1.5</X>
+      <Y>3</Y>
+      <References />
+    </MapModel>
+    <MapModel xsi:type="WallMapModel">
+      <Identifier>wall_stone_1</Identifier>
+      <X>-1</X>
+      <Y>3.5</Y>
+      <References />
+    </MapModel>
+    <MapModel xsi:type="WallMapModel">
+      <Identifier>wall_stone_1</Identifier>
+      <X>0</X>
+      <Y>3.5</Y>
+      <References />
+    </MapModel>
+    <MapModel xsi:type="WallMapModel">
+      <Identifier>wall_stone_1</Identifier>
+      <X>1</X>
+      <Y>3.5</Y>
+      <References />
+    </MapModel>
+    <MapModel xsi:type="WallMapModel">
+      <Identifier>wall_stone_1</Identifier>
+      <X>1.5</X>
+      <Y>3</Y>
+      <References />
+    </MapModel>
+    <MapModel xsi:type="WallMapModel">
+      <Identifier>wall_stone_1</Identifier>
+      <X>1.5</X>
+      <Y>2</Y>
+      <References />
+    </MapModel>
+    <MapModel xsi:type="WallMapModel">
+      <Identifier>wall_stone_1</Identifier>
+      <X>2</X>
+      <Y>1.5</Y>
+      <References />
+    </MapModel>
+    <MapModel xsi:type="WallMapModel">
+      <Identifier>wall_stone_1</Identifier>
+      <X>3</X>
+      <Y>1.5</Y>
+      <References />
+    </MapModel>
+    <MapModel xsi:type="WallMapModel">
+      <Identifier>wall_stone_1</Identifier>
+      <X>3.5</X>
+      <Y>1</Y>
+      <References />
+    </MapModel>
+    <MapModel xsi:type="WallMapModel">
+      <Identifier>wall_stone_1</Identifier>
+      <X>3.5</X>
+      <Y>0</Y>
+      <References />
+    </MapModel>
+    <MapModel xsi:type="WallMapModel">
+      <Identifier>wall_stone_1</Identifier>
+      <X>3</X>
+      <Y>-0.5</Y>
+      <References />
+    </MapModel>
+    <MapModel xsi:type="WallMapModel">
+      <Identifier>wall_stone_1</Identifier>
+      <X>2</X>
+      <Y>-0.5</Y>
+      <References />
+    </MapModel>
+    <MapModel xsi:type="DoorMapModel">
+      <Identifier>door_stone_1</Identifier>
+      <X>1</X>
+      <Y>-0.5</Y>
+      <References>
+        <string>door_to_map2
+
+w
+
+v
+</string>
+      </References>
+      <IsOpen>false</IsOpen>
+      <LoadOtherLevelOnUse>true</LoadOtherLevelOnUse>
+      <MapReference>map2</MapReference>
+      <SpawnReference>door_spawn</SpawnReference>
+    </MapModel>
+  </Models>
+</MapModelConverter>

@@ -1,6 +1,6 @@
-using System;
+using System.Collections.Generic;
+using Models.Components;
 using UnityEngine;
-using World;
 
 namespace Models.DataModels
 {
@@ -11,31 +11,17 @@ namespace Models.DataModels
         public string FrameSpriteName { get; set; }
         public string FrameSortingLayer { get; set; }
         public float TurnPoint { get; set; }
-
-        public DoorDataModel(string identifier, string displayName, string frameSpriteName, string doorSpriteName,
-            string frameSortingLayer, string doorSortingLayer, float turnPoint)
-        {
-            Identifier = identifier;
-            DisplayName = displayName;
-            TurnPoint = turnPoint;
-
-            FrameSpriteName = frameSpriteName;
-            FrameSortingLayer = frameSortingLayer;
-
-            DoorSpriteName = doorSpriteName;
-            DoorSortingLayer = doorSortingLayer;
-        }
-
+        
         protected DoorDataModel()
         {
         }
 
-        public override GameObject InstantiateGame(Vector3 position)
+        public override GameObject Instantiate(Vector3 position)
         {
-            return InstantiateGame(position, Vector3.zero);
+            return Instantiate(position, Vector3.zero);
         }
 
-        public override GameObject InstantiateGame(Vector3 position, Vector3 rotation)
+        public override GameObject Instantiate(Vector3 position, Vector3 rotation)
         {
             var go = new GameObject(Identifier);
             go.transform.position = position;
@@ -57,17 +43,29 @@ namespace Models.DataModels
             doorSpriteRenderer.sprite = GameRegistry.SpriteRegistry[DoorSpriteName];
             doorSpriteRenderer.sortingLayerName = DoorSortingLayer;
 
+            var hover = new GameObject("Hover");
+            hover.transform.SetParent(go.transform);
+            hover.transform.localPosition = Vector3.zero;
+
+            var hoverSpriteRenderer = hover.AddComponent<SpriteRenderer>();
+            hoverSpriteRenderer.sprite = GameRegistry.SpriteRegistry["hover_door"];
+            hoverSpriteRenderer.sortingLayerName = "Hover";
+
             var door = go.AddComponent<DoorComponent>();
+
+            door.LoadOtherLevelOnUse = false;
+            door.MapReference = "";
+            door.SpawnPointReference = "";
 
             var remaining = position.x - (int) position.x;
 
             if (remaining == 0f)
             {
-                door.Configure(Identifier, new Vector3(TurnPoint, 0) + position, movingPart);
+                door.Configure(Identifier, new List<string>(), new Vector3(TurnPoint, 0) + position, movingPart);
             }
             else if (remaining == 0.5f)
             {
-                door.Configure(Identifier, new Vector3(0, TurnPoint) + position, movingPart);
+                door.Configure(Identifier, new List<string>(), new Vector3(0, TurnPoint) + position, movingPart);
             }
             else
             {
@@ -75,16 +73,6 @@ namespace Models.DataModels
             }
 
             return go;
-        }
-
-        public override GameObject InstantiateEditor(Vector3 position)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override GameObject InstantiateEditor(Vector3 position, Vector3 rotation)
-        {
-            throw new NotImplementedException();
         }
     }
 }

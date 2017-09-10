@@ -1,15 +1,16 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
-using World;
 
 namespace GameEditor.Controllers
 {
     public class MousePositionInputController : MonoBehaviour {
-        public GameObject TileMarker;   // Set in editor
+        private GameObject _tileMarker;
 
         private void Start()
         {
-            var spriteRenderer = TileMarker.GetComponent<SpriteRenderer>();
+            _tileMarker = new GameObject("TileMarker");
+            var spriteRenderer = _tileMarker.AddComponent<SpriteRenderer>();
+            spriteRenderer.sprite = GameRegistry.SpriteRegistry["mark_tile"];
             spriteRenderer.sortingLayerName = "Marker";
         }
 
@@ -17,13 +18,13 @@ namespace GameEditor.Controllers
         {
             if (!EventSystem.current.IsPointerOverGameObject())
             {
-                TileMarker.SetActive(true);
+                _tileMarker.SetActive(true);
                 var pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                TileMarker.transform.position = new Vector3(Mathf.RoundToInt(pos.x), Mathf.RoundToInt(pos.y));
+                _tileMarker.transform.position = new Vector3(Mathf.RoundToInt(pos.x), Mathf.RoundToInt(pos.y));
             }
             else
             {
-                TileMarker.SetActive(false);
+                _tileMarker.SetActive(false);
             }
         }
     }

@@ -1,6 +1,6 @@
 ﻿using Characters;
+using Models.Components;
 using UnityEngine;
-using World;
 
 namespace GameEditor.MapEditor
 {

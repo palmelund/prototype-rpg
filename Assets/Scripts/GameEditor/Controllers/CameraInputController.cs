@@ -10,6 +10,12 @@ namespace GameEditor.Controllers
         // Update is called once per frame
         private void Update()
         {
+            if (Input.GetKeyDown(KeyCode.Home))
+            {
+                var pos = Camera.main.transform.position;
+                Camera.main.transform.position = new Vector3(0f, 0f, pos.z);
+            }
+
             if (Input.mousePosition.x < Border && Camera.main.transform.position.x >= 0)
             {
                 transform.position += Vector3.left * Time.deltaTime * CamSpeed;

@@ -1,8 +1,7 @@
 <?xml version="1.0"?>
 <FloorDataModel xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <Identifier>floor_grass_1</Identifier>
-  <DisplayName>Grass 1</DisplayName>
-  <SpriteName>grass</SpriteName>
+  <SpriteName>floor_grass_1</SpriteName>
   <SortingLayer>BackgroundTiles</SortingLayer>
   <CanEnter>true</CanEnter>
 </FloorDataModel>

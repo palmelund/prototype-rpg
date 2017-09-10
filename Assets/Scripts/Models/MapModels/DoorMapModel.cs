@@ -1,15 +1,13 @@
-﻿using UnityEngine;
-using World;
+﻿using Models.Components;
 
 namespace Models.MapModels
 {
-    public class DoorMapModel : IMapModel
+    public class DoorMapModel : MapModel
     {
-        public string Identifier { get; set; }
-        public float X { get; set; }
-        public float Y { get; set; }
-
         public bool IsOpen { get; set; }
+        public bool LoadOtherLevelOnUse { get; set; }
+        public string MapReference { get; set; }
+        public string SpawnReference { get; set; }
         
         public DoorMapModel()
         {
@@ -19,9 +17,13 @@ namespace Models.MapModels
         public DoorMapModel(DoorComponent doorComponent)
         {
             Identifier = doorComponent.Identifier;
+            References = doorComponent.References;
             X = doorComponent.transform.position.x;
             Y = doorComponent.transform.position.y;
             IsOpen = doorComponent.IsOpen;
+            LoadOtherLevelOnUse = doorComponent.LoadOtherLevelOnUse;
+            MapReference = doorComponent.MapReference;
+            SpawnReference = doorComponent.SpawnPointReference;
         }
     }
 }

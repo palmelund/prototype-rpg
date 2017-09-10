@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
+using Models.Components;
 using UnityEngine;
-using World;
 
 namespace Characters.PathFinding
 {
@@ -13,9 +13,9 @@ namespace Characters.PathFinding
 
         public List<Vertice> NeighborList = new List<Vertice>();
 
-        public Vertice(Vector3 position, FloorComponent floorComponent)
+        public Vertice(FloorComponent floorComponent)
         {
-            Position = position;
+            Position = floorComponent.transform.position;
             FloorComponent = floorComponent;
         }
     }
