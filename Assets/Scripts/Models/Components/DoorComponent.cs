@@ -67,10 +67,13 @@ namespace Models.Components
             {
                 var map = GameRegistry.MapRegistry[MapReference];
 
-                FindObjectOfType<MapComponent>().ClearMap();
-
                 var mapModel = MapModelConverter.DeserializeFromFile(map);
-                mapModel.CreateMapFromModel();
+                FindObjectOfType<MapComponent>().LoadMapTransition(mapModel, MapReference, SpawnPointReference);
+
+                //FindObjectOfType<MapComponent>().UnloadMap();
+
+                //var mapModel = MapModelConverter.DeserializeFromFile(map);
+                //mapModel.CreateMapFromModel();
 
                 return;
             }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using GameEditor.MapEditor.MapModelEditors;
 using Models.Components;
 using Models.DataModels;
@@ -228,7 +229,7 @@ namespace GameEditor.MapEditor
 
         public void LoadMap()
         {
-            FindObjectOfType<MapComponent>().ClearMap();
+            FindObjectOfType<MapComponent>().UnloadMap();
             var mapName = FileNameInputField.text == string.Empty ? "Data/Maps/map.xml" : "Data/Maps/" + FileNameInputField.text + ".xml";
             LoadMap(mapName);
         }
@@ -250,7 +251,8 @@ namespace GameEditor.MapEditor
         public void LoadMap(string mapName)
         {
             var mapModel = MapModelConverter.DeserializeFromFile(mapName);
-            mapModel.CreateMapFromModel();
+            FindObjectOfType<MapComponent>().LoadMapTransition(mapModel, Path.GetFileNameWithoutExtension(mapName), null);
+            // mapModel.CreateMapFromModel();
         }
     }
 }

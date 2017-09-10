@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml.Serialization;
+using Characters.Player;
 using GameEditor.MapEditor;
 using Models.Components;
 using UnityEngine;
 using World;
 using Object = UnityEngine.Object;
+using Random = UnityEngine.Random;
 
 namespace Models.MapModels
 {
@@ -83,20 +85,16 @@ namespace Models.MapModels
                 map.ModelsMap.Add(go.transform.position, go);
             }
 
+            // Add references to map
+            foreach (var model in Models)
+            {
+                foreach (var reference in model.References)
+                {
+                    Object.FindObjectOfType<MapComponent>().ReferenceMap.Add(reference, model);
+                }
+            }
+
             map.GenerateGraph();
-
-            //var character = new PlayableCharacter();
-            //Object.FindObjectOfType<PlayerController>().SelectedPlayerCharacter = character;
-
-            //character.GameObject = new GameObject("player_go");
-            //var spriteRenderer = character.GameObject.AddComponent<SpriteRenderer>();
-            //spriteRenderer.sprite = GameRegistry.SpriteRegistry["actor_debug"];
-            //spriteRenderer.sortingLayerName = "Characters";
-            //character.GameObject.transform.position = map.FloorModelMap.Values.ToList()[Random.Range(0, map.FloorModelMap.Count)].transform.position;
-
-            //character.NextVertice = Object.FindObjectOfType<MapComponent>().GetTileAt(character.GameObject.transform.position)?.Vertice;
-
-            //character.GameObject.AddComponent<BoxCollider2D>();
         }
 
         public void CreateModelFromMap()

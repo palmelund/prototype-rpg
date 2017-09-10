@@ -6,6 +6,8 @@ using Characters.Player;
 using Models.Components;
 using Models.MapModels;
 using UnityEngine;
+using Object = UnityEngine.Object;
+using Random = UnityEngine.Random;
 
 /* TODO:
  * Change the code so that based on tiles deemed reachable by the map maker, 
@@ -24,15 +26,15 @@ namespace World
         //public Dictionary<Vector3, List<PointComponent>> PointMap { get; } = new Dictionary<Vector3, List<PointComponent>>();
 
 
-
         public Dictionary<Vector3, GameObject> ModelsMap { get; } = new Dictionary<Vector3, GameObject>();
-        public Dictionary<string, MapModel> ReferenceMap { get; } = new Dictionary<string, MapModel>(); // TODO: Map Model or Map Component?
+
+        public Dictionary<string, MapModel> ReferenceMap { get; } =
+            new Dictionary<string, MapModel>(); // TODO: Map Model or Map Component?
 
         // Todo: better way that does not rely on static global variable?
 
         void Start()
         {
-
         }
 
         void Update()
@@ -41,6 +43,12 @@ namespace World
             {
                 ToggleVisibleGraph();
             }
+        }
+
+        public List<T> GetComponentsOfType<T>() where T : MonoBehaviour
+        {
+            return (from model in ModelsMap.Values where model.GetComponent<T>() != null select model.GetComponent<T>())
+                .ToList();
         }
 
         public T GetComponentAt<T>(float x, float y) where T : MonoBehaviour
@@ -126,7 +134,7 @@ namespace World
             }
 
             // Add door connections
-            
+
             foreach (var go in ModelsMap.Values)
             {
                 if (go.GetComponent<DoorComponent>() != null)
@@ -138,7 +146,7 @@ namespace World
             }
 
             // Apply wall blocking to walls and doors
-            
+
             foreach (var go in ModelsMap.Values)
             {
                 if (go.GetComponent<IWallBehavior>() != null)
@@ -156,11 +164,15 @@ namespace World
 
                         if (touchingSides.Item1.X == touchingSides.Item2.X) // Vertical
                         {
-                            var right1Tile = GetComponentAt<FloorComponent>(touchingSides.Item1.X + 1, touchingSides.Item1.Y);
-                            var left1Tile = GetComponentAt<FloorComponent>(touchingSides.Item1.X - 1, touchingSides.Item1.Y);
+                            var right1Tile =
+                                GetComponentAt<FloorComponent>(touchingSides.Item1.X + 1, touchingSides.Item1.Y);
+                            var left1Tile =
+                                GetComponentAt<FloorComponent>(touchingSides.Item1.X - 1, touchingSides.Item1.Y);
 
-                            var right2Tile = GetComponentAt<FloorComponent>(touchingSides.Item2.X + 1, touchingSides.Item2.Y);
-                            var left2Tile = GetComponentAt<FloorComponent>(touchingSides.Item2.X - 1, touchingSides.Item2.Y);
+                            var right2Tile =
+                                GetComponentAt<FloorComponent>(touchingSides.Item2.X + 1, touchingSides.Item2.Y);
+                            var left2Tile =
+                                GetComponentAt<FloorComponent>(touchingSides.Item2.X - 1, touchingSides.Item2.Y);
 
                             if (right1Tile != null && right1Tile.CanEnter)
                             {
@@ -188,11 +200,15 @@ namespace World
                         }
                         else // Horizontal
                         {
-                            var up1Tile = GetComponentAt<FloorComponent>(touchingSides.Item1.X, touchingSides.Item1.Y + 1);
-                            var down1Tile = GetComponentAt<FloorComponent>(touchingSides.Item1.X, touchingSides.Item1.Y - 1);
+                            var up1Tile =
+                                GetComponentAt<FloorComponent>(touchingSides.Item1.X, touchingSides.Item1.Y + 1);
+                            var down1Tile =
+                                GetComponentAt<FloorComponent>(touchingSides.Item1.X, touchingSides.Item1.Y - 1);
 
-                            var up2Tile = GetComponentAt<FloorComponent>(touchingSides.Item2.X, touchingSides.Item2.Y + 1);
-                            var down2Tile = GetComponentAt<FloorComponent>(touchingSides.Item2.X, touchingSides.Item2.Y - 1);
+                            var up2Tile =
+                                GetComponentAt<FloorComponent>(touchingSides.Item2.X, touchingSides.Item2.Y + 1);
+                            var down2Tile =
+                                GetComponentAt<FloorComponent>(touchingSides.Item2.X, touchingSides.Item2.Y - 1);
 
                             if (up1Tile != null && up1Tile.CanEnter)
                             {
@@ -225,14 +241,16 @@ namespace World
             // Re-attach actors
             if (playerController.SelectedPlayerCharacter?.NextVertice != null)
             {
-                playerController.SelectedPlayerCharacter.NextVertice = GetComponentAt<FloorComponent>(playerController.SelectedPlayerCharacter.NextVertice.Position)?.Vertice;
+                playerController.SelectedPlayerCharacter.NextVertice =
+                    GetComponentAt<FloorComponent>(playerController.SelectedPlayerCharacter.NextVertice.Position)
+                        ?.Vertice;
             }
         }
 
         public Tuple<FloorComponent, FloorComponent> GetTouchingTiles(Vector3 position)
         {
-            var xDecimal = Mathf.Abs(position.x - (int)position.x);
-            var yDecimal = Mathf.Abs(position.y - (int)position.y);
+            var xDecimal = Mathf.Abs(position.x - (int) position.x);
+            var yDecimal = Mathf.Abs(position.y - (int) position.y);
 
             // TODO: Approximate?
 
@@ -240,13 +258,17 @@ namespace World
             {
                 var left = new Vector3(position.x - 0.5f, position.y);
                 var right = new Vector3(position.x + 0.5f, position.y);
-                return new Tuple<FloorComponent, FloorComponent>(GetComponentAt<FloorComponent>(Mathf.RoundToInt(left.x), Mathf.RoundToInt(left.y)), GetComponentAt<FloorComponent>(Mathf.RoundToInt(right.x), Mathf.RoundToInt(right.y)));
+                return new Tuple<FloorComponent, FloorComponent>(
+                    GetComponentAt<FloorComponent>(Mathf.RoundToInt(left.x), Mathf.RoundToInt(left.y)),
+                    GetComponentAt<FloorComponent>(Mathf.RoundToInt(right.x), Mathf.RoundToInt(right.y)));
             }
             else if (yDecimal == 0.5f)
             {
                 var down = new Vector3(position.x, position.y - 0.5f);
                 var up = new Vector3(position.x, position.y + 0.5f);
-                return new Tuple<FloorComponent, FloorComponent>(GetComponentAt<FloorComponent>(Mathf.RoundToInt(down.x), Mathf.RoundToInt(down.y)), GetComponentAt<FloorComponent>(Mathf.RoundToInt(up.x), Mathf.RoundToInt(up.y)));
+                return new Tuple<FloorComponent, FloorComponent>(
+                    GetComponentAt<FloorComponent>(Mathf.RoundToInt(down.x), Mathf.RoundToInt(down.y)),
+                    GetComponentAt<FloorComponent>(Mathf.RoundToInt(up.x), Mathf.RoundToInt(up.y)));
             }
             else
             {
@@ -255,7 +277,38 @@ namespace World
             }
         }
 
-        public void ClearMap()
+        public void SaveMap()
+        {
+            // TODO
+        }
+
+        public void LoadMapFromSave()
+        {
+            // TODO
+        }
+
+        public void LoadMapTransition(MapModelConverter mapModelConverter, string mapIdentifier, string spawnReference)
+        {
+            // Save player state
+            SavePlayerState(spawnReference);
+
+            // Save map state (Delta)
+            // TODO
+
+            // Unload map
+            UnloadMap();
+
+            // Load map
+            mapModelConverter.CreateMapFromModel();
+
+            // Load map state (Delta)
+            // TODO
+
+            // Load players
+            LoadPlayerState();
+        }
+
+        public void UnloadMap()
         {
             foreach (var model in ModelsMap.Values)
             {
@@ -265,6 +318,80 @@ namespace World
 
             ReferenceMap.Clear();
         }
+
+
+        #region Player Loading
+
+        private class PlayerTransferState
+        {
+            public readonly string SpawnPoint;
+
+            public PlayerTransferState(string spawnPoint)
+            {
+                SpawnPoint = spawnPoint;
+            }
+        }
+
+        private PlayerTransferState _pts;
+
+        public void SavePlayerState(string spawnPoint)
+        {
+            if (!string.IsNullOrWhiteSpace(spawnPoint))
+            {
+                _pts = new PlayerTransferState(spawnPoint);
+            }
+
+            Destroy(GameObject.Find("player_go"));
+            FindObjectOfType<PlayerController>().SelectedPlayerCharacter = null;
+        }
+
+        public void LoadPlayerState()
+        {
+            if (_pts != null)
+            {
+                if (!ReferenceMap.ContainsKey(_pts.SpawnPoint))
+                {
+                    Debug.LogError("Cannot find reference!");
+                    return;
+                }
+
+                var character = new PlayableCharacter();
+                FindObjectOfType<PlayerController>().SelectedPlayerCharacter = character;
+
+                character.GameObject = new GameObject("player_go");
+                var spriteRenderer = character.GameObject.AddComponent<SpriteRenderer>();
+                spriteRenderer.sprite = GameRegistry.SpriteRegistry["actor_debug"];
+                spriteRenderer.sortingLayerName = "Characters";
+
+                var components = GetComponentsOfType<FloorComponent>();
+                character.GameObject.transform.position = ReferenceMap[_pts.SpawnPoint].Position; // components[Random.Range(0, components.Count)].transform.position;
+
+                character.NextVertice = FindObjectOfType<MapComponent>().GetComponentAt<FloorComponent>(character.GameObject.transform.position)?.Vertice;
+
+                character.GameObject.AddComponent<BoxCollider2D>();
+
+                _pts = null;
+            }
+            else
+            {
+                var character = new PlayableCharacter();
+                FindObjectOfType<PlayerController>().SelectedPlayerCharacter = character;
+
+                character.GameObject = new GameObject("player_go");
+                var spriteRenderer = character.GameObject.AddComponent<SpriteRenderer>();
+                spriteRenderer.sprite = GameRegistry.SpriteRegistry["actor_debug"];
+                spriteRenderer.sortingLayerName = "Characters";
+
+                var components = GetComponentsOfType<FloorComponent>();
+                character.GameObject.transform.position = components[Random.Range(0, components.Count)].transform.position;
+
+                character.NextVertice = FindObjectOfType<MapComponent>().GetComponentAt<FloorComponent>(character.GameObject.transform.position)?.Vertice;
+
+                character.GameObject.AddComponent<BoxCollider2D>();
+            }
+        }
+
+        #endregion
 
         #region PathGraph
 

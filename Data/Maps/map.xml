@@ -326,14 +326,7 @@
       <Identifier>door_stone_1</Identifier>
       <X>1</X>
       <Y>-0.5</Y>
-      <References>
-        <string>door_to_map2
-
-w
-
-v
-</string>
-      </References>
+      <References />
       <IsOpen>false</IsOpen>
       <LoadOtherLevelOnUse>true</LoadOtherLevelOnUse>
       <MapReference>map2</MapReference>

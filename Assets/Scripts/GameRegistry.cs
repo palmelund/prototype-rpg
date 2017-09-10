@@ -23,15 +23,15 @@ public class GameRegistry : MonoBehaviour
         LoadAllModels<DoorDataModel>("Doors");
     }
 
-    public static List<T> GetModelsListOfType<T>() where T : DataModel
-    {
-        return ModelRegistry.OfType<T>().ToList();
-    }
+    //public static List<T> GetModelsListOfType<T>() where T : DataModel
+    //{
+    //    return ModelRegistry.OfType<T>().ToList();
+    //}
 
-    public static Dictionary<string, T> GetModelsDictionaryOfType<T>() where T : DataModel
-    {
-        return ModelRegistry.OfType<T>().ToDictionary(model => model.Identifier);
-    }
+    //public static Dictionary<string, T> GetModelsDictionaryOfType<T>() where T : DataModel
+    //{
+    //    return ModelRegistry.OfType<T>().ToDictionary(model => model.Identifier);
+    //}
 
     private void LoadAllSprites()
     {
