@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
+using Global;
 using UnityEngine;
 
 namespace Models.MapModels
 {
-    public abstract class MapModel
+    public abstract class MapModel : IGameSerializable
     {
         public string Identifier { get; set; }
         public float X { get; set; }

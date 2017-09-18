@@ -1,8 +1,10 @@
 using System.Collections.Generic;
 using GameEditor.MapEditor;
 using GameEditor.MapEditor.MapModelEditors;
+using Global;
 using Models.MapModels;
 using UnityEngine;
+using UnityEngine.UI;
 using World;
 
 namespace Models.Components
@@ -38,13 +40,15 @@ namespace Models.Components
 
         public string MapReference { get; set; }
         public string SpawnPointReference { get; set; }
+        public string KeyGroup { get; set; }
 
-        public void Configure(string identifier, List<string> references, Vector3 turnPoint, GameObject movingPart)
+        public void Configure(string identifier, List<string> references, string keyGroup, Vector3 turnPoint, GameObject movingPart)
         {
             Identifier = identifier;
             TurnPoint = turnPoint;
             MovingPart = movingPart;
             References = references;
+            KeyGroup = keyGroup;
         }
 
         public void SetSides(FloorComponent sideA, FloorComponent sideB)
@@ -67,7 +71,7 @@ namespace Models.Components
             {
                 var map = GameRegistry.MapRegistry[MapReference];
 
-                var mapModel = MapModelConverter.DeserializeFromFile(map);
+                var mapModel = Serializer.DeserializeFromFile<MapModelConverter>(map);
                 FindObjectOfType<MapComponent>().LoadMapTransition(mapModel, MapReference, SpawnPointReference);
 
                 //FindObjectOfType<MapComponent>().UnloadMap();

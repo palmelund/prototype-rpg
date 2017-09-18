@@ -2,6 +2,7 @@
 using Characters.PathFinding;
 using GameEditor.MapEditor;
 using GameEditor.MapEditor.MapModelEditors;
+using Global;
 using UnityEngine;
 
 namespace Models.Components

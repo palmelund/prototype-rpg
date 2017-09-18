@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Characters.PathFinding;
 using Characters.Player;
+using Global;
 using Models.Components;
 using Models.MapModels;
 using UnityEngine;
@@ -28,8 +29,7 @@ namespace World
 
         public Dictionary<Vector3, GameObject> ModelsMap { get; } = new Dictionary<Vector3, GameObject>();
 
-        public Dictionary<string, MapModel> ReferenceMap { get; } =
-            new Dictionary<string, MapModel>(); // TODO: Map Model or Map Component?
+        public Dictionary<string, MapModel> ReferenceMap { get; } = new Dictionary<string, MapModel>(); // TODO: Map Model or Map Component?
 
         // Todo: better way that does not rely on static global variable?
 
@@ -116,10 +116,24 @@ namespace World
                     floor.Vertice.NeighborList.Add(GetComponentAt<FloorComponent>(floor.X, floor.Y + 1)?.Vertice);
 
                     // Diagonals
-                    floor.Vertice.NeighborList.Add(GetComponentAt<FloorComponent>(floor.X + 1, floor.Y + 1)?.Vertice);
-                    floor.Vertice.NeighborList.Add(GetComponentAt<FloorComponent>(floor.X + 1, floor.Y - 1)?.Vertice);
-                    floor.Vertice.NeighborList.Add(GetComponentAt<FloorComponent>(floor.X - 1, floor.Y + 1)?.Vertice);
-                    floor.Vertice.NeighborList.Add(GetComponentAt<FloorComponent>(floor.X - 1, floor.Y - 1)?.Vertice);
+                    if (GetComponentAt<FloorComponent>(floor.X + 1, floor.Y) != null && GetComponentAt<FloorComponent>(floor.X, floor.Y + 1) != null)
+                    {
+                        floor.Vertice.NeighborList.Add(GetComponentAt<FloorComponent>(floor.X + 1, floor.Y + 1)?.Vertice);
+                    }
+
+                    if (GetComponentAt<FloorComponent>(floor.X + 1, floor.Y) != null && GetComponentAt<FloorComponent>(floor.X, floor.Y - 1) != null)
+                    {
+                        floor.Vertice.NeighborList.Add(GetComponentAt<FloorComponent>(floor.X + 1, floor.Y - 1)?.Vertice);
+                    }
+
+                    if (GetComponentAt<FloorComponent>(floor.X - 1, floor.Y) != null && GetComponentAt<FloorComponent>(floor.X, floor.Y + 1) != null)
+                    {
+                        floor.Vertice.NeighborList.Add(GetComponentAt<FloorComponent>(floor.X - 1, floor.Y + 1)?.Vertice);
+                    }
+                    if (GetComponentAt<FloorComponent>(floor.X - 1, floor.Y) != null && GetComponentAt<FloorComponent>(floor.X, floor.Y - 1) != null)
+                    {
+                        floor.Vertice.NeighborList.Add(GetComponentAt<FloorComponent>(floor.X - 1, floor.Y - 1)?.Vertice);
+                    }
                 }
             }
 
@@ -249,8 +263,8 @@ namespace World
 
         public Tuple<FloorComponent, FloorComponent> GetTouchingTiles(Vector3 position)
         {
-            var xDecimal = Mathf.Abs(position.x - (int) position.x);
-            var yDecimal = Mathf.Abs(position.y - (int) position.y);
+            var xDecimal = Mathf.Abs(position.x - (int)position.x);
+            var yDecimal = Mathf.Abs(position.y - (int)position.y);
 
             // TODO: Approximate?
 
@@ -363,8 +377,7 @@ namespace World
                 spriteRenderer.sprite = GameRegistry.SpriteRegistry["actor_debug"];
                 spriteRenderer.sortingLayerName = "Characters";
 
-                var components = GetComponentsOfType<FloorComponent>();
-                character.GameObject.transform.position = ReferenceMap[_pts.SpawnPoint].Position; // components[Random.Range(0, components.Count)].transform.position;
+                character.GameObject.transform.position = ReferenceMap[_pts.SpawnPoint].Position;
 
                 character.NextVertice = FindObjectOfType<MapComponent>().GetComponentAt<FloorComponent>(character.GameObject.transform.position)?.Vertice;
 
@@ -400,13 +413,13 @@ namespace World
 
         public void DrawVisibleGraph()
         {
-            foreach (var tile in ModelsMap.OfType<FloorComponent>())
+            foreach (var floor in GetComponentsOfType<FloorComponent>())
             {
-                if (tile.Vertice == null) continue;
+                if (floor.Vertice == null) continue;
 
-                foreach (var vertex in tile.Vertice.NeighborList)
+                foreach (var vertex in floor.Vertice.NeighborList)
                 {
-                    var pos1 = tile.gameObject.transform.position;
+                    var pos1 = floor.gameObject.transform.position;
                     var pos2 = vertex.Position;
 
                     pos1.z -= 0.1f;

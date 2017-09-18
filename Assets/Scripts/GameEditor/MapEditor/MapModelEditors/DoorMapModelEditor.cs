@@ -19,23 +19,27 @@ namespace GameEditor.MapEditor.MapModelEditors
         public Toggle LoadOtherLevelOnUse;
         public InputField MapReference;
         public InputField SpawnReference;
+        public InputField KeyGroupInputField;
 
         private DoorComponent _component;
-
-        // Use this for initialization
-        void Start () {
-		
+        
+        private void Start ()
+        {
+            MapReference.enabled = false;
+            SpawnReference.enabled = false;
         }
 	
-        // Update is called once per frame
-        void Update ()
+        private void Update ()
         {
             FindObjectOfType<MapBuilder>().FocusOnInputField = ReferenceInputField.isFocused;
+            FindObjectOfType<MapBuilder>().FocusOnInputField = KeyGroupInputField.isFocused;
+            FindObjectOfType<MapBuilder>().FocusOnInputField = MapReference.isFocused;
+            FindObjectOfType<MapBuilder>().FocusOnInputField = SpawnReference.isFocused;
         }
 
         public static GameObject CreateFromData(DoorComponent component)
         {
-            var go = Instantiate(Resources.Load<GameObject>("Prefabs/UI/Windows/Editor/DoorMapModelEditor"), GameObject.Find("GlobalCanvas").transform);
+            var go = Instantiate(Resources.Load<GameObject>("Prefabs/Windows/Editor/MapModelEditor/DoorMapModelEditor"), GameObject.Find("GlobalCanvas").transform);
             go.GetComponent<DoorMapModelEditor>().ConfigureFromData(component);
             return go;
         }
@@ -82,11 +86,20 @@ namespace GameEditor.MapEditor.MapModelEditors
 
             SpawnReference.text = component.SpawnPointReference;
             SpawnReference.onEndEdit.AddListener(SpawnReferenceOnEndEdit);
+
+            KeyGroupInputField.text = component.KeyGroup;
+            KeyGroupInputField.onEndEdit.AddListener(KeyGroupOnEndEdit);
+        }
+
+        private void KeyGroupOnEndEdit(string value)
+        {
+            _component.KeyGroup = value;
         }
 
         private void IsOpenOnToggle(bool value)
         {
-            _component.IsOpen = value;
+            // _component.IsOpen = value;
+            _component.ToggleDoor();
         }
 
         private void CanUseDoorOnToggle(bool value)
@@ -96,7 +109,14 @@ namespace GameEditor.MapEditor.MapModelEditors
 
         private void LoadOtherLevelOnToggle(bool value)
         {
+            Debug.Log("Toggle LoadOtherLevel");
             _component.LoadOtherLevelOnUse = value;
+
+            MapReference.enabled = value;
+            SpawnReference.enabled = value;
+
+            //MapReference.readOnly = !value;
+            //SpawnReference.readOnly = !value;
         }
 
         private void ReferenceOnEndEdit(string value)

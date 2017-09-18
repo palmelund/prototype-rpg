@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using GameEditor.MapEditor.MapModelEditors;
+using Global;
 using Models.Components;
 using Models.DataModels;
 using Models.MapModels;
@@ -244,13 +245,12 @@ namespace GameEditor.MapEditor
         {
             var mapModel = new MapModelConverter();
             mapModel.CreateModelFromMap();
-            mapModel.Serialize(mapName);
-
+            Serializer.SerializeToFile(mapModel, mapName);
         }
 
         public void LoadMap(string mapName)
         {
-            var mapModel = MapModelConverter.DeserializeFromFile(mapName);
+            var mapModel = Serializer.DeserializeFromFile<MapModelConverter>(mapName);
             FindObjectOfType<MapComponent>().LoadMapTransition(mapModel, Path.GetFileNameWithoutExtension(mapName), null);
             // mapModel.CreateMapFromModel();
         }

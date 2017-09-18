@@ -5,6 +5,7 @@ using System.Linq;
 using System.Xml.Serialization;
 using Characters.Player;
 using GameEditor.MapEditor;
+using Global;
 using Models.Components;
 using UnityEngine;
 using World;
@@ -13,36 +14,11 @@ using Random = UnityEngine.Random;
 
 namespace Models.MapModels
 {
-    public class MapModelConverter
+    public class MapModelConverter : IGameSerializable
     {
         public string Reference { get; set; }
         
         public List<MapModel> Models { get; set; } = new List<MapModel>();
-
-        private static readonly Type[] SerializedTypes = {
-            typeof(FloorMapModel),
-            typeof(WallMapModel),
-            typeof(DoorMapModel),
-        };
-
-
-        public void Serialize(string file)
-        {
-            var serializer = new XmlSerializer(typeof(MapModelConverter), SerializedTypes);
-            using (var stream = new FileStream(file, FileMode.Create))
-            {
-                serializer.Serialize(stream, this);
-            }
-        }
-        
-        public static MapModelConverter DeserializeFromFile(string file)
-        {
-            var serializer = new XmlSerializer(typeof(MapModelConverter), SerializedTypes);
-            using (var stream = new FileStream(file, FileMode.Open))
-            {
-                return serializer.Deserialize(stream) as MapModelConverter;
-            }
-        }
 
         public void CreateMapFromModel()
         {

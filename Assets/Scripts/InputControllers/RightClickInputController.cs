@@ -62,9 +62,9 @@ namespace InputControllers
                     verticalPositionOffSet -= 35;
                 }
 
-                //var r = Panel.GetComponent<RectTransform>();
+                //var r = WindowPanel.GetComponent<RectTransform>();
 
-                // Panel.sizeDelta = new Vector2(175, verticalPositionOffSet + 5);
+                // WindowPanel.sizeDelta = new Vector2(175, verticalPositionOffSet + 5);
 
                 Panel.gameObject.SetActive(true);
             }
@@ -83,7 +83,7 @@ namespace InputControllers
         //    var enemy = collidedGameObject.GetComponent<NpcComponent>().Npc;
         //    var Go = Instantiate(Resources.Load<GameObject>("Prefabs/SampleButton"));
         //    _rightClickMenuObjects.Add(Go);
-        //    Go.transform.SetParent(Panel.transform, false);
+        //    Go.transform.SetParent(WindowPanel.transform, false);
         //    Go.transform.localScale = new Vector3(1, 1, 1);
         //    var button = Go.GetComponent<Button>();
         //    button.onClick.AddListener(() =>
@@ -139,7 +139,7 @@ namespace InputControllers
         //    //var player = collidedGameObject.GetComponent<PlayerComponent>().PlayableCharacter;
         //    var Go = Instantiate(Resources.Load<GameObject>("Prefabs/SampleButton"));
         //    _rightClickMenuObjects.Add(Go);
-        //    Go.transform.SetParent(Panel.transform, false);
+        //    Go.transform.SetParent(WindowPanel.transform, false);
         //    Go.transform.localScale = new Vector3(1, 1, 1);
         //    var b = Go.GetComponent<Button>();
         //    b.onClick.AddListener(() =>
@@ -158,7 +158,7 @@ namespace InputControllers
         //    var enemy = collidedGameObject.GetComponent<NpcComponent>().Npc;
         //    var Go = Instantiate(Resources.Load<GameObject>("Prefabs/SampleButton"));
         //    _rightClickMenuObjects.Add(Go);
-        //    Go.transform.SetParent(Panel.transform, false);
+        //    Go.transform.SetParent(WindowPanel.transform, false);
         //    Go.transform.localScale = new Vector3(1, 1, 1);
         //    var b = Go.GetComponent<Button>();
         //    b.onClick.AddListener(() =>

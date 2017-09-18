@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using Global;
 using Models.Components;
 using UnityEngine;
 
@@ -11,7 +13,7 @@ namespace Models.DataModels
         public string FrameSpriteName { get; set; }
         public string FrameSortingLayer { get; set; }
         public float TurnPoint { get; set; }
-        
+
         protected DoorDataModel()
         {
         }
@@ -26,11 +28,11 @@ namespace Models.DataModels
             var go = new GameObject(Identifier);
             go.transform.position = position;
             go.transform.rotation = Quaternion.Euler(rotation);
-            
+
             var spriteRenderer = go.AddComponent<SpriteRenderer>();
             spriteRenderer.sprite = GameRegistry.SpriteRegistry[FrameSpriteName];
             spriteRenderer.sortingLayerName = FrameSortingLayer;
-            
+
 
             var movingPart = new GameObject();
             movingPart.transform.SetParent(go.transform);
@@ -57,15 +59,15 @@ namespace Models.DataModels
             door.MapReference = "";
             door.SpawnPointReference = "";
 
-            var remaining = position.x - (int) position.x;
+            var remaining = position.x - (int)position.x;
 
             if (remaining == 0f)
             {
-                door.Configure(Identifier, new List<string>(), new Vector3(TurnPoint, 0) + position, movingPart);
+                door.Configure(Identifier, new List<string>(), string.Empty, new Vector3(TurnPoint, 0) + position, movingPart);
             }
             else if (remaining == 0.5f)
             {
-                door.Configure(Identifier, new List<string>(), new Vector3(0, TurnPoint) + position, movingPart);
+                door.Configure(Identifier, new List<string>(), string.Empty, new Vector3(0, TurnPoint) + position, movingPart);
             }
             else
             {
