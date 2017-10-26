@@ -7,11 +7,13 @@ namespace GameEditor.Controllers
     public class MousePositionInputController : MonoBehaviour {
         private GameObject _tileMarker;
 
+        public Sprite TileMarker;
+
         private void Start()
         {
             _tileMarker = new GameObject("TileMarker");
             var spriteRenderer = _tileMarker.AddComponent<SpriteRenderer>();
-            spriteRenderer.sprite = GameRegistry.SpriteRegistry["mark_tile"];
+            spriteRenderer.sprite = TileMarker;
             spriteRenderer.sortingLayerName = "Marker";
         }
 

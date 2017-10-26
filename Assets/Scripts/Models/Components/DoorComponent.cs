@@ -1,8 +1,8 @@
+using System;
 using System.Collections.Generic;
 using GameEditor.MapEditor;
 using GameEditor.MapEditor.MapModelEditors;
 using Global;
-using Models.MapModels;
 using UnityEngine;
 using UnityEngine.UI;
 using World;
@@ -11,7 +11,7 @@ namespace Models.Components
 {
     public class DoorComponent : MonoBehaviour, IWorldComponent, IWallBehavior
     {
-        // TODO: Better way to do this!
+        public DoorModel DoorModel;
 
         public Vector3 TurnPoint { get; set; }
 
@@ -19,8 +19,7 @@ namespace Models.Components
 
         private FloorComponent _sideA;
         private FloorComponent _sideB;
-        public string Identifier { get; set; }
-        public List<string> References { get; set; }
+
         public void OpenEditorWindow()
         {
             if (FindObjectOfType<MapBuilder>().OpenWindowMap.ContainsKey(this))
@@ -36,19 +35,11 @@ namespace Models.Components
 
         private GameObject MovingPart { get; set; }
 
-        public bool LoadOtherLevelOnUse { get; set; }
-
-        public string MapReference { get; set; }
-        public string SpawnPointReference { get; set; }
-        public string KeyGroup { get; set; }
-
-        public void Configure(string identifier, List<string> references, string keyGroup, Vector3 turnPoint, GameObject movingPart)
+        public void Configure(DoorModel doorModel, Vector3 turnPoint, GameObject movingPart)
         {
-            Identifier = identifier;
+            DoorModel = doorModel;
             TurnPoint = turnPoint;
             MovingPart = movingPart;
-            References = references;
-            KeyGroup = keyGroup;
         }
 
         public void SetSides(FloorComponent sideA, FloorComponent sideB)
@@ -67,21 +58,6 @@ namespace Models.Components
         
         public void ToggleDoor()
         {
-            if (LoadOtherLevelOnUse)
-            {
-                var map = GameRegistry.MapRegistry[MapReference];
-
-                var mapModel = Serializer.DeserializeFromFile<MapModelConverter>(map);
-                FindObjectOfType<MapComponent>().LoadMapTransition(mapModel, MapReference, SpawnPointReference);
-
-                //FindObjectOfType<MapComponent>().UnloadMap();
-
-                //var mapModel = MapModelConverter.DeserializeFromFile(map);
-                //mapModel.CreateMapFromModel();
-
-                return;
-            }
-
             if (!CanUseDoor) return;
 
             if (IsOpen)

@@ -7,8 +7,8 @@ namespace Models.Components
 {
     public class WallComponent : MonoBehaviour, IWorldComponent, IWallBehavior
     {
-        public string Identifier { get; set; }
-        public List<string> References { get; set; }
+        public WallModel WallModel;
+
         public void OpenEditorWindow()
         {
             if (FindObjectOfType<MapBuilder>().OpenWindowMap.ContainsKey(this))
@@ -20,10 +20,9 @@ namespace Models.Components
             FindObjectOfType<MapBuilder>().OpenWindowMap.Add(this, go);
         }
 
-        public void Configure(string identifier, List<string> references)
+        public void Configure(WallModel wallModel)
         {
-            Identifier = identifier;
-            References = references;
+            WallModel = wallModel;
         }
     }
 }

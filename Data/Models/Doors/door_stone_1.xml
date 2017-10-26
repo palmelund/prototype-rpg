@@ -1,9 +1,0 @@
-<?xml version="1.0"?>
-<DoorDataModel xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <Identifier>door_stone_1</Identifier>
-  <DoorSpriteName>door_wood_1</DoorSpriteName>
-  <DoorSortingLayer>Door</DoorSortingLayer>
-  <FrameSpriteName>door_frame_stone_1</FrameSpriteName>
-  <FrameSortingLayer>BackgroundConstruction</FrameSortingLayer>
-  <TurnPoint>-0.45</TurnPoint>
-</DoorDataModel>

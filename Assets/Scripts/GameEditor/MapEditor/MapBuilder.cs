@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using GameEditor.MapEditor.MapModelEditors;
 using Global;
+using Models;
 using Models.Components;
-using Models.DataModels;
-using Models.MapModels;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 using World;
@@ -16,7 +16,7 @@ namespace GameEditor.MapEditor
     {
         public EditorLeftClickActionState EditorLeftClickActionState = EditorLeftClickActionState.Select;
         public GameObject SelectedGameObject { get; set; }
-        public DataModel SelectedDataModel { get; set; }
+        public BaseModel SelectedDataModel { get; set; }
 
         public InputField FileNameInputField;
 
@@ -55,41 +55,54 @@ namespace GameEditor.MapEditor
             }
         }
 
+        private List<GameObject> ModelPrefabs()
+        {
+            var models = new List<GameObject>();
+            models.AddRange(Resources.LoadAll<GameObject>("Prefabs/Models/Doors"));
+            models.AddRange(Resources.LoadAll<GameObject>("Prefabs/Models/Floors"));
+            models.AddRange(Resources.LoadAll<GameObject>("Prefabs/Models/Walls"));
+            return models;
+        }
+
         public void CreateBuildableObjectList()
         {
+            // TODO: Fix ME!
+
+            // TODO: Move to editor instead
             var scrollView = Instantiate(Resources.Load<GameObject>("Prefabs/LeftSideScrollView"), GameObject.Find("GlobalCanvas").transform);
             scrollView.name = "Buildable Objects Scroll View";
             var content = scrollView.transform.Find("Viewport").Find("Content").gameObject;
-            
-            var count = GameRegistry.ModelRegistry.Count;
+
+            var models = ModelPrefabs();
+
+            var count = models.Count;
 
             var height = count * 35;
-            
+
             content.GetComponent<RectTransform>().sizeDelta = new Vector2(175, height);
             var verticalPositionOffset = height; // (height - 35) / 2;
 
-            foreach (var model in GameRegistry.ModelRegistry.Values)
+            foreach (var model in models)
             {
-                EditorSelectorButtonBuilder(model.Identifier, verticalPositionOffset, content);
+                EditorSelectorButtonBuilder(model.GetComponent<BaseModel>(), verticalPositionOffset, content);
                 verticalPositionOffset -= 35;
             }
         }
 
-        public void EditorSelectorButtonBuilder(string identifier, int verticalPositionOffset, GameObject content)
+        public void EditorSelectorButtonBuilder(BaseModel baseModel, int verticalPositionOffset, GameObject content)
         {
+            // TODO: Fix ME!
+
             var go = Instantiate(Resources.Load<GameObject>("Prefabs/SampleButton"));
             go.transform.SetParent(content.transform);
             go.transform.localScale = Vector3.one;
 
             var button = go.GetComponent<Button>();
-            button.onClick.AddListener(() =>
-            {
-                GameRegistry.ModelRegistry[identifier].OnEditorBuilderSelect();
-            });
-            button.GetComponentInChildren<Text>().text = identifier;
+            button.onClick.AddListener(baseModel.OnEditorBuilderSelect);
+            button.GetComponentInChildren<Text>().text = baseModel.IdName;
 
             var rt = go.GetComponent<RectTransform>();
-            rt.transform.position = new Vector3(rt.transform.position.x, rt.transform.position.y - verticalPositionOffset);
+            rt.transform.position = new Vector3(rt.transform.position.x, rt.transform.position.y - verticalPositionOffset, rt.transform.position.z);
         }
 
         public Vector3 RoundToBuildModePosition(Vector3 position, BuildPositionMode buildPositionMode, out Vector3 sideRotation)
@@ -187,17 +200,17 @@ namespace GameEditor.MapEditor
             BuildPositionMode mode;
 
             // TODO: Better way to do this?
-            if (SelectedDataModel is FloorDataModel)
+            if (SelectedDataModel is FloorModel)
             {
                 mode = BuildPositionMode.Center;
             }
-            else if (SelectedDataModel is WallDataModel || SelectedDataModel is DoorDataModel)
+            else if (SelectedDataModel is WallModel || SelectedDataModel is DoorModel)
             {
                 mode = BuildPositionMode.Side;
             }
             else
             {
-                Debug.LogError($"Cannot set mode for: {SelectedDataModel.Identifier}");
+                Debug.LogError($"Cannot set mode for: {SelectedDataModel.IdName}");
                 return;
             }
 
@@ -208,8 +221,9 @@ namespace GameEditor.MapEditor
                 return;
                 // TODO: Think about what should happen if trying to override existing object
             }
-            
-            var go = GameRegistry.ModelRegistry[SelectedDataModel.Identifier].Instantiate(pos, sideRotation);
+
+            var go = SelectedDataModel.Instantiate(pos, sideRotation);
+
             world.ModelsMap.Add(pos, go);
         }
 
@@ -230,28 +244,32 @@ namespace GameEditor.MapEditor
 
         public void LoadMap()
         {
-            FindObjectOfType<MapComponent>().UnloadMap();
-            var mapName = FileNameInputField.text == string.Empty ? "Data/Maps/map.xml" : "Data/Maps/" + FileNameInputField.text + ".xml";
-            LoadMap(mapName);
+            throw new NotImplementedException();
+            //FindObjectOfType<MapComponent>().UnloadMap();
+            //var mapName = FileNameInputField.text == string.Empty ? "Data/Maps/map.xml" : "Data/Maps/" + FileNameInputField.text + ".xml";
+            //LoadMap(mapName);
         }
 
         public void SaveMap()
         {
-            var mapName = FileNameInputField.text == string.Empty ? "Data/Maps/map.xml" : "Data/Maps/" + FileNameInputField.text + ".xml";
-            SaveMap(mapName);
+            throw new NotImplementedException();
+            //var mapName = FileNameInputField.text == string.Empty ? "Data/Maps/map.xml" : "Data/Maps/" + FileNameInputField.text + ".xml";
+            //SaveMap(mapName);
         }
 
         public void SaveMap(string mapName)
         {
-            var mapModel = new MapModelConverter();
-            mapModel.CreateModelFromMap();
-            Serializer.SerializeToFile(mapModel, mapName);
+            throw new NotImplementedException();
+            //var mapModel = new MapModelConverter();
+            //mapModel.CreateModelFromMap();
+            //Serializer.SerializeToFile(mapModel, mapName);
         }
 
         public void LoadMap(string mapName)
         {
-            var mapModel = Serializer.DeserializeFromFile<MapModelConverter>(mapName);
-            FindObjectOfType<MapComponent>().LoadMapTransition(mapModel, Path.GetFileNameWithoutExtension(mapName), null);
+            throw new NotImplementedException();
+            //var mapModel = Serializer.DeserializeFromFile<MapModelConverter>(mapName);
+            //FindObjectOfType<MapComponent>().LoadMapTransition(mapModel, Path.GetFileNameWithoutExtension(mapName), null);
             // mapModel.CreateMapFromModel();
         }
     }

@@ -1,7 +1,0 @@
-<?xml version="1.0"?>
-<FloorDataModel xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <Identifier>floor_wood_1</Identifier>
-  <SpriteName>floor_wood_1</SpriteName>
-  <SortingLayer>BackgroundTiles</SortingLayer>
-  <CanEnter>true</CanEnter>
-</FloorDataModel>

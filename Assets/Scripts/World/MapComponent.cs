@@ -5,7 +5,6 @@ using Characters.PathFinding;
 using Characters.Player;
 using Global;
 using Models.Components;
-using Models.MapModels;
 using UnityEngine;
 using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
@@ -29,7 +28,7 @@ namespace World
 
         public Dictionary<Vector3, GameObject> ModelsMap { get; } = new Dictionary<Vector3, GameObject>();
 
-        public Dictionary<string, MapModel> ReferenceMap { get; } = new Dictionary<string, MapModel>(); // TODO: Map Model or Map Component?
+        // public Dictionary<string, MapModel> ReferenceMap { get; } = new Dictionary<string, MapModel>(); // TODO: Map Model or Map Component?
 
         // Todo: better way that does not rely on static global variable?
 
@@ -301,37 +300,37 @@ namespace World
             // TODO
         }
 
-        public void LoadMapTransition(MapModelConverter mapModelConverter, string mapIdentifier, string spawnReference)
-        {
-            // Save player state
-            SavePlayerState(spawnReference);
+        //public void LoadMapTransition(MapModelConverter mapModelConverter, string mapIdentifier, string spawnReference)
+        //{
+        //    // Save player state
+        //    SavePlayerState(spawnReference);
 
-            // Save map state (Delta)
-            // TODO
+        //    // Save map state (Delta)
+        //    // TODO
 
-            // Unload map
-            UnloadMap();
+        //    // Unload map
+        //    UnloadMap();
 
-            // Load map
-            mapModelConverter.CreateMapFromModel();
+        //    // Load map
+        //    mapModelConverter.CreateMapFromModel();
 
-            // Load map state (Delta)
-            // TODO
+        //    // Load map state (Delta)
+        //    // TODO
 
-            // Load players
-            LoadPlayerState();
-        }
+        //    // Load players
+        //    LoadPlayerState();
+        //}
 
-        public void UnloadMap()
-        {
-            foreach (var model in ModelsMap.Values)
-            {
-                Destroy(model);
-            }
-            ModelsMap.Clear();
+        //public void UnloadMap()
+        //{
+        //    foreach (var model in ModelsMap.Values)
+        //    {
+        //        Destroy(model);
+        //    }
+        //    ModelsMap.Clear();
 
-            ReferenceMap.Clear();
-        }
+        //    ReferenceMap.Clear();
+        //}
 
 
         #region Player Loading
@@ -359,50 +358,50 @@ namespace World
             FindObjectOfType<PlayerController>().SelectedPlayerCharacter = null;
         }
 
-        public void LoadPlayerState()
-        {
-            if (_pts != null)
-            {
-                if (!ReferenceMap.ContainsKey(_pts.SpawnPoint))
-                {
-                    Debug.LogError("Cannot find reference!");
-                    return;
-                }
+        //public void LoadPlayerState()
+        //{
+        //    if (_pts != null)
+        //    {
+        //        if (!ReferenceMap.ContainsKey(_pts.SpawnPoint))
+        //        {
+        //            Debug.LogError("Cannot find reference!");
+        //            return;
+        //        }
 
-                var character = new PlayableCharacter();
-                FindObjectOfType<PlayerController>().SelectedPlayerCharacter = character;
+        //        var character = new PlayableCharacter();
+        //        FindObjectOfType<PlayerController>().SelectedPlayerCharacter = character;
 
-                character.GameObject = new GameObject("player_go");
-                var spriteRenderer = character.GameObject.AddComponent<SpriteRenderer>();
-                spriteRenderer.sprite = GameRegistry.SpriteRegistry["actor_debug"];
-                spriteRenderer.sortingLayerName = "Characters";
+        //        character.GameObject = new GameObject("player_go");
+        //        var spriteRenderer = character.GameObject.AddComponent<SpriteRenderer>();
+        //        spriteRenderer.sprite = GameRegistry.SpriteRegistry["actor_debug"];
+        //        spriteRenderer.sortingLayerName = "Characters";
 
-                character.GameObject.transform.position = ReferenceMap[_pts.SpawnPoint].Position;
+        //        character.GameObject.transform.position = ReferenceMap[_pts.SpawnPoint].Position;
 
-                character.NextVertice = FindObjectOfType<MapComponent>().GetComponentAt<FloorComponent>(character.GameObject.transform.position)?.Vertice;
+        //        character.NextVertice = FindObjectOfType<MapComponent>().GetComponentAt<FloorComponent>(character.GameObject.transform.position)?.Vertice;
 
-                character.GameObject.AddComponent<BoxCollider2D>();
+        //        character.GameObject.AddComponent<BoxCollider2D>();
 
-                _pts = null;
-            }
-            else
-            {
-                var character = new PlayableCharacter();
-                FindObjectOfType<PlayerController>().SelectedPlayerCharacter = character;
+        //        _pts = null;
+        //    }
+        //    else
+        //    {
+        //        var character = new PlayableCharacter();
+        //        FindObjectOfType<PlayerController>().SelectedPlayerCharacter = character;
 
-                character.GameObject = new GameObject("player_go");
-                var spriteRenderer = character.GameObject.AddComponent<SpriteRenderer>();
-                spriteRenderer.sprite = GameRegistry.SpriteRegistry["actor_debug"];
-                spriteRenderer.sortingLayerName = "Characters";
+        //        character.GameObject = new GameObject("player_go");
+        //        var spriteRenderer = character.GameObject.AddComponent<SpriteRenderer>();
+        //        spriteRenderer.sprite = GameRegistry.SpriteRegistry["actor_debug"];
+        //        spriteRenderer.sortingLayerName = "Characters";
 
-                var components = GetComponentsOfType<FloorComponent>();
-                character.GameObject.transform.position = components[Random.Range(0, components.Count)].transform.position;
+        //        var components = GetComponentsOfType<FloorComponent>();
+        //        character.GameObject.transform.position = components[Random.Range(0, components.Count)].transform.position;
 
-                character.NextVertice = FindObjectOfType<MapComponent>().GetComponentAt<FloorComponent>(character.GameObject.transform.position)?.Vertice;
+        //        character.NextVertice = FindObjectOfType<MapComponent>().GetComponentAt<FloorComponent>(character.GameObject.transform.position)?.Vertice;
 
-                character.GameObject.AddComponent<BoxCollider2D>();
-            }
-        }
+        //        character.GameObject.AddComponent<BoxCollider2D>();
+        //    }
+        //}
 
         #endregion
 

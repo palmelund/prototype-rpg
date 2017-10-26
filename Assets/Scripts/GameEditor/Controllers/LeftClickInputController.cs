@@ -23,7 +23,6 @@ namespace GameEditor.Controllers
 
                         if (hit.collider?.gameObject.GetComponent<IWorldComponent>() != null)
                         {
-                            Debug.Log(hit.collider.gameObject.GetComponent<IWorldComponent>().Identifier);
                             FindObjectOfType<MapBuilder>().SelectedGameObject = hit.collider.gameObject;
                         }
                         break;

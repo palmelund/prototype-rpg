@@ -70,7 +70,7 @@ namespace Items
         
     }
 
-    public abstract class Item : IGameSerializable
+    public abstract class Item
     {
         public string Identifier { get; set; }
         public string Name { get; set; }

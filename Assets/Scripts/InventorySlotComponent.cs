@@ -26,35 +26,37 @@ public class InventorySlotComponent : MonoBehaviour
 
     private void Start()
     {
-        var invController = GameObject.FindObjectOfType<InventoryController>();
-        if (InventorySlotType == InventorySlotType.Inventory)
-        {
-            invController.InventorySlots[InventorySlotNumber] = this;
-        }
-        else
-        {
-            invController.EquipmentSlots[(int) InventorySlotType] = this;
-        }
+        // TODO: Fix ME!
 
-        // TODO: temp only
-        if (InventorySlotType == InventorySlotType.Inventory && Random.Range(0, 2) == 0)
-        {
-            var colors = new string[] {"red", "yellow", "green", "blue"};
+        //var invController = GameObject.FindObjectOfType<InventoryController>();
+        //if (InventorySlotType == InventorySlotType.Inventory)
+        //{
+        //    invController.InventorySlots[InventorySlotNumber] = this;
+        //}
+        //else
+        //{
+        //    invController.EquipmentSlots[(int) InventorySlotType] = this;
+        //}
 
-            var go = new GameObject();
-            go.transform.SetParent(GameObject.Find("Inventory").transform);
-            go.transform.position = transform.position;
-            var rt = go.AddComponent<RectTransform>();
-            rt.sizeDelta = new Vector2(32, 32);
-            go.AddComponent<CanvasRenderer>();
-            var image = go.AddComponent<Image>();
-            image.sprite = Resources.Load<Sprite>(colors[Random.Range(0, 4)]);
-            var itemComponent = go.AddComponent<ItemComponent>();
-            var item = GameRegistry.ItemRegistry.Values.ToArray()[Random.Range(0, GameRegistry.ItemRegistry.Count)];
-            go.transform.name = item.Identifier;
-            ItemComponent = itemComponent;
-            ItemComponent.Identifier = item.Identifier;
-        }
+        //// TODO: temp only
+        //if (InventorySlotType == InventorySlotType.Inventory && Random.Range(0, 2) == 0)
+        //{
+        //    var colors = new string[] {"red", "yellow", "green", "blue"};
+
+        //    var go = new GameObject();
+        //    go.transform.SetParent(GameObject.Find("Inventory").transform);
+        //    go.transform.position = transform.position;
+        //    var rt = go.AddComponent<RectTransform>();
+        //    rt.sizeDelta = new Vector2(32, 32);
+        //    go.AddComponent<CanvasRenderer>();
+        //    var image = go.AddComponent<Image>();
+        //    image.sprite = Resources.Load<Sprite>(colors[Random.Range(0, 4)]);
+        //    var itemComponent = go.AddComponent<ItemComponent>();
+        //    var item = GameRegistry.ItemRegistry.Values.ToArray()[Random.Range(0, GameRegistry.ItemRegistry.Count)];
+        //    go.transform.name = item.Identifier;
+        //    ItemComponent = itemComponent;
+        //    ItemComponent.Identifier = item.Identifier;
+        //}
     }
 }
 

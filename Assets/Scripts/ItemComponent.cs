@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 public class ItemComponent : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     public string Identifier { get; set; }
-    public Item Item => GameRegistry.ItemRegistry[Identifier];
+    public Item Item => null; // GameRegistry.ItemRegistry[Identifier];
 
     public Vector3 StartPosition { get; private set; }
     private RectTransform RectTransform => GetComponent<RectTransform>();

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Models.Components;
-using Models.MapModels;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,7 +12,6 @@ namespace GameEditor.MapEditor.MapModelEditors
         public Button CloseButton;
         public Text IdentifierText;
         public Text PositionText;
-        public InputField ReferenceInputField;
 
         private WallComponent _component;
 
@@ -25,7 +23,7 @@ namespace GameEditor.MapEditor.MapModelEditors
         // Update is called once per frame
         void Update ()
         {
-            FindObjectOfType<MapBuilder>().FocusOnInputField = ReferenceInputField.isFocused;
+
         }
 
         public static GameObject CreateFromData(WallComponent component)
@@ -40,31 +38,15 @@ namespace GameEditor.MapEditor.MapModelEditors
             _component = component;
 
             CloseButton.onClick.AddListener(CloseWindow);
-            IdentifierText.text = component.Identifier;
+            IdentifierText.text = component.WallModel.IdName;
             PositionText.text = component.gameObject.transform.position.ToString();
-
-            var references = string.Empty;
-            for (var i = 0; i < component.References.Count; i++)
-            {
-                if (i == component.References.Count - 1)
-                {
-                    references += component.References[i];
-                }
-                else
-                {
-                    references += component.References[i] + "\n";
-                }
-            }
-
-            ReferenceInputField.text = references;
-            ReferenceInputField.onEndEdit.AddListener(OnEndEdit);
+            
         }
         private void OnEndEdit(string value)
         {
             var lines = value.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
             var references = new List<string>(lines);
             references = references.Where(s => !string.IsNullOrWhiteSpace(s)).ToList();
-            _component.References = references;
         }
 
         public void CloseWindow()
